@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://roubin.me/first-priority-of-life/</loc>
+    
+    <lastmod>2020-01-22T02:59:25.793Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/git-worktree/</loc>
     
     <lastmod>2020-01-22T02:39:43.174Z</lastmod>
@@ -156,14 +163,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/randomize-shuffle-a-javascript-array/</loc>
+    <loc>https://roubin.me/resolution-of-extra-pixel-under-image/</loc>
     
     <lastmod>2020-01-21T06:51:33.854Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/resolution-of-extra-pixel-under-image/</loc>
+    <loc>https://roubin.me/randomize-shuffle-a-javascript-array/</loc>
     
     <lastmod>2020-01-21T06:51:33.854Z</lastmod>
     
@@ -177,14 +184,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/mini-program-use-behavior-encapsulate-search-component/</loc>
+    <loc>https://roubin.me/mini-program-use-wxs-solve-text-indent/</loc>
     
     <lastmod>2020-01-21T06:51:33.853Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/mini-program-use-wxs-solve-text-indent/</loc>
+    <loc>https://roubin.me/mini-program-use-behavior-encapsulate-search-component/</loc>
     
     <lastmod>2020-01-21T06:51:33.853Z</lastmod>
     
@@ -282,13 +289,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/how-to-ride-in-subway-train/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.850Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/gulp-compress-css-js/</loc>
     
     <lastmod>2020-01-21T06:51:33.850Z</lastmod>
@@ -296,14 +296,21 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/install-office-2010-requires-msxml-version-6101129/</loc>
+    <loc>https://roubin.me/inheritance-method-summary/</loc>
     
     <lastmod>2020-01-21T06:51:33.850Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/inheritance-method-summary/</loc>
+    <loc>https://roubin.me/how-to-ride-in-subway-train/</loc>
+    
+    <lastmod>2020-01-21T06:51:33.850Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/install-office-2010-requires-msxml-version-6101129/</loc>
     
     <lastmod>2020-01-21T06:51:33.850Z</lastmod>
     
@@ -324,14 +331,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/git-notes/</loc>
+    <loc>https://roubin.me/es6-let-string-number-destruction/</loc>
     
     <lastmod>2020-01-21T06:51:33.849Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/es6-let-string-number-destruction/</loc>
+    <loc>https://roubin.me/git-notes/</loc>
     
     <lastmod>2020-01-21T06:51:33.849Z</lastmod>
     
@@ -401,13 +408,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/async-await/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.847Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/closure/</loc>
     
     <lastmod>2020-01-21T06:51:33.847Z</lastmod>
@@ -416,6 +416,13 @@
   
   <url>
     <loc>https://roubin.me/communication-between-vue-components/</loc>
+    
+    <lastmod>2020-01-21T06:51:33.847Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/async-await/</loc>
     
     <lastmod>2020-01-21T06:51:33.847Z</lastmod>
     
@@ -457,13 +464,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/2019-year-end-summary/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.845Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/angular-adminlte-body-height-cut-off-fix/</loc>
     
     <lastmod>2020-01-21T06:51:33.845Z</lastmod>
@@ -472,6 +472,13 @@
   
   <url>
     <loc>https://roubin.me/angular-data-bind/</loc>
+    
+    <lastmod>2020-01-21T06:51:33.845Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/2019-year-end-summary/</loc>
     
     <lastmod>2020-01-21T06:51:33.845Z</lastmod>
     
