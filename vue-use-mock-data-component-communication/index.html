@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="前端,vue," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、配置模拟数据1.在static文件夹下新增mock文件夹 2.在mock文件夹下新建index.json文件，写入mock data如下：">
+<meta name="keywords" content="前端,vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Vue】配合模拟数据实现前后端、父子组件间通信">
+<meta property="og:url" content="https://roubin.me/vue-use-mock-data-component-communication/index.html">
+<meta property="og:site_name" content="肉饼博客">
+<meta property="og:description" content="一、配置模拟数据1.在static文件夹下新增mock文件夹 2.在mock文件夹下新建index.json文件，写入mock data如下：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-01-21T06:51:33.857Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Vue】配合模拟数据实现前后端、父子组件间通信">
+<meta name="twitter:description" content="一、配置模拟数据1.在static文件夹下新增mock文件夹 2.在mock文件夹下新建index.json文件，写入mock data如下：">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://roubin.me/vue-use-mock-data-component-communication/"/>
+
+
+
+
+
+  <title>【Vue】配合模拟数据实现前后端、父子组件间通信 | 肉饼博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">肉饼博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Talk is cheap. Show me the code.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://roubin.me/vue-use-mock-data-component-communication/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="roubin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="肉饼博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【Vue】配合模拟数据实现前后端、父子组件间通信</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-31T16:42:51+08:00">
+                2018-05-31
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-01-21T14:51:33+08:00">
+                2020-01-21
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/VUE/" itemprop="url" rel="index">
+                    <span itemprop="name">VUE</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/vue-use-mock-data-component-communication/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="vue-use-mock-data-component-communication/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="一、配置模拟数据"><a href="#一、配置模拟数据" class="headerlink" title="一、配置模拟数据"></a>一、配置模拟数据</h4><p>1.在static文件夹下新增mock文件夹</p>
+<p>2.在mock文件夹下新建index.json文件，写入mock data如下：<br><a id="more"></a><br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"ret"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"data"</span>: &#123;</span><br><span class="line">    <span class="attr">"city"</span>: <span class="string">"北京"</span>,</span><br><span class="line">    <span class="attr">"swiperList"</span>: [&#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0001"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/piao/fusion/1801/1a/94428c6dea109402.jpg_640x200_2cf590d8.jpg"</span></span><br><span class="line">    &#125;,&#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0002"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/piao/fusion/1802/42/7c92b9a381e46402.jpg_640x200_1cdce2a4.jpg"</span></span><br><span class="line">    &#125;,&#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0003"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/piao/fusion/1802/51/e78f936a5b404102.jpg_640x200_c14f0b3a.jpg"</span></span><br><span class="line">    &#125;,&#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0004"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/piao/fusion/1712/91/a275569091681d02.jpg_640x200_0519ccb9.jpg"</span></span><br><span class="line">    &#125;],</span><br><span class="line">    <span class="attr">"iconList"</span>: [&#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0001"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/piao/fusion/1611/54/ace00878a52d9702.png"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"景点门票"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0002"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/piao/fusion/1711/df/86cbcfc533330d02.png"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"滑雪季"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0003"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/piao/fusion/1710/a6/83f636bd75ae6302.png"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"泡温泉"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0004"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/piao/fusion/1611/35/2640cab202c41b02.png"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"动植园"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0005"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/piao/fusion/1611/d0/e09575e66f4aa402.png"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"游乐园"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0006"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/piao/fusion/1611/59/569d3c096e542502.png"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"必游榜单"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0007"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/piao/fusion/1611/17/4bd370f3eb1acd02.png"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"演出"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0008"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/piao/fusion/1611/7f/b1ea3c8c7fb6db02.png"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"城市观光"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0009"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/piao/fusion/1611/a9/ffc620dbda9b9c02.png"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"一日游"</span></span><br><span class="line">    &#125;],</span><br><span class="line">    <span class="attr">"recommendList"</span>: [&#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0001"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/sight/p0/1409/19/adca619faaab0898245dc4ec482b5722.jpg_140x140_80f63803.jpg"</span>,</span><br><span class="line">      <span class="attr">"title"</span>: <span class="string">"故宫"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"东方宫殿建筑代表，世界宫殿建筑典范"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0002"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/sight/p0/1511/d2/d2aec2dfc5aa771290.water.jpg_140x140_abb362a7.jpg"</span>,</span><br><span class="line">      <span class="attr">"title"</span>: <span class="string">"南山滑雪场"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"北京专业级滑雪圣地"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0003"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/sight/p0/1501/f4/f467729126949c3a.water.jpg_140x140_ef235b1c.jpg"</span>,</span><br><span class="line">      <span class="attr">"title"</span>: <span class="string">"天安门广场"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"我爱北京天安门，天安门上太阳升"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0004"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/sight/p0/1501/40/40b2b6c951b28fdd.water.jpg_140x140_1c863e5c.jpg"</span>,</span><br><span class="line">      <span class="attr">"title"</span>: <span class="string">"水立方"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"中国的荣耀，阳光下的晶莹水滴"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0005"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/sight/p0/201308/23/b283071686e64dfec8d65eac.jpg_140x140_8c5a7c49.jpg"</span>,</span><br><span class="line">      <span class="attr">"title"</span>: <span class="string">"温都水城养生馆"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"各种亚热带植物掩映其间仿佛置身热带雨林"</span></span><br><span class="line">    &#125;],</span><br><span class="line">    <span class="attr">"weekendList"</span>: [&#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0001"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/sight/source/1510/6e/1ea71e2f04e.jpg_r_640x214_aa6f091d.jpg"</span>,</span><br><span class="line">      <span class="attr">"title"</span>: <span class="string">"北京温泉排行榜"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"细数北京温泉，温暖你的冬天"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0002"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/sight/source/1505/aa/7baaf8a851d221.jpg_r_640x214_1431200f.jpg"</span>,</span><br><span class="line">      <span class="attr">"title"</span>: <span class="string">"北京必游TOP10"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"来北京必去的景点非这些地方莫属"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0003"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/sight/source/1505/9e/21df651e19af5d.jpg_r_640x214_3ea5bb38.jpg"</span>,</span><br><span class="line">      <span class="attr">"title"</span>: <span class="string">"寻找北京的皇城范儿"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"数百年的宫廷庙宇，至今依旧威严霸气"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0004"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/sight/source/1505/ce/bc89bc2f0e33ea.jpg_r_640x214_3e408453.jpg"</span>,</span><br><span class="line">      <span class="attr">"title"</span>: <span class="string">"学生最爱的博物馆"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"周末干嘛？北京很多博物馆已经免费开放啦"</span></span><br><span class="line">    &#125;, &#123;</span><br><span class="line">      <span class="attr">"id"</span>: <span class="string">"0005"</span>,</span><br><span class="line">      <span class="attr">"imgUrl"</span>: <span class="string">"http://img1.qunarzz.com/sight/source/1505/b2/fde1bfcd057a52.jpg_r_640x214_bbf3fa44.jpg"</span>,</span><br><span class="line">      <span class="attr">"title"</span>: <span class="string">"儿童剧场，孩子的乐园"</span>,</span><br><span class="line">      <span class="attr">"desc"</span>: <span class="string">"带宝贝观看演出，近距离体验艺术的无穷魅力"</span></span><br><span class="line">    &#125;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="二、配置proxy实现本地请求转发"><a href="#二、配置proxy实现本地请求转发" class="headerlink" title="二、配置proxy实现本地请求转发"></a>二、配置proxy实现本地请求转发</h4><p>1.在config/index.js下修改：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">proxyTable: &#123;</span><br><span class="line">      <span class="string">'/api'</span>: &#123;</span><br><span class="line">        target: <span class="string">'http://localhost:8080'</span>,</span><br><span class="line">        pathRewrite: &#123;</span><br><span class="line">          <span class="string">'^/api'</span>: <span class="string">'/static/mock'</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br></pre></td></tr></table></figure></p>
+<p>2.重启服务器</p>
+<p>3.组件ajax数据获取<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">axios.get(<span class="string">'/api/index.json'</span>)</span><br><span class="line">        .then(<span class="keyword">this</span>.getHomeInfoSuccess)</span><br></pre></td></tr></table></figure></p>
+<h4 id="三、父子组件间通信"><a href="#三、父子组件间通信" class="headerlink" title="三、父子组件间通信"></a>三、父子组件间通信</h4><p>1.父组件中设置data变量，用于接收ajax返回的数据<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">data () &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      city: <span class="string">''</span>,</span><br><span class="line">      swiperList: []</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure></p>
+<p>2.对ajax返回的数据做处理，赋值给本地变量<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">    getHomeInfo () &#123;</span><br><span class="line">      axios.get(<span class="string">'/api/index.json'</span>)</span><br><span class="line">        .then(<span class="keyword">this</span>.getHomeInfoSuccess)</span><br><span class="line">    &#125;,</span><br><span class="line">    getHomeInfoSuccess (res) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(res)</span><br><span class="line">      res = res.data</span><br><span class="line">      <span class="keyword">if</span> (res.ret &amp;&amp; res.data) &#123;</span><br><span class="line">        <span class="keyword">this</span>.city = res.data.city</span><br><span class="line">        <span class="keyword">this</span>.swiperList = res.data.swiperList</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  mounted () &#123;</span><br><span class="line">    <span class="keyword">this</span>.getHomeInfo()</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>3.通过属性绑定将数据传递给子组件<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">home-header</span> <span class="attr">:city</span>=<span class="string">"city"</span>&gt;</span><span class="tag">&lt;/<span class="name">home-header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">home-swiper</span> <span class="attr">:list</span>=<span class="string">"swiperList"</span>&gt;</span><span class="tag">&lt;/<span class="name">home-swiper</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>4.子组件设置对应变量，用于接收父组件传过来的数据<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">props: &#123;</span><br><span class="line">    list: <span class="built_in">Array</span></span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure></p>
+<p>5.子组件将数据渲染到模板上<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">swiper-slide</span> <span class="attr">v-for</span>=<span class="string">"item of list"</span> <span class="attr">:key</span>=<span class="string">"item.id"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">"swiper-img"</span> <span class="attr">:src</span>=<span class="string">"item.imgUrl"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">swiper-slide</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前端/" rel="tag"># 前端</a>
+          
+            <a href="/tags/vue/" rel="tag"># vue</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/vue-integrated-iconfont-stylus/" rel="next" title="【Vue】使用iconfont和stylus">
+                <i class="fa fa-chevron-left"></i> 【Vue】使用iconfont和stylus
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/vuex-basic/" rel="prev" title="【Vue】Vuex的基本使用">
+                【Vue】Vuex的基本使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="roubin" />
+            
+              <p class="site-author-name" itemprop="name">roubin</p>
+              <p class="site-description motion-element" itemprop="description">芝兰其室，金石其心<br/>仁义为友，道德为师</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/satorioh" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:wangbinxp@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、配置模拟数据"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x4E00;&#x3001;&#x914D;&#x7F6E;&#x6A21;&#x62DF;&#x6570;&#x636E;" class="headerlink" title="&#x4E00;&#x3001;&#x914D;&#x7F6E;&#x6A21;&#x62DF;&#x6570;&#x636E;"></a>&#x4E00;&#x3001;&#x914D;&#x7F6E;&#x6A21;&#x62DF;&#x6570;&#x636E;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、配置proxy实现本地请求转发"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;&#x914D;&#x7F6E;proxy&#x5B9E;&#x73B0;&#x672C;&#x5730;&#x8BF7;&#x6C42;&#x8F6C;&#x53D1;" class="headerlink" title="&#x4E8C;&#x3001;&#x914D;&#x7F6E;proxy&#x5B9E;&#x73B0;&#x672C;&#x5730;&#x8BF7;&#x6C42;&#x8F6C;&#x53D1;"></a>&#x4E8C;&#x3001;&#x914D;&#x7F6E;proxy&#x5B9E;&#x73B0;&#x672C;&#x5730;&#x8BF7;&#x6C42;&#x8F6C;&#x53D1;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、父子组件间通信"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x4E09;&#x3001;&#x7236;&#x5B50;&#x7EC4;&#x4EF6;&#x95F4;&#x901A;&#x4FE1;" class="headerlink" title="&#x4E09;&#x3001;&#x7236;&#x5B50;&#x7EC4;&#x4EF6;&#x95F4;&#x901A;&#x4FE1;"></a>&#x4E09;&#x3001;&#x7236;&#x5B50;&#x7EC4;&#x4EF6;&#x95F4;&#x901A;&#x4FE1;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roubin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://roubinme.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://roubin.me/vue-use-mock-data-component-communication/';
+          this.page.identifier = 'vue-use-mock-data-component-communication/';
+          this.page.title = '【Vue】配合模拟数据实现前后端、父子组件间通信';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://roubinme.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

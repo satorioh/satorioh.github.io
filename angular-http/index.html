@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="angular,前端," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、在根模块导入HttpModule1234import &amp;#123;HttpModule &amp;#125; from &quot;@angular/http&quot;;imports: [    HttpModule  ],">
+<meta name="keywords" content="angular,前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Angular】HTTP通信">
+<meta property="og:url" content="https://roubin.me/angular-http/index.html">
+<meta property="og:site_name" content="肉饼博客">
+<meta property="og:description" content="一、在根模块导入HttpModule1234import &amp;#123;HttpModule &amp;#125; from &quot;@angular/http&quot;;imports: [    HttpModule  ],">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-01-21T06:51:33.845Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Angular】HTTP通信">
+<meta name="twitter:description" content="一、在根模块导入HttpModule1234import &amp;#123;HttpModule &amp;#125; from &quot;@angular/http&quot;;imports: [    HttpModule  ],">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://roubin.me/angular-http/"/>
+
+
+
+
+
+  <title>【Angular】HTTP通信 | 肉饼博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">肉饼博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Talk is cheap. Show me the code.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://roubin.me/angular-http/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="roubin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="肉饼博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【Angular】HTTP通信</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-07T09:49:51+08:00">
+                2018-05-07
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-01-21T14:51:33+08:00">
+                2020-01-21
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Angular/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/angular-http/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="angular-http/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="一、在根模块导入HttpModule"><a href="#一、在根模块导入HttpModule" class="headerlink" title="一、在根模块导入HttpModule"></a>一、在根模块导入HttpModule</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;HttpModule &#125; <span class="keyword">from</span> <span class="string">"@angular/http"</span>;</span><br><span class="line">imports: [</span><br><span class="line">    HttpModule</span><br><span class="line">  ],</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="二、在组件中导入Http服务"><a href="#二、在组件中导入Http服务" class="headerlink" title="二、在组件中导入Http服务"></a>二、在组件中导入Http服务</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Http &#125; <span class="keyword">from</span> <span class="string">'@angular/http'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">"rxjs/Rx"</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;Observable&#125; <span class="keyword">from</span> <span class="string">"rxjs"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HttpComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line"></span><br><span class="line">  dataSource:Observable&lt;<span class="built_in">any</span>&gt;;</span><br><span class="line">  stocks = [];</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> http:Http</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.dataSource =  <span class="keyword">this</span>.http.get(<span class="string">'/stock'</span>).map(<span class="function"><span class="params">response</span> =&gt;</span> response.json());</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">   <span class="keyword">this</span>.dataSource.subscribe(<span class="function"><span class="params">data</span> =&gt;</span> <span class="keyword">this</span>.stocks = data);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="三、使用proxy实现跨域调用API，方便开发"><a href="#三、使用proxy实现跨域调用API，方便开发" class="headerlink" title="三、使用proxy实现跨域调用API，方便开发"></a>三、使用proxy实现跨域调用API，方便开发</h4><h5 id="1-在客户端新增proxy-conf-json"><a href="#1-在客户端新增proxy-conf-json" class="headerlink" title="1.在客户端新增proxy.conf.json"></a>1.在客户端新增proxy.conf.json</h5><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"/api"</span>:&#123;</span><br><span class="line">        <span class="attr">"target"</span>:<span class="string">"http://localhost:8000"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="2-修改http组件中的url，前面增加api"><a href="#2-修改http组件中的url，前面增加api" class="headerlink" title="2.修改http组件中的url，前面增加api"></a>2.修改http组件中的url，前面增加api</h5><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> http:Http</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.dataSource =  <span class="keyword">this</span>.http.get(<span class="string">'/api/stock'</span>).map(<span class="function"><span class="params">response</span> =&gt;</span> response.json());</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h5 id="3-server端修改响应url，前面增加api"><a href="#3-server端修改响应url，前面增加api" class="headerlink" title="3.server端修改响应url，前面增加api"></a>3.server端修改响应url，前面增加api</h5><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> express <span class="keyword">from</span> <span class="string">"express"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/'</span>,<span class="function">(<span class="params">request,response</span>) =&gt;</span> response.send(<span class="string">"这里是首页!"</span>));</span><br><span class="line">app.get(<span class="string">'/api/stock'</span>,<span class="function">(<span class="params">request,response</span>) =&gt;</span> response.json(stocks));</span><br><span class="line">app.get(<span class="string">'/api/stock/:id'</span>,<span class="function">(<span class="params">request,response</span>) =&gt;</span> response.json(stocks.find(<span class="function">(<span class="params">stock</span>) =&gt;</span> stock.id == request.params.id )));</span><br><span class="line"><span class="keyword">const</span> server = app.listen(<span class="number">8000</span>, <span class="string">'localhost'</span>, <span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"服务器已启动"</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> Stock &#123;</span><br><span class="line">    <span class="keyword">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> id:<span class="built_in">number</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> name:<span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> price:<span class="built_in">number</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> rating:<span class="built_in">number</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> desc:<span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">        <span class="keyword">public</span> categories:<span class="built_in">Array</span>&lt;<span class="built_in">string</span>&gt;</span></span><br><span class="line"><span class="params">    </span>)&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> stocks: Stock[] = [</span><br><span class="line">    <span class="keyword">new</span> Stock(<span class="number">1</span>, <span class="string">'第一只股票'</span>, <span class="number">1.99</span>, <span class="number">3.5</span>, <span class="string">'第1只股票，大牛股'</span>, [<span class="string">'IT'</span>, <span class="string">'互联网'</span>]),</span><br><span class="line">    <span class="keyword">new</span> Stock(<span class="number">2</span>, <span class="string">'第二只股票'</span>, <span class="number">2.99</span>, <span class="number">4.5</span>, <span class="string">'第2只股票，大牛股'</span>, [<span class="string">'IT'</span>, <span class="string">'金融'</span>]),</span><br><span class="line">    <span class="keyword">new</span> Stock(<span class="number">3</span>, <span class="string">'第三只股票'</span>, <span class="number">3.99</span>, <span class="number">3.5</span>, <span class="string">'第3只股票，大牛股'</span>, [<span class="string">'金融'</span>, <span class="string">'IT'</span>]),</span><br><span class="line">    <span class="keyword">new</span> Stock(<span class="number">4</span>, <span class="string">'第四只股票'</span>, <span class="number">4.99</span>, <span class="number">1.5</span>, <span class="string">'第4只股票，大牛股'</span>, [<span class="string">'金融'</span>, <span class="string">'互联网'</span>]),</span><br><span class="line">    <span class="keyword">new</span> Stock(<span class="number">5</span>, <span class="string">'第五只股票'</span>, <span class="number">5.99</span>, <span class="number">2.5</span>, <span class="string">'第5只股票，大牛股'</span>, [<span class="string">'IT'</span>]),</span><br><span class="line">    <span class="keyword">new</span> Stock(<span class="number">6</span>, <span class="string">'第六只股票'</span>, <span class="number">6.99</span>, <span class="number">3.5</span>, <span class="string">'第6只股票，大牛股'</span>, [<span class="string">'IT'</span>, <span class="string">'互联网'</span>]),</span><br><span class="line">    <span class="keyword">new</span> Stock(<span class="number">7</span>, <span class="string">'第七只股票'</span>, <span class="number">7.99</span>, <span class="number">2.5</span>, <span class="string">'第7只股票，大牛股'</span>, [<span class="string">'互联网'</span>]),</span><br><span class="line">    <span class="keyword">new</span> Stock(<span class="number">8</span>, <span class="string">'第八只股票'</span>, <span class="number">8.99</span>, <span class="number">1.5</span>, <span class="string">'第8只股票，大牛股'</span>, [<span class="string">'金融'</span>]),</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<h5 id="4-在package-json的启动脚本start中添加proxy配置"><a href="#4-在package-json的启动脚本start中添加proxy配置" class="headerlink" title="4.在package.json的启动脚本start中添加proxy配置"></a>4.在package.json的启动脚本start中添加proxy配置</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span><br><span class="line">    "ng": "ng",</span><br><span class="line">    "start": "ng serve --proxy-config proxy.conf.json",</span><br><span class="line">    "build": "ng build --prod",</span><br><span class="line">    "test": "ng test",</span><br><span class="line">    "lint": "ng lint",</span><br><span class="line">    "e2e": "ng e2e"</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<h4 id="四、使用async管道接收并展示数据"><a href="#四、使用async管道接收并展示数据" class="headerlink" title="四、使用async管道接收并展示数据"></a>四、使用async管道接收并展示数据</h4><h5 id="1-模板修改为："><a href="#1-模板修改为：" class="headerlink" title="1.模板修改为："></a>1.模板修改为：</h5><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">  股票信息</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> *<span class="attr">ngFor</span>=<span class="string">"let stock of stocks | async"</span>&gt;</span></span><br><span class="line">      &#123;&#123;stock.name&#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-组件类修改为："><a href="#2-组件类修改为：" class="headerlink" title="2.组件类修改为："></a>2.组件类修改为：</h5><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HttpComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line"></span><br><span class="line">  stocks:Observable&lt;<span class="built_in">any</span>&gt;;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> http:Http</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.stocks =  <span class="keyword">this</span>.http.get(<span class="string">'/api/stock'</span>).map(<span class="function"><span class="params">response</span> =&gt;</span> response.json());</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="五、增加Request-Header内容"><a href="#五、增加Request-Header内容" class="headerlink" title="五、增加Request Header内容"></a>五、增加Request Header内容</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Http , Headers&#125; <span class="keyword">from</span> <span class="string">'@angular/http'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> HttpComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line"></span><br><span class="line">  stocks:Observable&lt;<span class="built_in">any</span>&gt;;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> http:Http</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> myHeaders:Headers = <span class="keyword">new</span> Headers();</span><br><span class="line">    myHeaders.append(<span class="string">"Authorization"</span>,<span class="string">"Basic 123456"</span>);</span><br><span class="line">    <span class="keyword">this</span>.stocks =  <span class="keyword">this</span>.http.get(<span class="string">'/api/stock'</span>,&#123;headers:myHeaders&#125;).map(<span class="function"><span class="params">response</span> =&gt;</span> response.json());</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/angular/" rel="tag"># angular</a>
+          
+            <a href="/tags/前端/" rel="tag"># 前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/angular-reactive-forms/" rel="next" title="【Angular】响应式表单的使用">
+                <i class="fa fa-chevron-left"></i> 【Angular】响应式表单的使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/angular-pagination-component/" rel="prev" title="【Angular】分页组件">
+                【Angular】分页组件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="roubin" />
+            
+              <p class="site-author-name" itemprop="name">roubin</p>
+              <p class="site-description motion-element" itemprop="description">芝兰其室，金石其心<br/>仁义为友，道德为师</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/satorioh" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:wangbinxp@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、在根模块导入HttpModule"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x4E00;&#x3001;&#x5728;&#x6839;&#x6A21;&#x5757;&#x5BFC;&#x5165;HttpModule" class="headerlink" title="&#x4E00;&#x3001;&#x5728;&#x6839;&#x6A21;&#x5757;&#x5BFC;&#x5165;HttpModule"></a>&#x4E00;&#x3001;&#x5728;&#x6839;&#x6A21;&#x5757;&#x5BFC;&#x5165;HttpModule</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、在组件中导入Http服务"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;&#x5728;&#x7EC4;&#x4EF6;&#x4E2D;&#x5BFC;&#x5165;Http&#x670D;&#x52A1;" class="headerlink" title="&#x4E8C;&#x3001;&#x5728;&#x7EC4;&#x4EF6;&#x4E2D;&#x5BFC;&#x5165;Http&#x670D;&#x52A1;"></a>&#x4E8C;&#x3001;&#x5728;&#x7EC4;&#x4EF6;&#x4E2D;&#x5BFC;&#x5165;Http&#x670D;&#x52A1;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、使用proxy实现跨域调用API，方便开发"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x4E09;&#x3001;&#x4F7F;&#x7528;proxy&#x5B9E;&#x73B0;&#x8DE8;&#x57DF;&#x8C03;&#x7528;API&#xFF0C;&#x65B9;&#x4FBF;&#x5F00;&#x53D1;" class="headerlink" title="&#x4E09;&#x3001;&#x4F7F;&#x7528;proxy&#x5B9E;&#x73B0;&#x8DE8;&#x57DF;&#x8C03;&#x7528;API&#xFF0C;&#x65B9;&#x4FBF;&#x5F00;&#x53D1;"></a>&#x4E09;&#x3001;&#x4F7F;&#x7528;proxy&#x5B9E;&#x73B0;&#x8DE8;&#x57DF;&#x8C03;&#x7528;API&#xFF0C;&#x65B9;&#x4FBF;&#x5F00;&#x53D1;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-在客户端新增proxy-conf-json"><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#1-&#x5728;&#x5BA2;&#x6237;&#x7AEF;&#x65B0;&#x589E;proxy-conf-json" class="headerlink" title="1.&#x5728;&#x5BA2;&#x6237;&#x7AEF;&#x65B0;&#x589E;proxy.conf.json"></a>1.&#x5728;&#x5BA2;&#x6237;&#x7AEF;&#x65B0;&#x589E;proxy.conf.json</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-修改http组件中的url，前面增加api"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#2-&#x4FEE;&#x6539;http&#x7EC4;&#x4EF6;&#x4E2D;&#x7684;url&#xFF0C;&#x524D;&#x9762;&#x589E;&#x52A0;api" class="headerlink" title="2.&#x4FEE;&#x6539;http&#x7EC4;&#x4EF6;&#x4E2D;&#x7684;url&#xFF0C;&#x524D;&#x9762;&#x589E;&#x52A0;api"></a>2.&#x4FEE;&#x6539;http&#x7EC4;&#x4EF6;&#x4E2D;&#x7684;url&#xFF0C;&#x524D;&#x9762;&#x589E;&#x52A0;api</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-server端修改响应url，前面增加api"><span class="nav-number">3.3.</span> <span class="nav-text"><a href="#3-server&#x7AEF;&#x4FEE;&#x6539;&#x54CD;&#x5E94;url&#xFF0C;&#x524D;&#x9762;&#x589E;&#x52A0;api" class="headerlink" title="3.server&#x7AEF;&#x4FEE;&#x6539;&#x54CD;&#x5E94;url&#xFF0C;&#x524D;&#x9762;&#x589E;&#x52A0;api"></a>3.server&#x7AEF;&#x4FEE;&#x6539;&#x54CD;&#x5E94;url&#xFF0C;&#x524D;&#x9762;&#x589E;&#x52A0;api</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-在package-json的启动脚本start中添加proxy配置"><span class="nav-number">3.4.</span> <span class="nav-text"><a href="#4-&#x5728;package-json&#x7684;&#x542F;&#x52A8;&#x811A;&#x672C;start&#x4E2D;&#x6DFB;&#x52A0;proxy&#x914D;&#x7F6E;" class="headerlink" title="4.&#x5728;package.json&#x7684;&#x542F;&#x52A8;&#x811A;&#x672C;start&#x4E2D;&#x6DFB;&#x52A0;proxy&#x914D;&#x7F6E;"></a>4.&#x5728;package.json&#x7684;&#x542F;&#x52A8;&#x811A;&#x672C;start&#x4E2D;&#x6DFB;&#x52A0;proxy&#x914D;&#x7F6E;</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、使用async管道接收并展示数据"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x56DB;&#x3001;&#x4F7F;&#x7528;async&#x7BA1;&#x9053;&#x63A5;&#x6536;&#x5E76;&#x5C55;&#x793A;&#x6570;&#x636E;" class="headerlink" title="&#x56DB;&#x3001;&#x4F7F;&#x7528;async&#x7BA1;&#x9053;&#x63A5;&#x6536;&#x5E76;&#x5C55;&#x793A;&#x6570;&#x636E;"></a>&#x56DB;&#x3001;&#x4F7F;&#x7528;async&#x7BA1;&#x9053;&#x63A5;&#x6536;&#x5E76;&#x5C55;&#x793A;&#x6570;&#x636E;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-模板修改为："><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#1-&#x6A21;&#x677F;&#x4FEE;&#x6539;&#x4E3A;&#xFF1A;" class="headerlink" title="1.&#x6A21;&#x677F;&#x4FEE;&#x6539;&#x4E3A;&#xFF1A;"></a>1.&#x6A21;&#x677F;&#x4FEE;&#x6539;&#x4E3A;&#xFF1A;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-组件类修改为："><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#2-&#x7EC4;&#x4EF6;&#x7C7B;&#x4FEE;&#x6539;&#x4E3A;&#xFF1A;" class="headerlink" title="2.&#x7EC4;&#x4EF6;&#x7C7B;&#x4FEE;&#x6539;&#x4E3A;&#xFF1A;"></a>2.&#x7EC4;&#x4EF6;&#x7C7B;&#x4FEE;&#x6539;&#x4E3A;&#xFF1A;</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、增加Request-Header内容"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x4E94;&#x3001;&#x589E;&#x52A0;Request-Header&#x5185;&#x5BB9;" class="headerlink" title="&#x4E94;&#x3001;&#x589E;&#x52A0;Request Header&#x5185;&#x5BB9;"></a>&#x4E94;&#x3001;&#x589E;&#x52A0;Request Header&#x5185;&#x5BB9;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roubin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://roubinme.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://roubin.me/angular-http/';
+          this.page.identifier = 'angular-http/';
+          this.page.title = '【Angular】HTTP通信';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://roubinme.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="前端,js," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、let和const命令1.特点： 块级作用域，防止污染全局变量 没有变量提升，防止意外错误 不可重复声明变量 不可在声明前使用该变量">
+<meta name="keywords" content="前端,js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【ES6】let、const、解构、字符串、数值的扩展">
+<meta property="og:url" content="https://roubin.me/es6-let-string-number-destruction/index.html">
+<meta property="og:site_name" content="肉饼博客">
+<meta property="og:description" content="一、let和const命令1.特点： 块级作用域，防止污染全局变量 没有变量提升，防止意外错误 不可重复声明变量 不可在声明前使用该变量">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-01-21T06:51:33.849Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【ES6】let、const、解构、字符串、数值的扩展">
+<meta name="twitter:description" content="一、let和const命令1.特点： 块级作用域，防止污染全局变量 没有变量提升，防止意外错误 不可重复声明变量 不可在声明前使用该变量">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://roubin.me/es6-let-string-number-destruction/"/>
+
+
+
+
+
+  <title>【ES6】let、const、解构、字符串、数值的扩展 | 肉饼博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">肉饼博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Talk is cheap. Show me the code.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://roubin.me/es6-let-string-number-destruction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="roubin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="肉饼博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【ES6】let、const、解构、字符串、数值的扩展</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-18T09:13:20+08:00">
+                2018-04-18
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-01-21T14:51:33+08:00">
+                2020-01-21
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ES6/" itemprop="url" rel="index">
+                    <span itemprop="name">ES6</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/es6-let-string-number-destruction/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="es6-let-string-number-destruction/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、let和const命令"><a href="#一、let和const命令" class="headerlink" title="一、let和const命令"></a>一、let和const命令</h3><h4 id="1-特点："><a href="#1-特点：" class="headerlink" title="1.特点："></a>1.特点：</h4><ul>
+<li>块级作用域，防止污染全局变量</li>
+<li>没有变量提升，防止意外错误</li>
+<li>不可重复声明变量</li>
+<li>不可在声明前使用该变量<a id="more"></a>
+<h4 id="2-注意："><a href="#2-注意：" class="headerlink" title="2.注意："></a>2.注意：</h4></li>
+<li>const本质是保证变量指向的内存地址不得改变，所以对于对象，对象的属性依旧可以更改</li>
+<li>let、const声明的变量，不再默认是全局对象的属性</li>
+</ul>
+<h4 id="3-示例："><a href="#3-示例：" class="headerlink" title="3.示例："></a>3.示例：</h4><ul>
+<li>for循环中的i用let声明</li>
+<li>经典闭包问题解决</li>
+</ul>
+<h3 id="二、变量的解构赋值"><a href="#二、变量的解构赋值" class="headerlink" title="二、变量的解构赋值"></a>二、变量的解构赋值</h3><h4 id="1-语法："><a href="#1-语法：" class="headerlink" title="1.语法："></a>1.语法：</h4><h5 id="（1）数组的解构赋值"><a href="#（1）数组的解构赋值" class="headerlink" title="（1）数组的解构赋值"></a>（1）数组的解构赋值</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> [foo, [[bar], baz]] = [<span class="number">1</span>, [[<span class="number">2</span>], <span class="number">3</span>]];</span><br><span class="line">foo <span class="comment">// 1</span></span><br><span class="line">bar <span class="comment">// 2</span></span><br><span class="line">baz <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> [ , , third] = [<span class="string">"foo"</span>, <span class="string">"bar"</span>, <span class="string">"baz"</span>];</span><br><span class="line">third <span class="comment">// "baz"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> [x, , y] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">x <span class="comment">// 1</span></span><br><span class="line">y <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> [head, ...tail] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span><br><span class="line">head <span class="comment">// 1</span></span><br><span class="line">tail <span class="comment">// [2, 3, 4]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> [x, y, ...z] = [<span class="string">'a'</span>];</span><br><span class="line">x <span class="comment">// "a"</span></span><br><span class="line">y <span class="comment">// undefined</span></span><br><span class="line">z <span class="comment">// []</span></span><br></pre></td></tr></table></figure>
+<h5 id="（2）默认值："><a href="#（2）默认值：" class="headerlink" title="（2）默认值："></a>（2）默认值：</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> [foo = <span class="literal">true</span>] = [];</span><br><span class="line">foo <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> [x, y = <span class="string">'b'</span>] = [<span class="string">'a'</span>]; <span class="comment">// x='a', y='b'</span></span><br><span class="line"><span class="keyword">let</span> [x, y = <span class="string">'b'</span>] = [<span class="string">'a'</span>, <span class="literal">undefined</span>]; <span class="comment">// x='a', y='b'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> &#123;x = <span class="number">3</span>&#125; = &#123;&#125;;</span><br><span class="line">x <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> &#123;x, y = <span class="number">5</span>&#125; = &#123;<span class="attr">x</span>: <span class="number">1</span>&#125;;</span><br><span class="line">x <span class="comment">// 1</span></span><br><span class="line">y <span class="comment">// 5</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> &#123;<span class="attr">x</span>: y = <span class="number">3</span>&#125; = &#123;&#125;;</span><br><span class="line">y <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> &#123;<span class="attr">x</span>: y = <span class="number">3</span>&#125; = &#123;<span class="attr">x</span>: <span class="number">5</span>&#125;;</span><br><span class="line">y <span class="comment">// 5</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> &#123; <span class="attr">message</span>: msg = <span class="string">'Something went wrong'</span> &#125; = &#123;&#125;;</span><br><span class="line">msg <span class="comment">// "Something went wrong"</span></span><br></pre></td></tr></table></figure>
+<h5 id="3-对象的解构赋值"><a href="#3-对象的解构赋值" class="headerlink" title="(3)对象的解构赋值"></a>(3)对象的解构赋值</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> &#123; bar, foo &#125; = &#123; <span class="attr">foo</span>: <span class="string">"aaa"</span>, <span class="attr">bar</span>: <span class="string">"bbb"</span> &#125;;</span><br><span class="line">foo <span class="comment">// "aaa"</span></span><br><span class="line">bar <span class="comment">// "bbb"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> &#123; baz &#125; = &#123; <span class="attr">foo</span>: <span class="string">"aaa"</span>, <span class="attr">bar</span>: <span class="string">"bbb"</span> &#125;;</span><br><span class="line">baz <span class="comment">// undefined</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> &#123; <span class="attr">foo</span>: baz &#125; = &#123; <span class="attr">foo</span>: <span class="string">'aaa'</span>, <span class="attr">bar</span>: <span class="string">'bbb'</span> &#125;;</span><br><span class="line">baz <span class="comment">// "aaa"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> obj = &#123; <span class="attr">first</span>: <span class="string">'hello'</span>, <span class="attr">last</span>: <span class="string">'world'</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> &#123; <span class="attr">first</span>: f, <span class="attr">last</span>: l &#125; = obj;</span><br><span class="line">f <span class="comment">// 'hello'</span></span><br><span class="line">l <span class="comment">// 'world'</span></span><br></pre></td></tr></table></figure>
+<h5 id="4-字符串的解构赋值"><a href="#4-字符串的解构赋值" class="headerlink" title="(4)字符串的解构赋值"></a>(4)字符串的解构赋值</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> [a, b, c, d, e] = <span class="string">'hello'</span>;</span><br><span class="line">a <span class="comment">// "h"</span></span><br><span class="line">b <span class="comment">// "e"</span></span><br><span class="line">c <span class="comment">// "l"</span></span><br><span class="line">d <span class="comment">// "l"</span></span><br><span class="line">e <span class="comment">// "o"</span></span><br></pre></td></tr></table></figure>
+<h5 id="5-函数参数的解构赋值"><a href="#5-函数参数的解构赋值" class="headerlink" title="(5)函数参数的解构赋值"></a>(5)函数参数的解构赋值</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">move</span>(<span class="params">&#123;x = <span class="number">0</span>, y = <span class="number">0</span>&#125; = &#123;&#125;</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> [x, y];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">move(&#123;<span class="attr">x</span>: <span class="number">3</span>, <span class="attr">y</span>: <span class="number">8</span>&#125;); <span class="comment">// [3, 8]</span></span><br><span class="line">move(&#123;<span class="attr">x</span>: <span class="number">3</span>&#125;); <span class="comment">// [3, 0]</span></span><br><span class="line">move(&#123;&#125;); <span class="comment">// [0, 0]</span></span><br><span class="line">move(); <span class="comment">// [0, 0]</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-注意：-1"><a href="#2-注意：-1" class="headerlink" title="2.注意："></a>2.注意：</h4><ul>
+<li>只有变量对应的值显示设置为undefined，默认值才会生效，如果为null，则不生效</li>
+<li>对象的解构赋值，变量必须与属性同名，才能取到正确的值</li>
+</ul>
+<h4 id="3-示例：-1"><a href="#3-示例：-1" class="headerlink" title="3.示例："></a>3.示例：</h4><h5 id="1-数组解构"><a href="#1-数组解构" class="headerlink" title="(1)数组解构"></a>(1)数组解构</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]].map(<span class="function">(<span class="params">[a, b]</span>) =&gt;</span> a + b);</span><br><span class="line"><span class="comment">// [ 3, 7 ]</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-交换变量的值"><a href="#2-交换变量的值" class="headerlink" title="(2)交换变量的值"></a>(2)交换变量的值</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="number">2</span>;</span><br><span class="line">[x, y] = [y, x];</span><br></pre></td></tr></table></figure>
+<h5 id="3-从函数返回多个值"><a href="#3-从函数返回多个值" class="headerlink" title="(3)从函数返回多个值"></a>(3)从函数返回多个值</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">example</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> [a, b, c] = example();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回一个对象</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">example</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    foo: <span class="number">1</span>,</span><br><span class="line">    bar: <span class="number">2</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> &#123; foo, bar &#125; = example();</span><br></pre></td></tr></table></figure>
+<h5 id="4-提取JSON数据"><a href="#4-提取JSON数据" class="headerlink" title="(4)提取JSON数据"></a>(4)提取JSON数据</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> jsonData = &#123;</span><br><span class="line">  id: <span class="number">42</span>,</span><br><span class="line">  status: <span class="string">"OK"</span>,</span><br><span class="line">  data: [<span class="number">867</span>, <span class="number">5309</span>]</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> &#123; id, status, <span class="attr">data</span>: number &#125; = jsonData;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(id, status, number);</span><br><span class="line"><span class="comment">// 42, "OK", [867, 5309]</span></span><br></pre></td></tr></table></figure>
+<h3 id="三、字符串的扩展"><a href="#三、字符串的扩展" class="headerlink" title="三、字符串的扩展"></a>三、字符串的扩展</h3><h4 id="1-新增方法："><a href="#1-新增方法：" class="headerlink" title="1.新增方法："></a>1.新增方法：</h4><h5 id="1-includes-返回布尔值，表示是否找到了参数字符串"><a href="#1-includes-返回布尔值，表示是否找到了参数字符串" class="headerlink" title="(1)includes:返回布尔值，表示是否找到了参数字符串"></a>(1)includes:返回布尔值，表示是否找到了参数字符串</h5><h5 id="2-startsWith-返回布尔值，表示参数字符串是否在原字符串的头部"><a href="#2-startsWith-返回布尔值，表示参数字符串是否在原字符串的头部" class="headerlink" title="(2)startsWith:返回布尔值，表示参数字符串是否在原字符串的头部"></a>(2)startsWith:返回布尔值，表示参数字符串是否在原字符串的头部</h5><h5 id="3-endsWith-返回布尔值，表示参数字符串是否在原字符串的尾部"><a href="#3-endsWith-返回布尔值，表示参数字符串是否在原字符串的尾部" class="headerlink" title="(3)endsWith:返回布尔值，表示参数字符串是否在原字符串的尾部"></a>(3)endsWith:返回布尔值，表示参数字符串是否在原字符串的尾部</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> s = <span class="string">'Hello world!'</span>;</span><br><span class="line"></span><br><span class="line">s.startsWith(<span class="string">'Hello'</span>) <span class="comment">// true</span></span><br><span class="line">s.endsWith(<span class="string">'!'</span>) <span class="comment">// true</span></span><br><span class="line">s.includes(<span class="string">'o'</span>) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+<p>(4)repeat:返回一个新字符串，表示将原字符串重复n次<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'x'</span>.repeat(<span class="number">3</span>) <span class="comment">// "xxx"</span></span><br><span class="line"><span class="string">'hello'</span>.repeat(<span class="number">2</span>) <span class="comment">// "hellohello"</span></span><br><span class="line"><span class="string">'na'</span>.repeat(<span class="number">0</span>) <span class="comment">// ""</span></span><br><span class="line"><span class="string">'na'</span>.repeat(<span class="string">'na'</span>) <span class="comment">// ""</span></span><br><span class="line"><span class="string">'na'</span>.repeat(<span class="string">'3'</span>) <span class="comment">// "nanana"</span></span><br></pre></td></tr></table></figure></p>
+<p>(5)padStart:头部补全<br>(6)padEnd:尾部补全</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//为数值不全指定位数</span></span><br><span class="line"><span class="string">'1'</span>.padStart(<span class="number">10</span>, <span class="string">'0'</span>) <span class="comment">// "0000000001"</span></span><br><span class="line"><span class="string">'12'</span>.padStart(<span class="number">10</span>, <span class="string">'0'</span>) <span class="comment">// "0000000012"</span></span><br><span class="line"><span class="string">'123456'</span>.padStart(<span class="number">10</span>, <span class="string">'0'</span>) <span class="comment">// "0000123456"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//提示字符串格式</span></span><br><span class="line"><span class="string">'12'</span>.padStart(<span class="number">10</span>, <span class="string">'YYYY-MM-DD'</span>) <span class="comment">// "YYYY-MM-12"</span></span><br><span class="line"><span class="string">'09-12'</span>.padStart(<span class="number">10</span>, <span class="string">'YYYY-MM-DD'</span>) <span class="comment">// "YYYY-09-12"</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-注意"><a href="#2-注意" class="headerlink" title="2.注意"></a>2.注意</h4><ul>
+<li>includes、startsWith、endWith这三个方法都支持第二个参数，表示开始搜索的位置</li>
+<li>使用第二个参数n时，endsWith的行为与其他两个方法有所不同。它针对前n个字符，而其他两个方法针对从第n个位置直到字符串结束</li>
+</ul>
+<h3 id="四、数值的扩展"><a href="#四、数值的扩展" class="headerlink" title="四、数值的扩展"></a>四、数值的扩展</h3><h4 id="1-新增方法：-1"><a href="#1-新增方法：-1" class="headerlink" title="1.新增方法："></a>1.新增方法：</h4><h5 id="1-ES6-提供了二进制和八进制数值的新的写法，分别用前缀0b（或0B）和0o（或0O）表示"><a href="#1-ES6-提供了二进制和八进制数值的新的写法，分别用前缀0b（或0B）和0o（或0O）表示" class="headerlink" title="(1)ES6 提供了二进制和八进制数值的新的写法，分别用前缀0b（或0B）和0o（或0O）表示"></a>(1)ES6 提供了二进制和八进制数值的新的写法，分别用前缀0b（或0B）和0o（或0O）表示</h5><h5 id="2-Number-isFinite-用来检查一个数值是否为有限的"><a href="#2-Number-isFinite-用来检查一个数值是否为有限的" class="headerlink" title="(2)Number.isFinite:用来检查一个数值是否为有限的"></a>(2)Number.isFinite:用来检查一个数值是否为有限的</h5><h5 id="3-Number-isNaN-用来检查一个值是否为NaN"><a href="#3-Number-isNaN-用来检查一个值是否为NaN" class="headerlink" title="(3)Number.isNaN:用来检查一个值是否为NaN"></a>(3)Number.isNaN:用来检查一个值是否为NaN</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">isFinite</span>(<span class="number">25</span>) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">isFinite</span>(<span class="string">"25"</span>) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Number</span>.isFinite(<span class="number">25</span>) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Number</span>.isFinite(<span class="string">"25"</span>) <span class="comment">// false</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">isNaN</span>(<span class="literal">NaN</span>) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">isNaN</span>(<span class="string">"NaN"</span>) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Number</span>.isNaN(<span class="literal">NaN</span>) <span class="comment">// true</span></span><br><span class="line"><span class="built_in">Number</span>.isNaN(<span class="string">"NaN"</span>) <span class="comment">// false</span></span><br><span class="line"><span class="built_in">Number</span>.isNaN(<span class="number">1</span>) <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<h5 id="4-Number-parseInt-与原方法同"><a href="#4-Number-parseInt-与原方法同" class="headerlink" title="(4)Number.parseInt:与原方法同"></a>(4)Number.parseInt:与原方法同</h5><h5 id="5-Number-parseFloat-与原方法同"><a href="#5-Number-parseFloat-与原方法同" class="headerlink" title="(5)Number.parseFloat:与原方法同"></a>(5)Number.parseFloat:与原方法同</h5><h5 id="6-Number-isInteger-判断一个数值是否为整数"><a href="#6-Number-isInteger-判断一个数值是否为整数" class="headerlink" title="(6)Number.isInteger:判断一个数值是否为整数"></a>(6)Number.isInteger:判断一个数值是否为整数</h5><h5 id="7-Math-trunc-用于去除一个数的小数部分，返回整数部分"><a href="#7-Math-trunc-用于去除一个数的小数部分，返回整数部分" class="headerlink" title="(7)Math.trunc:用于去除一个数的小数部分，返回整数部分"></a>(7)Math.trunc:用于去除一个数的小数部分，返回整数部分</h5><h5 id="8-Math-sign-用来判断一个数到底是正数、负数、还是零。对于非数值，会先将其转换为数值。"><a href="#8-Math-sign-用来判断一个数到底是正数、负数、还是零。对于非数值，会先将其转换为数值。" class="headerlink" title="(8)Math.sign:用来判断一个数到底是正数、负数、还是零。对于非数值，会先将其转换为数值。"></a>(8)Math.sign:用来判断一个数到底是正数、负数、还是零。对于非数值，会先将其转换为数值。</h5><h5 id="9-新增了一个指数运算符（-）"><a href="#9-新增了一个指数运算符（-）" class="headerlink" title="(9)新增了一个指数运算符（**）"></a>(9)新增了一个指数运算符（**）</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="number">1.5</span>;</span><br><span class="line">a **= <span class="number">2</span>;</span><br><span class="line"><span class="comment">// 等同于 a = a * a;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b = <span class="number">4</span>;</span><br><span class="line">b **= <span class="number">3</span>;</span><br><span class="line"><span class="comment">// 等同于 b = b * b * b;</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-注意：-2"><a href="#2-注意：-2" class="headerlink" title="2.注意："></a>2.注意：</h4><ul>
+<li>Number.isFinite、Number.isNaN与传统方法区别：传统方法先调用Number()将非数值的值转为数值，再进行判断，而这两个新方法只对数值有效，Number.isFinite()对于非数值一律返回false, Number.isNaN()只有对于NaN才返回true，非NaN一律返回false</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前端/" rel="tag"># 前端</a>
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/login-with-temp-profile-and-desktop-lost/" rel="next" title="win7桌面丢失/已使用临时配置登录">
+                <i class="fa fa-chevron-left"></i> win7桌面丢失/已使用临时配置登录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/angular-integrated-with-adminlte/" rel="prev" title="【Angular】Angular 5 整合 AdminLTE 2.4.3">
+                【Angular】Angular 5 整合 AdminLTE 2.4.3 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="roubin" />
+            
+              <p class="site-author-name" itemprop="name">roubin</p>
+              <p class="site-description motion-element" itemprop="description">芝兰其室，金石其心<br/>仁义为友，道德为师</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/satorioh" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:wangbinxp@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、let和const命令"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x4E00;&#x3001;let&#x548C;const&#x547D;&#x4EE4;" class="headerlink" title="&#x4E00;&#x3001;let&#x548C;const&#x547D;&#x4EE4;"></a>&#x4E00;&#x3001;let&#x548C;const&#x547D;&#x4EE4;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-特点："><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#1-&#x7279;&#x70B9;&#xFF1A;" class="headerlink" title="1.&#x7279;&#x70B9;&#xFF1A;"></a>1.&#x7279;&#x70B9;&#xFF1A;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-注意："><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#2-&#x6CE8;&#x610F;&#xFF1A;" class="headerlink" title="2.&#x6CE8;&#x610F;&#xFF1A;"></a>2.&#x6CE8;&#x610F;&#xFF1A;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-示例："><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#3-&#x793A;&#x4F8B;&#xFF1A;" class="headerlink" title="3.&#x793A;&#x4F8B;&#xFF1A;"></a>3.&#x793A;&#x4F8B;&#xFF1A;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、变量的解构赋值"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;&#x53D8;&#x91CF;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;" class="headerlink" title="&#x4E8C;&#x3001;&#x53D8;&#x91CF;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;"></a>&#x4E8C;&#x3001;&#x53D8;&#x91CF;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-语法："><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#1-&#x8BED;&#x6CD5;&#xFF1A;" class="headerlink" title="1.&#x8BED;&#x6CD5;&#xFF1A;"></a>1.&#x8BED;&#x6CD5;&#xFF1A;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#（1）数组的解构赋值"><span class="nav-number">2.1.1.</span> <span class="nav-text"><a href="#&#xFF08;1&#xFF09;&#x6570;&#x7EC4;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;" class="headerlink" title="&#xFF08;1&#xFF09;&#x6570;&#x7EC4;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;"></a>&#xFF08;1&#xFF09;&#x6570;&#x7EC4;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（2）默认值："><span class="nav-number">2.1.2.</span> <span class="nav-text"><a href="#&#xFF08;2&#xFF09;&#x9ED8;&#x8BA4;&#x503C;&#xFF1A;" class="headerlink" title="&#xFF08;2&#xFF09;&#x9ED8;&#x8BA4;&#x503C;&#xFF1A;"></a>&#xFF08;2&#xFF09;&#x9ED8;&#x8BA4;&#x503C;&#xFF1A;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-对象的解构赋值"><span class="nav-number">2.1.3.</span> <span class="nav-text"><a href="#3-&#x5BF9;&#x8C61;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;" class="headerlink" title="(3)&#x5BF9;&#x8C61;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;"></a>(3)&#x5BF9;&#x8C61;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-字符串的解构赋值"><span class="nav-number">2.1.4.</span> <span class="nav-text"><a href="#4-&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;" class="headerlink" title="(4)&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;"></a>(4)&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-函数参数的解构赋值"><span class="nav-number">2.1.5.</span> <span class="nav-text"><a href="#5-&#x51FD;&#x6570;&#x53C2;&#x6570;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;" class="headerlink" title="(5)&#x51FD;&#x6570;&#x53C2;&#x6570;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;"></a>(5)&#x51FD;&#x6570;&#x53C2;&#x6570;&#x7684;&#x89E3;&#x6784;&#x8D4B;&#x503C;</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-注意：-1"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#2-&#x6CE8;&#x610F;&#xFF1A;-1" class="headerlink" title="2.&#x6CE8;&#x610F;&#xFF1A;"></a>2.&#x6CE8;&#x610F;&#xFF1A;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-示例：-1"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#3-&#x793A;&#x4F8B;&#xFF1A;-1" class="headerlink" title="3.&#x793A;&#x4F8B;&#xFF1A;"></a>3.&#x793A;&#x4F8B;&#xFF1A;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-数组解构"><span class="nav-number">2.3.1.</span> <span class="nav-text"><a href="#1-&#x6570;&#x7EC4;&#x89E3;&#x6784;" class="headerlink" title="(1)&#x6570;&#x7EC4;&#x89E3;&#x6784;"></a>(1)&#x6570;&#x7EC4;&#x89E3;&#x6784;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-交换变量的值"><span class="nav-number">2.3.2.</span> <span class="nav-text"><a href="#2-&#x4EA4;&#x6362;&#x53D8;&#x91CF;&#x7684;&#x503C;" class="headerlink" title="(2)&#x4EA4;&#x6362;&#x53D8;&#x91CF;&#x7684;&#x503C;"></a>(2)&#x4EA4;&#x6362;&#x53D8;&#x91CF;&#x7684;&#x503C;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-从函数返回多个值"><span class="nav-number">2.3.3.</span> <span class="nav-text"><a href="#3-&#x4ECE;&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x591A;&#x4E2A;&#x503C;" class="headerlink" title="(3)&#x4ECE;&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x591A;&#x4E2A;&#x503C;"></a>(3)&#x4ECE;&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x591A;&#x4E2A;&#x503C;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-提取JSON数据"><span class="nav-number">2.3.4.</span> <span class="nav-text"><a href="#4-&#x63D0;&#x53D6;JSON&#x6570;&#x636E;" class="headerlink" title="(4)&#x63D0;&#x53D6;JSON&#x6570;&#x636E;"></a>(4)&#x63D0;&#x53D6;JSON&#x6570;&#x636E;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、字符串的扩展"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x4E09;&#x3001;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x6269;&#x5C55;" class="headerlink" title="&#x4E09;&#x3001;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x6269;&#x5C55;"></a>&#x4E09;&#x3001;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x6269;&#x5C55;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-新增方法："><span class="nav-number">3.1.</span> <span class="nav-text"><a href="#1-&#x65B0;&#x589E;&#x65B9;&#x6CD5;&#xFF1A;" class="headerlink" title="1.&#x65B0;&#x589E;&#x65B9;&#x6CD5;&#xFF1A;"></a>1.&#x65B0;&#x589E;&#x65B9;&#x6CD5;&#xFF1A;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-includes-返回布尔值，表示是否找到了参数字符串"><span class="nav-number">3.1.1.</span> <span class="nav-text"><a href="#1-includes-&#x8FD4;&#x56DE;&#x5E03;&#x5C14;&#x503C;&#xFF0C;&#x8868;&#x793A;&#x662F;&#x5426;&#x627E;&#x5230;&#x4E86;&#x53C2;&#x6570;&#x5B57;&#x7B26;&#x4E32;" class="headerlink" title="(1)includes:&#x8FD4;&#x56DE;&#x5E03;&#x5C14;&#x503C;&#xFF0C;&#x8868;&#x793A;&#x662F;&#x5426;&#x627E;&#x5230;&#x4E86;&#x53C2;&#x6570;&#x5B57;&#x7B26;&#x4E32;"></a>(1)includes:&#x8FD4;&#x56DE;&#x5E03;&#x5C14;&#x503C;&#xFF0C;&#x8868;&#x793A;&#x662F;&#x5426;&#x627E;&#x5230;&#x4E86;&#x53C2;&#x6570;&#x5B57;&#x7B26;&#x4E32;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-startsWith-返回布尔值，表示参数字符串是否在原字符串的头部"><span class="nav-number">3.1.2.</span> <span class="nav-text"><a href="#2-startsWith-&#x8FD4;&#x56DE;&#x5E03;&#x5C14;&#x503C;&#xFF0C;&#x8868;&#x793A;&#x53C2;&#x6570;&#x5B57;&#x7B26;&#x4E32;&#x662F;&#x5426;&#x5728;&#x539F;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x5934;&#x90E8;" class="headerlink" title="(2)startsWith:&#x8FD4;&#x56DE;&#x5E03;&#x5C14;&#x503C;&#xFF0C;&#x8868;&#x793A;&#x53C2;&#x6570;&#x5B57;&#x7B26;&#x4E32;&#x662F;&#x5426;&#x5728;&#x539F;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x5934;&#x90E8;"></a>(2)startsWith:&#x8FD4;&#x56DE;&#x5E03;&#x5C14;&#x503C;&#xFF0C;&#x8868;&#x793A;&#x53C2;&#x6570;&#x5B57;&#x7B26;&#x4E32;&#x662F;&#x5426;&#x5728;&#x539F;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x5934;&#x90E8;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-endsWith-返回布尔值，表示参数字符串是否在原字符串的尾部"><span class="nav-number">3.1.3.</span> <span class="nav-text"><a href="#3-endsWith-&#x8FD4;&#x56DE;&#x5E03;&#x5C14;&#x503C;&#xFF0C;&#x8868;&#x793A;&#x53C2;&#x6570;&#x5B57;&#x7B26;&#x4E32;&#x662F;&#x5426;&#x5728;&#x539F;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x5C3E;&#x90E8;" class="headerlink" title="(3)endsWith:&#x8FD4;&#x56DE;&#x5E03;&#x5C14;&#x503C;&#xFF0C;&#x8868;&#x793A;&#x53C2;&#x6570;&#x5B57;&#x7B26;&#x4E32;&#x662F;&#x5426;&#x5728;&#x539F;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x5C3E;&#x90E8;"></a>(3)endsWith:&#x8FD4;&#x56DE;&#x5E03;&#x5C14;&#x503C;&#xFF0C;&#x8868;&#x793A;&#x53C2;&#x6570;&#x5B57;&#x7B26;&#x4E32;&#x662F;&#x5426;&#x5728;&#x539F;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x5C3E;&#x90E8;</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-注意"><span class="nav-number">3.2.</span> <span class="nav-text"><a href="#2-&#x6CE8;&#x610F;" class="headerlink" title="2.&#x6CE8;&#x610F;"></a>2.&#x6CE8;&#x610F;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、数值的扩展"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x56DB;&#x3001;&#x6570;&#x503C;&#x7684;&#x6269;&#x5C55;" class="headerlink" title="&#x56DB;&#x3001;&#x6570;&#x503C;&#x7684;&#x6269;&#x5C55;"></a>&#x56DB;&#x3001;&#x6570;&#x503C;&#x7684;&#x6269;&#x5C55;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-新增方法：-1"><span class="nav-number">4.1.</span> <span class="nav-text"><a href="#1-&#x65B0;&#x589E;&#x65B9;&#x6CD5;&#xFF1A;-1" class="headerlink" title="1.&#x65B0;&#x589E;&#x65B9;&#x6CD5;&#xFF1A;"></a>1.&#x65B0;&#x589E;&#x65B9;&#x6CD5;&#xFF1A;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-ES6-提供了二进制和八进制数值的新的写法，分别用前缀0b（或0B）和0o（或0O）表示"><span class="nav-number">4.1.1.</span> <span class="nav-text"><a href="#1-ES6-&#x63D0;&#x4F9B;&#x4E86;&#x4E8C;&#x8FDB;&#x5236;&#x548C;&#x516B;&#x8FDB;&#x5236;&#x6570;&#x503C;&#x7684;&#x65B0;&#x7684;&#x5199;&#x6CD5;&#xFF0C;&#x5206;&#x522B;&#x7528;&#x524D;&#x7F00;0b&#xFF08;&#x6216;0B&#xFF09;&#x548C;0o&#xFF08;&#x6216;0O&#xFF09;&#x8868;&#x793A;" class="headerlink" title="(1)ES6 &#x63D0;&#x4F9B;&#x4E86;&#x4E8C;&#x8FDB;&#x5236;&#x548C;&#x516B;&#x8FDB;&#x5236;&#x6570;&#x503C;&#x7684;&#x65B0;&#x7684;&#x5199;&#x6CD5;&#xFF0C;&#x5206;&#x522B;&#x7528;&#x524D;&#x7F00;0b&#xFF08;&#x6216;0B&#xFF09;&#x548C;0o&#xFF08;&#x6216;0O&#xFF09;&#x8868;&#x793A;"></a>(1)ES6 &#x63D0;&#x4F9B;&#x4E86;&#x4E8C;&#x8FDB;&#x5236;&#x548C;&#x516B;&#x8FDB;&#x5236;&#x6570;&#x503C;&#x7684;&#x65B0;&#x7684;&#x5199;&#x6CD5;&#xFF0C;&#x5206;&#x522B;&#x7528;&#x524D;&#x7F00;0b&#xFF08;&#x6216;0B&#xFF09;&#x548C;0o&#xFF08;&#x6216;0O&#xFF09;&#x8868;&#x793A;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Number-isFinite-用来检查一个数值是否为有限的"><span class="nav-number">4.1.2.</span> <span class="nav-text"><a href="#2-Number-isFinite-&#x7528;&#x6765;&#x68C0;&#x67E5;&#x4E00;&#x4E2A;&#x6570;&#x503C;&#x662F;&#x5426;&#x4E3A;&#x6709;&#x9650;&#x7684;" class="headerlink" title="(2)Number.isFinite:&#x7528;&#x6765;&#x68C0;&#x67E5;&#x4E00;&#x4E2A;&#x6570;&#x503C;&#x662F;&#x5426;&#x4E3A;&#x6709;&#x9650;&#x7684;"></a>(2)Number.isFinite:&#x7528;&#x6765;&#x68C0;&#x67E5;&#x4E00;&#x4E2A;&#x6570;&#x503C;&#x662F;&#x5426;&#x4E3A;&#x6709;&#x9650;&#x7684;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-Number-isNaN-用来检查一个值是否为NaN"><span class="nav-number">4.1.3.</span> <span class="nav-text"><a href="#3-Number-isNaN-&#x7528;&#x6765;&#x68C0;&#x67E5;&#x4E00;&#x4E2A;&#x503C;&#x662F;&#x5426;&#x4E3A;NaN" class="headerlink" title="(3)Number.isNaN:&#x7528;&#x6765;&#x68C0;&#x67E5;&#x4E00;&#x4E2A;&#x503C;&#x662F;&#x5426;&#x4E3A;NaN"></a>(3)Number.isNaN:&#x7528;&#x6765;&#x68C0;&#x67E5;&#x4E00;&#x4E2A;&#x503C;&#x662F;&#x5426;&#x4E3A;NaN</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-Number-parseInt-与原方法同"><span class="nav-number">4.1.4.</span> <span class="nav-text"><a href="#4-Number-parseInt-&#x4E0E;&#x539F;&#x65B9;&#x6CD5;&#x540C;" class="headerlink" title="(4)Number.parseInt:&#x4E0E;&#x539F;&#x65B9;&#x6CD5;&#x540C;"></a>(4)Number.parseInt:&#x4E0E;&#x539F;&#x65B9;&#x6CD5;&#x540C;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-Number-parseFloat-与原方法同"><span class="nav-number">4.1.5.</span> <span class="nav-text"><a href="#5-Number-parseFloat-&#x4E0E;&#x539F;&#x65B9;&#x6CD5;&#x540C;" class="headerlink" title="(5)Number.parseFloat:&#x4E0E;&#x539F;&#x65B9;&#x6CD5;&#x540C;"></a>(5)Number.parseFloat:&#x4E0E;&#x539F;&#x65B9;&#x6CD5;&#x540C;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-Number-isInteger-判断一个数值是否为整数"><span class="nav-number">4.1.6.</span> <span class="nav-text"><a href="#6-Number-isInteger-&#x5224;&#x65AD;&#x4E00;&#x4E2A;&#x6570;&#x503C;&#x662F;&#x5426;&#x4E3A;&#x6574;&#x6570;" class="headerlink" title="(6)Number.isInteger:&#x5224;&#x65AD;&#x4E00;&#x4E2A;&#x6570;&#x503C;&#x662F;&#x5426;&#x4E3A;&#x6574;&#x6570;"></a>(6)Number.isInteger:&#x5224;&#x65AD;&#x4E00;&#x4E2A;&#x6570;&#x503C;&#x662F;&#x5426;&#x4E3A;&#x6574;&#x6570;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-Math-trunc-用于去除一个数的小数部分，返回整数部分"><span class="nav-number">4.1.7.</span> <span class="nav-text"><a href="#7-Math-trunc-&#x7528;&#x4E8E;&#x53BB;&#x9664;&#x4E00;&#x4E2A;&#x6570;&#x7684;&#x5C0F;&#x6570;&#x90E8;&#x5206;&#xFF0C;&#x8FD4;&#x56DE;&#x6574;&#x6570;&#x90E8;&#x5206;" class="headerlink" title="(7)Math.trunc:&#x7528;&#x4E8E;&#x53BB;&#x9664;&#x4E00;&#x4E2A;&#x6570;&#x7684;&#x5C0F;&#x6570;&#x90E8;&#x5206;&#xFF0C;&#x8FD4;&#x56DE;&#x6574;&#x6570;&#x90E8;&#x5206;"></a>(7)Math.trunc:&#x7528;&#x4E8E;&#x53BB;&#x9664;&#x4E00;&#x4E2A;&#x6570;&#x7684;&#x5C0F;&#x6570;&#x90E8;&#x5206;&#xFF0C;&#x8FD4;&#x56DE;&#x6574;&#x6570;&#x90E8;&#x5206;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8-Math-sign-用来判断一个数到底是正数、负数、还是零。对于非数值，会先将其转换为数值。"><span class="nav-number">4.1.8.</span> <span class="nav-text"><a href="#8-Math-sign-&#x7528;&#x6765;&#x5224;&#x65AD;&#x4E00;&#x4E2A;&#x6570;&#x5230;&#x5E95;&#x662F;&#x6B63;&#x6570;&#x3001;&#x8D1F;&#x6570;&#x3001;&#x8FD8;&#x662F;&#x96F6;&#x3002;&#x5BF9;&#x4E8E;&#x975E;&#x6570;&#x503C;&#xFF0C;&#x4F1A;&#x5148;&#x5C06;&#x5176;&#x8F6C;&#x6362;&#x4E3A;&#x6570;&#x503C;&#x3002;" class="headerlink" title="(8)Math.sign:&#x7528;&#x6765;&#x5224;&#x65AD;&#x4E00;&#x4E2A;&#x6570;&#x5230;&#x5E95;&#x662F;&#x6B63;&#x6570;&#x3001;&#x8D1F;&#x6570;&#x3001;&#x8FD8;&#x662F;&#x96F6;&#x3002;&#x5BF9;&#x4E8E;&#x975E;&#x6570;&#x503C;&#xFF0C;&#x4F1A;&#x5148;&#x5C06;&#x5176;&#x8F6C;&#x6362;&#x4E3A;&#x6570;&#x503C;&#x3002;"></a>(8)Math.sign:&#x7528;&#x6765;&#x5224;&#x65AD;&#x4E00;&#x4E2A;&#x6570;&#x5230;&#x5E95;&#x662F;&#x6B63;&#x6570;&#x3001;&#x8D1F;&#x6570;&#x3001;&#x8FD8;&#x662F;&#x96F6;&#x3002;&#x5BF9;&#x4E8E;&#x975E;&#x6570;&#x503C;&#xFF0C;&#x4F1A;&#x5148;&#x5C06;&#x5176;&#x8F6C;&#x6362;&#x4E3A;&#x6570;&#x503C;&#x3002;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-新增了一个指数运算符（-）"><span class="nav-number">4.1.9.</span> <span class="nav-text"><a href="#9-&#x65B0;&#x589E;&#x4E86;&#x4E00;&#x4E2A;&#x6307;&#x6570;&#x8FD0;&#x7B97;&#x7B26;&#xFF08;-&#xFF09;" class="headerlink" title="(9)&#x65B0;&#x589E;&#x4E86;&#x4E00;&#x4E2A;&#x6307;&#x6570;&#x8FD0;&#x7B97;&#x7B26;&#xFF08;**&#xFF09;"></a>(9)&#x65B0;&#x589E;&#x4E86;&#x4E00;&#x4E2A;&#x6307;&#x6570;&#x8FD0;&#x7B97;&#x7B26;&#xFF08;**&#xFF09;</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-注意：-2"><span class="nav-number">4.2.</span> <span class="nav-text"><a href="#2-&#x6CE8;&#x610F;&#xFF1A;-2" class="headerlink" title="2.&#x6CE8;&#x610F;&#xFF1A;"></a>2.&#x6CE8;&#x610F;&#xFF1A;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roubin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://roubinme.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://roubin.me/es6-let-string-number-destruction/';
+          this.page.identifier = 'es6-let-string-number-destruction/';
+          this.page.title = '【ES6】let、const、解构、字符串、数值的扩展';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://roubinme.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

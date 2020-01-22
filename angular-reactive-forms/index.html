@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="angular,前端," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、在根模块中引入依赖123456import &amp;#123;FormsModule, ReactiveFormsModule &amp;#125; from &apos;@angular/forms&apos;;imports: [    FormsModule,    ReactiveFormsModule  ],">
+<meta name="keywords" content="angular,前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Angular】响应式表单的使用">
+<meta property="og:url" content="https://roubin.me/angular-reactive-forms/index.html">
+<meta property="og:site_name" content="肉饼博客">
+<meta property="og:description" content="一、在根模块中引入依赖123456import &amp;#123;FormsModule, ReactiveFormsModule &amp;#125; from &apos;@angular/forms&apos;;imports: [    FormsModule,    ReactiveFormsModule  ],">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-01-21T06:51:33.846Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Angular】响应式表单的使用">
+<meta name="twitter:description" content="一、在根模块中引入依赖123456import &amp;#123;FormsModule, ReactiveFormsModule &amp;#125; from &apos;@angular/forms&apos;;imports: [    FormsModule,    ReactiveFormsModule  ],">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://roubin.me/angular-reactive-forms/"/>
+
+
+
+
+
+  <title>【Angular】响应式表单的使用 | 肉饼博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">肉饼博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Talk is cheap. Show me the code.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://roubin.me/angular-reactive-forms/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="roubin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="肉饼博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【Angular】响应式表单的使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-04T09:25:25+08:00">
+                2018-05-04
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-01-21T14:51:33+08:00">
+                2020-01-21
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Angular/" itemprop="url" rel="index">
+                    <span itemprop="name">Angular</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/angular-reactive-forms/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="angular-reactive-forms/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="一、在根模块中引入依赖"><a href="#一、在根模块中引入依赖" class="headerlink" title="一、在根模块中引入依赖"></a>一、在根模块中引入依赖</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;FormsModule, ReactiveFormsModule &#125; <span class="keyword">from</span> <span class="string">'@angular/forms'</span>;</span><br><span class="line"></span><br><span class="line">imports: [</span><br><span class="line">    FormsModule,</span><br><span class="line">    ReactiveFormsModule</span><br><span class="line">  ],</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="二、在组件类中声明formModel"><a href="#二、在组件类中声明formModel" class="headerlink" title="二、在组件类中声明formModel"></a>二、在组件类中声明formModel</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">formModel:FormGroup;</span><br></pre></td></tr></table></figure>
+<h4 id="三、在组件模板form处添加属性，使用ng接管"><a href="#三、在组件模板form处添加属性，使用ng接管" class="headerlink" title="三、在组件模板form处添加属性，使用ng接管"></a>三、在组件模板form处添加属性，使用ng接管</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> [<span class="attr">formGroup</span>]=<span class="string">"formModel"</span> <span class="attr">class</span>=<span class="string">"form-horizontal"</span>&gt;</span><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="四、在组件类中构建数据表单模型"><a href="#四、在组件类中构建数据表单模型" class="headerlink" title="四、在组件类中构建数据表单模型"></a>四、在组件类中构建数据表单模型</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> StockFormComponent <span class="keyword">implements</span> OnInit &#123;</span><br><span class="line">  formModel:FormGroup;</span><br><span class="line">  stockId:<span class="built_in">number</span>;</span><br><span class="line">  stock:Stock;</span><br><span class="line">  categories = [<span class="string">"IT"</span>,<span class="string">"互联网"</span>,<span class="string">"金融"</span>];</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">    <span class="keyword">private</span> activatedRoute: ActivatedRoute, </span></span><br><span class="line"><span class="params">    <span class="keyword">private</span> stockService:StockService,</span></span><br><span class="line"><span class="params">    <span class="keyword">private</span> router:Router</span></span><br><span class="line"><span class="params">  </span>) &#123; &#125;</span><br><span class="line"></span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">    <span class="keyword">this</span>.stockId = <span class="keyword">this</span>.activatedRoute.snapshot.params[<span class="string">'id'</span>];</span><br><span class="line">    <span class="keyword">this</span>.stock = <span class="keyword">this</span>.stockService.getStock(<span class="keyword">this</span>.stockId);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> fb = <span class="keyword">new</span> FormBuilder;</span><br><span class="line">    <span class="keyword">this</span>.formModel = fb.group(&#123;</span><br><span class="line">      name:[<span class="keyword">this</span>.stock.name, [Validators.required, Validators.minLength(<span class="number">3</span>)]],</span><br><span class="line">      price:[<span class="keyword">this</span>.stock.price, [Validators.required]],</span><br><span class="line">      desc:[<span class="keyword">this</span>.stock.desc],</span><br><span class="line">      categories:fb.array([</span><br><span class="line">        <span class="keyword">new</span> FormControl(<span class="keyword">this</span>.stock.categories.indexOf(<span class="keyword">this</span>.categories[<span class="number">0</span>])!== <span class="number">-1</span>),</span><br><span class="line">        <span class="keyword">new</span> FormControl(<span class="keyword">this</span>.stock.categories.indexOf(<span class="keyword">this</span>.categories[<span class="number">1</span>])!== <span class="number">-1</span>),</span><br><span class="line">        <span class="keyword">new</span> FormControl(<span class="keyword">this</span>.stock.categories.indexOf(<span class="keyword">this</span>.categories[<span class="number">2</span>])!== <span class="number">-1</span>)</span><br><span class="line">      ])</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  cancel()&#123;</span><br><span class="line">    <span class="keyword">this</span>.router.navigateByUrl(<span class="string">'/stock'</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  save()&#123;</span><br><span class="line">      <span class="keyword">const</span> chineseCategories = [];</span><br><span class="line">          <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i&lt; <span class="number">3</span>;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="keyword">this</span>.formModel.value.categories[i])&#123;</span><br><span class="line">              chineseCategories[i] = <span class="keyword">this</span>.categories[i];</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">this</span>.formModel.value.categories = chineseCategories;</span><br><span class="line">          <span class="keyword">this</span>.formModel.value.rating = <span class="keyword">this</span>.stock.rating;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="keyword">this</span>.formModel.value);</span><br><span class="line">          <span class="comment">//this.router.navigateByUrl('/stock');</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="五、在前台模板中绑定对应的数据模型"><a href="#五、在前台模板中绑定对应的数据模型" class="headerlink" title="五、在前台模板中绑定对应的数据模型"></a>五、在前台模板中绑定对应的数据模型</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> [<span class="attr">formGroup</span>]=<span class="string">"formModel"</span> <span class="attr">class</span>=<span class="string">"form-horizontal"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box-body"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-group"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"name"</span> <span class="attr">class</span>=<span class="string">"col-sm-2 control-label"</span>&gt;</span>股票名称<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-10"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">input</span> <span class="attr">formControlName</span>=<span class="string">"name"</span> <span class="attr">type</span>=<span class="string">"email"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">id</span>=<span class="string">"name"</span> <span class="attr">placeholder</span>=<span class="string">"股票名称"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-group"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"price"</span> <span class="attr">class</span>=<span class="string">"col-sm-2 control-label"</span>&gt;</span>股票价格<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-10"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">input</span> <span class="attr">formControlName</span>=<span class="string">"price"</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">id</span>=<span class="string">"price"</span> <span class="attr">placeholder</span>=<span class="string">"股票价格"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-group"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"col-sm-2 control-label"</span>&gt;</span>股票评级<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-10"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">app-star</span> [(<span class="attr">rating</span>)]=<span class="string">"stock.rating"</span>&gt;</span><span class="tag">&lt;/<span class="name">app-star</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-group"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"desc"</span> <span class="attr">class</span>=<span class="string">"col-sm-2 control-label"</span>&gt;</span>股票描述<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-10"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">textarea</span> <span class="attr">formControlName</span>=<span class="string">"desc"</span> <span class="attr">name</span>=<span class="string">""</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">id</span>=<span class="string">"desc"</span> <span class="attr">rows</span>=<span class="string">"5"</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-group"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"col-sm-2 control-label"</span>&gt;</span>股票类型<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-10"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span> <span class="attr">formArrayName</span>=<span class="string">"categories"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-2"</span> *<span class="attr">ngFor</span>=<span class="string">"let category of categories;let i = index"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"checkbox"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">label</span>&gt;</span></span><br><span class="line">                      <span class="tag">&lt;<span class="name">input</span> [<span class="attr">formControlName</span>]=<span class="string">"i"</span> <span class="attr">type</span>=<span class="string">"checkbox"</span>&gt;</span>&#123;&#123;category&#125;&#125;</span><br><span class="line">                    <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- /.box-body --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box-footer"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> (<span class="attr">click</span>)=<span class="string">"cancel()"</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">class</span>=<span class="string">"btn btn-default"</span>&gt;</span>取消<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">button</span> (<span class="attr">click</span>)=<span class="string">"save()"</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">class</span>=<span class="string">"btn btn-info pull-right"</span>&gt;</span>保存<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- /.box-footer --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="六、模板绑定校验器，并给出错误提示信息"><a href="#六、模板绑定校验器，并给出错误提示信息" class="headerlink" title="六、模板绑定校验器，并给出错误提示信息"></a>六、模板绑定校验器，并给出错误提示信息</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-group"</span> [<span class="attr">class.has-error</span>]=<span class="string">"formModel.hasError('required','name') || formModel.hasError('minlength','name')"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"name"</span> <span class="attr">class</span>=<span class="string">"col-sm-2 control-label"</span>&gt;</span>股票名称<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-10"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">input</span> <span class="attr">formControlName</span>=<span class="string">"name"</span> <span class="attr">type</span>=<span class="string">"email"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">id</span>=<span class="string">"name"</span> <span class="attr">placeholder</span>=<span class="string">"股票名称"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"help-block"</span> [<span class="attr">class.hidden</span>]=<span class="string">"!formModel.hasError('required','name')"</span>&gt;</span>股票名称是必填项<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"help-block"</span> [<span class="attr">class.hidden</span>]=<span class="string">"!formModel.hasError('minlength','name')"</span>&gt;</span>请至少输入三个字<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-group"</span> [<span class="attr">class.has-error</span>]=<span class="string">"formModel.hasError('required','price')"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"price"</span> <span class="attr">class</span>=<span class="string">"col-sm-2 control-label"</span>&gt;</span>股票价格<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-10"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">input</span> <span class="attr">formControlName</span>=<span class="string">"price"</span> <span class="attr">type</span>=<span class="string">"number"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">id</span>=<span class="string">"price"</span> <span class="attr">placeholder</span>=<span class="string">"股票价格"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"help-block"</span> [<span class="attr">class.hidden</span>]=<span class="string">"!formModel.hasError('required','price')"</span>&gt;</span>股票价格是必填项<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="七、自定义校验器"><a href="#七、自定义校验器" class="headerlink" title="七、自定义校验器"></a>七、自定义校验器</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">categories:fb.array([</span><br><span class="line">        <span class="keyword">new</span> FormControl(<span class="keyword">this</span>.stock.categories.indexOf(<span class="keyword">this</span>.categories[<span class="number">0</span>])!== <span class="number">-1</span>),</span><br><span class="line">        <span class="keyword">new</span> FormControl(<span class="keyword">this</span>.stock.categories.indexOf(<span class="keyword">this</span>.categories[<span class="number">1</span>])!== <span class="number">-1</span>),</span><br><span class="line">        <span class="keyword">new</span> FormControl(<span class="keyword">this</span>.stock.categories.indexOf(<span class="keyword">this</span>.categories[<span class="number">2</span>])!== <span class="number">-1</span>)</span><br><span class="line">      ], <span class="keyword">this</span>.categoriesSelectValidator)</span><br><span class="line">      </span><br><span class="line">      categoriesSelectValidator(control:FormArray)&#123;</span><br><span class="line">            <span class="keyword">let</span> valid:<span class="built_in">boolean</span> = !control.controls.every(<span class="function"><span class="keyword">function</span>(<span class="params">item</span>)</span>&#123;</span><br><span class="line">              <span class="keyword">return</span> item.value === <span class="literal">false</span>;</span><br><span class="line">            &#125;)</span><br><span class="line">            <span class="keyword">if</span>(valid)&#123;</span><br><span class="line">              <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">              <span class="keyword">return</span> &#123;categoriesLength:<span class="literal">true</span>&#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>绑定前台模板<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-group"</span> [<span class="attr">class.has-error</span>]=<span class="string">"formModel.hasError('categoriesLength','categories')"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">class</span>=<span class="string">"col-sm-2 control-label"</span>&gt;</span>股票类型<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-10"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"row"</span> <span class="attr">formArrayName</span>=<span class="string">"categories"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-2"</span> *<span class="attr">ngFor</span>=<span class="string">"let category of categories;let i = index"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"checkbox"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">label</span>&gt;</span></span><br><span class="line">                      <span class="tag">&lt;<span class="name">input</span> [<span class="attr">formControlName</span>]=<span class="string">"i"</span> <span class="attr">type</span>=<span class="string">"checkbox"</span>&gt;</span>&#123;&#123;category&#125;&#125;</span><br><span class="line">                    <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"help-block"</span> [<span class="attr">class.hidden</span>]=<span class="string">"!formModel.hasError('categoriesLength','categories')"</span>&gt;</span>请至少选择一个类型<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="八、细节完善"><a href="#八、细节完善" class="headerlink" title="八、细节完善"></a>八、细节完善</h4><h5 id="1-当表单中存在错误时，保存按钮不能点击"><a href="#1-当表单中存在错误时，保存按钮不能点击" class="headerlink" title="1.当表单中存在错误时，保存按钮不能点击"></a>1.当表单中存在错误时，保存按钮不能点击</h5><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> (<span class="attr">click</span>)=<span class="string">"save()"</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">class</span>=<span class="string">"btn btn-info pull-right"</span> [<span class="attr">disabled</span>]=<span class="string">"formModel.invalid"</span>&gt;</span>保存<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h5 id="2-表单初始时，根据状态字段实现不立即报错"><a href="#2-表单初始时，根据状态字段实现不立即报错" class="headerlink" title="2.表单初始时，根据状态字段实现不立即报错"></a>2.表单初始时，根据状态字段实现不立即报错</h5><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"form-group"</span> [<span class="attr">class.has-error</span>]=<span class="string">"formModel.get('name').touched &amp;&amp; (formModel.hasError('required','name') || formModel.hasError('minlength','name'))"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"name"</span> <span class="attr">class</span>=<span class="string">"col-sm-2 control-label"</span>&gt;</span>股票名称<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"col-sm-10"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">input</span> <span class="attr">formControlName</span>=<span class="string">"name"</span> <span class="attr">type</span>=<span class="string">"email"</span> <span class="attr">class</span>=<span class="string">"form-control"</span> <span class="attr">id</span>=<span class="string">"name"</span> <span class="attr">placeholder</span>=<span class="string">"股票名称"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"help-block"</span> [<span class="attr">class.hidden</span>]=<span class="string">"formModel.get('name').untouched || !formModel.hasError('required','name')"</span>&gt;</span>股票名称是必填项<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"help-block"</span> [<span class="attr">class.hidden</span>]=<span class="string">"!formModel.hasError('minlength','name')"</span>&gt;</span>请至少输入三个字<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/angular/" rel="tag"># angular</a>
+          
+            <a href="/tags/前端/" rel="tag"># 前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/integrate-jquery-plugin-in-angular/" rel="next" title="【Angular】在Angular 5中引入jQuery插件">
+                <i class="fa fa-chevron-left"></i> 【Angular】在Angular 5中引入jQuery插件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/angular-http/" rel="prev" title="【Angular】HTTP通信">
+                【Angular】HTTP通信 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="roubin" />
+            
+              <p class="site-author-name" itemprop="name">roubin</p>
+              <p class="site-description motion-element" itemprop="description">芝兰其室，金石其心<br/>仁义为友，道德为师</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/satorioh" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:wangbinxp@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、在根模块中引入依赖"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x4E00;&#x3001;&#x5728;&#x6839;&#x6A21;&#x5757;&#x4E2D;&#x5F15;&#x5165;&#x4F9D;&#x8D56;" class="headerlink" title="&#x4E00;&#x3001;&#x5728;&#x6839;&#x6A21;&#x5757;&#x4E2D;&#x5F15;&#x5165;&#x4F9D;&#x8D56;"></a>&#x4E00;&#x3001;&#x5728;&#x6839;&#x6A21;&#x5757;&#x4E2D;&#x5F15;&#x5165;&#x4F9D;&#x8D56;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、在组件类中声明formModel"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;&#x5728;&#x7EC4;&#x4EF6;&#x7C7B;&#x4E2D;&#x58F0;&#x660E;formModel" class="headerlink" title="&#x4E8C;&#x3001;&#x5728;&#x7EC4;&#x4EF6;&#x7C7B;&#x4E2D;&#x58F0;&#x660E;formModel"></a>&#x4E8C;&#x3001;&#x5728;&#x7EC4;&#x4EF6;&#x7C7B;&#x4E2D;&#x58F0;&#x660E;formModel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、在组件模板form处添加属性，使用ng接管"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x4E09;&#x3001;&#x5728;&#x7EC4;&#x4EF6;&#x6A21;&#x677F;form&#x5904;&#x6DFB;&#x52A0;&#x5C5E;&#x6027;&#xFF0C;&#x4F7F;&#x7528;ng&#x63A5;&#x7BA1;" class="headerlink" title="&#x4E09;&#x3001;&#x5728;&#x7EC4;&#x4EF6;&#x6A21;&#x677F;form&#x5904;&#x6DFB;&#x52A0;&#x5C5E;&#x6027;&#xFF0C;&#x4F7F;&#x7528;ng&#x63A5;&#x7BA1;"></a>&#x4E09;&#x3001;&#x5728;&#x7EC4;&#x4EF6;&#x6A21;&#x677F;form&#x5904;&#x6DFB;&#x52A0;&#x5C5E;&#x6027;&#xFF0C;&#x4F7F;&#x7528;ng&#x63A5;&#x7BA1;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、在组件类中构建数据表单模型"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x56DB;&#x3001;&#x5728;&#x7EC4;&#x4EF6;&#x7C7B;&#x4E2D;&#x6784;&#x5EFA;&#x6570;&#x636E;&#x8868;&#x5355;&#x6A21;&#x578B;" class="headerlink" title="&#x56DB;&#x3001;&#x5728;&#x7EC4;&#x4EF6;&#x7C7B;&#x4E2D;&#x6784;&#x5EFA;&#x6570;&#x636E;&#x8868;&#x5355;&#x6A21;&#x578B;"></a>&#x56DB;&#x3001;&#x5728;&#x7EC4;&#x4EF6;&#x7C7B;&#x4E2D;&#x6784;&#x5EFA;&#x6570;&#x636E;&#x8868;&#x5355;&#x6A21;&#x578B;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、在前台模板中绑定对应的数据模型"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x4E94;&#x3001;&#x5728;&#x524D;&#x53F0;&#x6A21;&#x677F;&#x4E2D;&#x7ED1;&#x5B9A;&#x5BF9;&#x5E94;&#x7684;&#x6570;&#x636E;&#x6A21;&#x578B;" class="headerlink" title="&#x4E94;&#x3001;&#x5728;&#x524D;&#x53F0;&#x6A21;&#x677F;&#x4E2D;&#x7ED1;&#x5B9A;&#x5BF9;&#x5E94;&#x7684;&#x6570;&#x636E;&#x6A21;&#x578B;"></a>&#x4E94;&#x3001;&#x5728;&#x524D;&#x53F0;&#x6A21;&#x677F;&#x4E2D;&#x7ED1;&#x5B9A;&#x5BF9;&#x5E94;&#x7684;&#x6570;&#x636E;&#x6A21;&#x578B;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#六、模板绑定校验器，并给出错误提示信息"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x516D;&#x3001;&#x6A21;&#x677F;&#x7ED1;&#x5B9A;&#x6821;&#x9A8C;&#x5668;&#xFF0C;&#x5E76;&#x7ED9;&#x51FA;&#x9519;&#x8BEF;&#x63D0;&#x793A;&#x4FE1;&#x606F;" class="headerlink" title="&#x516D;&#x3001;&#x6A21;&#x677F;&#x7ED1;&#x5B9A;&#x6821;&#x9A8C;&#x5668;&#xFF0C;&#x5E76;&#x7ED9;&#x51FA;&#x9519;&#x8BEF;&#x63D0;&#x793A;&#x4FE1;&#x606F;"></a>&#x516D;&#x3001;&#x6A21;&#x677F;&#x7ED1;&#x5B9A;&#x6821;&#x9A8C;&#x5668;&#xFF0C;&#x5E76;&#x7ED9;&#x51FA;&#x9519;&#x8BEF;&#x63D0;&#x793A;&#x4FE1;&#x606F;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#七、自定义校验器"><span class="nav-number">7.</span> <span class="nav-text"><a href="#&#x4E03;&#x3001;&#x81EA;&#x5B9A;&#x4E49;&#x6821;&#x9A8C;&#x5668;" class="headerlink" title="&#x4E03;&#x3001;&#x81EA;&#x5B9A;&#x4E49;&#x6821;&#x9A8C;&#x5668;"></a>&#x4E03;&#x3001;&#x81EA;&#x5B9A;&#x4E49;&#x6821;&#x9A8C;&#x5668;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#八、细节完善"><span class="nav-number">8.</span> <span class="nav-text"><a href="#&#x516B;&#x3001;&#x7EC6;&#x8282;&#x5B8C;&#x5584;" class="headerlink" title="&#x516B;&#x3001;&#x7EC6;&#x8282;&#x5B8C;&#x5584;"></a>&#x516B;&#x3001;&#x7EC6;&#x8282;&#x5B8C;&#x5584;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-当表单中存在错误时，保存按钮不能点击"><span class="nav-number">8.1.</span> <span class="nav-text"><a href="#1-&#x5F53;&#x8868;&#x5355;&#x4E2D;&#x5B58;&#x5728;&#x9519;&#x8BEF;&#x65F6;&#xFF0C;&#x4FDD;&#x5B58;&#x6309;&#x94AE;&#x4E0D;&#x80FD;&#x70B9;&#x51FB;" class="headerlink" title="1.&#x5F53;&#x8868;&#x5355;&#x4E2D;&#x5B58;&#x5728;&#x9519;&#x8BEF;&#x65F6;&#xFF0C;&#x4FDD;&#x5B58;&#x6309;&#x94AE;&#x4E0D;&#x80FD;&#x70B9;&#x51FB;"></a>1.&#x5F53;&#x8868;&#x5355;&#x4E2D;&#x5B58;&#x5728;&#x9519;&#x8BEF;&#x65F6;&#xFF0C;&#x4FDD;&#x5B58;&#x6309;&#x94AE;&#x4E0D;&#x80FD;&#x70B9;&#x51FB;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-表单初始时，根据状态字段实现不立即报错"><span class="nav-number">8.2.</span> <span class="nav-text"><a href="#2-&#x8868;&#x5355;&#x521D;&#x59CB;&#x65F6;&#xFF0C;&#x6839;&#x636E;&#x72B6;&#x6001;&#x5B57;&#x6BB5;&#x5B9E;&#x73B0;&#x4E0D;&#x7ACB;&#x5373;&#x62A5;&#x9519;" class="headerlink" title="2.&#x8868;&#x5355;&#x521D;&#x59CB;&#x65F6;&#xFF0C;&#x6839;&#x636E;&#x72B6;&#x6001;&#x5B57;&#x6BB5;&#x5B9E;&#x73B0;&#x4E0D;&#x7ACB;&#x5373;&#x62A5;&#x9519;"></a>2.&#x8868;&#x5355;&#x521D;&#x59CB;&#x65F6;&#xFF0C;&#x6839;&#x636E;&#x72B6;&#x6001;&#x5B57;&#x6BB5;&#x5B9E;&#x73B0;&#x4E0D;&#x7ACB;&#x5373;&#x62A5;&#x9519;</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roubin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://roubinme.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://roubin.me/angular-reactive-forms/';
+          this.page.identifier = 'angular-reactive-forms/';
+          this.page.title = '【Angular】响应式表单的使用';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://roubinme.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
