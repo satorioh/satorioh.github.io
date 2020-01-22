@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://roubin.me/my-life-list/</loc>
+    
+    <lastmod>2020-01-22T09:45:36.498Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/2019-year-end-summary/</loc>
     
     <lastmod>2020-01-22T08:52:22.263Z</lastmod>
@@ -72,14 +79,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-vw-layout/</loc>
+    <loc>https://roubin.me/vue-use-mock-data-component-communication/</loc>
     
     <lastmod>2020-01-21T06:51:33.857Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-web-app-initialization/</loc>
+    <loc>https://roubin.me/vue-vw-layout/</loc>
     
     <lastmod>2020-01-21T06:51:33.857Z</lastmod>
     
@@ -93,7 +100,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-use-mock-data-component-communication/</loc>
+    <loc>https://roubin.me/vue-web-app-initialization/</loc>
     
     <lastmod>2020-01-21T06:51:33.857Z</lastmod>
     
@@ -177,7 +184,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/randomize-shuffle-a-javascript-array/</loc>
+    <loc>https://roubin.me/offset-scroll-client/</loc>
     
     <lastmod>2020-01-21T06:51:33.854Z</lastmod>
     
@@ -191,7 +198,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/offset-scroll-client/</loc>
+    <loc>https://roubin.me/randomize-shuffle-a-javascript-array/</loc>
     
     <lastmod>2020-01-21T06:51:33.854Z</lastmod>
     
@@ -212,14 +219,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/mini-program-use-wxs-solve-text-indent/</loc>
+    <loc>https://roubin.me/mini-program-use-behavior-encapsulate-search-component/</loc>
     
     <lastmod>2020-01-21T06:51:33.853Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/mini-program-use-behavior-encapsulate-search-component/</loc>
+    <loc>https://roubin.me/mini-program-use-wxs-solve-text-indent/</loc>
     
     <lastmod>2020-01-21T06:51:33.853Z</lastmod>
     
@@ -229,6 +236,13 @@
     <loc>https://roubin.me/my-life-the-transformation-of-helpdesk/</loc>
     
     <lastmod>2020-01-21T06:51:33.853Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/jsonp-learning-summary/</loc>
+    
+    <lastmod>2020-01-21T06:51:33.852Z</lastmod>
     
   </url>
   
@@ -254,20 +268,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/jsonp-learning-summary/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.852Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/js-data-type-detection/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.851Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/integrate-jquery-plugin-in-angular/</loc>
     
     <lastmod>2020-01-21T06:51:33.851Z</lastmod>
@@ -282,7 +282,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/js-util-functions/</loc>
+    <loc>https://roubin.me/js-data-type-detection/</loc>
     
     <lastmod>2020-01-21T06:51:33.851Z</lastmod>
     
@@ -290,6 +290,13 @@
   
   <url>
     <loc>https://roubin.me/js-match-search-replace-split-exec-test/</loc>
+    
+    <lastmod>2020-01-21T06:51:33.851Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/js-util-functions/</loc>
     
     <lastmod>2020-01-21T06:51:33.851Z</lastmod>
     
@@ -422,14 +429,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-rxjs-pipe/</loc>
+    <loc>https://roubin.me/angular-routing-summary/</loc>
     
     <lastmod>2020-01-21T06:51:33.847Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-routing-summary/</loc>
+    <loc>https://roubin.me/angular-rxjs-pipe/</loc>
     
     <lastmod>2020-01-21T06:51:33.847Z</lastmod>
     
@@ -464,6 +471,13 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/angular-reactive-forms/</loc>
+    
+    <lastmod>2020-01-21T06:51:33.846Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/angular-routing-params/</loc>
     
     <lastmod>2020-01-21T06:51:33.846Z</lastmod>
@@ -478,13 +492,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-reactive-forms/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.846Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/angular-jwt-authentication/</loc>
     
     <lastmod>2020-01-21T06:51:33.846Z</lastmod>
@@ -492,14 +499,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-data-bind/</loc>
+    <loc>https://roubin.me/angular-adminlte-body-height-cut-off-fix/</loc>
     
     <lastmod>2020-01-21T06:51:33.845Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-adminlte-body-height-cut-off-fix/</loc>
+    <loc>https://roubin.me/angular-data-bind/</loc>
     
     <lastmod>2020-01-21T06:51:33.845Z</lastmod>
     
