@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://roubin.me/git-worktree/</loc>
+    
+    <lastmod>2020-01-22T02:39:43.174Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/docker-first-try/</loc>
     
     <lastmod>2020-01-22T02:03:47.094Z</lastmod>
@@ -114,14 +121,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/ssl-certificate-request-and-configuration/</loc>
+    <loc>https://roubin.me/use-angular-cli-create-project/</loc>
     
     <lastmod>2020-01-21T06:51:33.855Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/use-angular-cli-create-project/</loc>
+    <loc>https://roubin.me/ssl-certificate-request-and-configuration/</loc>
     
     <lastmod>2020-01-21T06:51:33.855Z</lastmod>
     
@@ -275,14 +282,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/gulp-compress-css-js/</loc>
+    <loc>https://roubin.me/how-to-ride-in-subway-train/</loc>
     
     <lastmod>2020-01-21T06:51:33.850Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/how-to-ride-in-subway-train/</loc>
+    <loc>https://roubin.me/gulp-compress-css-js/</loc>
     
     <lastmod>2020-01-21T06:51:33.850Z</lastmod>
     
@@ -317,14 +324,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/es6-let-string-number-destruction/</loc>
+    <loc>https://roubin.me/git-notes/</loc>
     
     <lastmod>2020-01-21T06:51:33.849Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/git-notes/</loc>
+    <loc>https://roubin.me/es6-let-string-number-destruction/</loc>
     
     <lastmod>2020-01-21T06:51:33.849Z</lastmod>
     
