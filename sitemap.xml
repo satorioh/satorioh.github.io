@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://roubin.me/git-npm-proxy-settings/</loc>
+    
+    <lastmod>2020-01-25T03:30:38.916Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/docker-installation/</loc>
     
     <lastmod>2020-01-25T03:18:58.082Z</lastmod>
@@ -163,14 +170,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/ssl-certificate-request-and-configuration/</loc>
+    <loc>https://roubin.me/shadowsocksr-serverspeed-configuration/</loc>
     
     <lastmod>2020-01-21T06:51:33.855Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/shadowsocksr-serverspeed-configuration/</loc>
+    <loc>https://roubin.me/ssl-certificate-request-and-configuration/</loc>
     
     <lastmod>2020-01-21T06:51:33.855Z</lastmod>
     
@@ -296,14 +303,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/js-util-functions/</loc>
+    <loc>https://roubin.me/js-match-search-replace-split-exec-test/</loc>
     
     <lastmod>2020-01-21T06:51:33.851Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/js-match-search-replace-split-exec-test/</loc>
+    <loc>https://roubin.me/js-util-functions/</loc>
     
     <lastmod>2020-01-21T06:51:33.851Z</lastmod>
     
@@ -485,14 +492,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-routing-params/</loc>
+    <loc>https://roubin.me/angular-reactive-forms/</loc>
     
     <lastmod>2020-01-21T06:51:33.846Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-reactive-forms/</loc>
+    <loc>https://roubin.me/angular-routing-params/</loc>
     
     <lastmod>2020-01-21T06:51:33.846Z</lastmod>
     
@@ -513,14 +520,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-dependency-injection-summary/</loc>
+    <loc>https://roubin.me/angular-data-bind/</loc>
     
     <lastmod>2020-01-21T06:51:33.845Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-data-bind/</loc>
+    <loc>https://roubin.me/angular-dependency-injection-summary/</loc>
     
     <lastmod>2020-01-21T06:51:33.845Z</lastmod>
     

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="前端,微信小程序," />
+  <meta name="keywords" content="git,npm," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="一段文本缩进text标签在小程序中默认为内联标签，如果单独设置 text-indent是无效的，需设置为块级/行内块元素12display: inline-block;text-indent: 58rpx;">
-<meta name="keywords" content="前端,微信小程序">
+<meta name="description" content="一、Git代理设置1.查看1git config -l">
+<meta name="keywords" content="git,npm">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【微信小程序】使用wxs解决文本替换与首行缩进">
-<meta property="og:url" content="https://roubin.me/mini-program-use-wxs-solve-text-indent/index.html">
+<meta property="og:title" content="Git、npm代理设置">
+<meta property="og:url" content="https://roubin.me/git-npm-proxy-settings/index.html">
 <meta property="og:site_name" content="肉饼博客">
-<meta property="og:description" content="一段文本缩进text标签在小程序中默认为内联标签，如果单独设置 text-indent是无效的，需设置为块级/行内块元素12display: inline-block;text-indent: 58rpx;">
+<meta property="og:description" content="一、Git代理设置1.查看1git config -l">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-01-21T06:51:33.853Z">
+<meta property="og:updated_time" content="2020-01-25T03:30:38.916Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【微信小程序】使用wxs解决文本替换与首行缩进">
-<meta name="twitter:description" content="一段文本缩进text标签在小程序中默认为内联标签，如果单独设置 text-indent是无效的，需设置为块级/行内块元素12display: inline-block;text-indent: 58rpx;">
+<meta name="twitter:title" content="Git、npm代理设置">
+<meta name="twitter:description" content="一、Git代理设置1.查看1git config -l">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://roubin.me/mini-program-use-wxs-solve-text-indent/"/>
+  <link rel="canonical" href="https://roubin.me/git-npm-proxy-settings/"/>
 
 
 
 
 
-  <title>【微信小程序】使用wxs解决文本替换与首行缩进 | 肉饼博客</title>
+  <title>Git、npm代理设置 | 肉饼博客</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://roubin.me/mini-program-use-wxs-solve-text-indent/">
+    <link itemprop="mainEntityOfPage" href="https://roubin.me/git-npm-proxy-settings/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="roubin">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">【微信小程序】使用wxs解决文本替换与首行缩进</h1>
+          <h1 class="post-title" itemprop="name headline">Git、npm代理设置</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-01T11:12:34+08:00">
-                2019-04-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-25T11:25:25+08:00">
+                2020-01-25
               </time>
             
 
@@ -308,8 +308,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-01-21T14:51:33+08:00">
-                2020-01-21
+              <time title="更新于" itemprop="dateModified" datetime="2020-01-25T11:30:38+08:00">
+                2020-01-25
               </time>
             
           </span>
@@ -327,8 +327,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/小程序/" itemprop="url" rel="index">
-                    <span itemprop="name">小程序</span>
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
                   </a>
                 </span>
 
@@ -345,9 +345,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/mini-program-use-wxs-solve-text-indent/#comments" itemprop="discussionUrl">
+                <a href="/git-npm-proxy-settings/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="mini-program-use-wxs-solve-text-indent/" itemprop="commentCount"></span>
+                        data-disqus-identifier="git-npm-proxy-settings/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -375,10 +375,12 @@
       
 
       
-        <h4 id="一段文本缩进"><a href="#一段文本缩进" class="headerlink" title="一段文本缩进"></a>一段文本缩进</h4><p>text标签在小程序中默认为内联标签，如果单独设置 text-indent是无效的，需设置为块级/行内块元素<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">display</span>: <span class="selector-tag">inline-block</span>;</span><br><span class="line"><span class="selector-tag">text-indent</span>: 58<span class="selector-tag">rpx</span>;</span><br></pre></td></tr></table></figure></p>
+        <h3 id="一、Git代理设置"><a href="#一、Git代理设置" class="headerlink" title="一、Git代理设置"></a>一、Git代理设置</h3><h5 id="1-查看"><a href="#1-查看" class="headerlink" title="1.查看"></a>1.查看</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config -l</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
-<h4 id="多段文本换行与缩进"><a href="#多段文本换行与缩进" class="headerlink" title="多段文本换行与缩进"></a>多段文本换行与缩进</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">wxs</span> <span class="attr">src</span>=<span class="string">"../../utils/filter.wxs"</span> <span class="attr">module</span>=<span class="string">"tools"</span>&gt;</span><span class="tag">&lt;/<span class="name">wxs</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">text</span> <span class="attr">decode</span>=<span class="string">"&#123;&#123;true&#125;&#125;"</span>&gt;</span>&#123;&#123;tools.format(多段文本的内容)&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line">//decode译码解码</span><br></pre></td></tr></table></figure>
-<p>filter.wxs:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> format = <span class="function"><span class="keyword">function</span> (<span class="params">text</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!text) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">var</span> reg = getRegExp(<span class="string">'\\\\n'</span>, <span class="string">'g'</span>)</span><br><span class="line">    <span class="keyword">return</span> text.replace(reg, <span class="string">'\n&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    format: format</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="2-设置"><a href="#2-设置" class="headerlink" title="2.设置"></a>2.设置</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global http.proxy 'socks5://127.0.0.1:1080' </span><br><span class="line">git config --global https.proxy 'socks5://127.0.0.1:1080'</span><br></pre></td></tr></table></figure>
+<h5 id="3-取消设置"><a href="#3-取消设置" class="headerlink" title="3.取消设置"></a>3.取消设置</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global --unset http.proxy</span><br><span class="line">git config --global --unset https.proxy</span><br></pre></td></tr></table></figure>
+<h3 id="二、npm代理设置"><a href="#二、npm代理设置" class="headerlink" title="二、npm代理设置"></a>二、npm代理设置</h3><h5 id="1-查看-1"><a href="#1-查看-1" class="headerlink" title="1.查看"></a>1.查看</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config list</span><br></pre></td></tr></table></figure>
+<h5 id="2-设置-1"><a href="#2-设置-1" class="headerlink" title="2.设置"></a>2.设置</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config set proxy=http://localhost:1080</span><br><span class="line">npm config set https-proxy=http://localhost:1080</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -396,9 +398,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/前端/" rel="tag"># 前端</a>
+            <a href="/tags/git/" rel="tag"># git</a>
           
-            <a href="/tags/微信小程序/" rel="tag"># 微信小程序</a>
+            <a href="/tags/npm/" rel="tag"># npm</a>
           
         </div>
       
@@ -411,8 +413,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/mini-program-http-encapsulation/" rel="next" title="【微信小程序】HTTP封装与使用示例">
-                <i class="fa fa-chevron-left"></i> 【微信小程序】HTTP封装与使用示例
+              <a href="/docker-installation/" rel="next" title="安装docker及常用指令">
+                <i class="fa fa-chevron-left"></i> 安装docker及常用指令
               </a>
             
           </div>
@@ -420,10 +422,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/css-spinner-bounce/" rel="prev" title="【CSS】冒泡loading样式">
-                【CSS】冒泡loading样式 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -585,7 +583,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一段文本缩进"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x4E00;&#x6BB5;&#x6587;&#x672C;&#x7F29;&#x8FDB;" class="headerlink" title="&#x4E00;&#x6BB5;&#x6587;&#x672C;&#x7F29;&#x8FDB;"></a>&#x4E00;&#x6BB5;&#x6587;&#x672C;&#x7F29;&#x8FDB;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多段文本换行与缩进"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x591A;&#x6BB5;&#x6587;&#x672C;&#x6362;&#x884C;&#x4E0E;&#x7F29;&#x8FDB;" class="headerlink" title="&#x591A;&#x6BB5;&#x6587;&#x672C;&#x6362;&#x884C;&#x4E0E;&#x7F29;&#x8FDB;"></a>&#x591A;&#x6BB5;&#x6587;&#x672C;&#x6362;&#x884C;&#x4E0E;&#x7F29;&#x8FDB;</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Git代理设置"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x4E00;&#x3001;Git&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;" class="headerlink" title="&#x4E00;&#x3001;Git&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;"></a>&#x4E00;&#x3001;Git&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-查看"><span class="nav-number">1.0.1.</span> <span class="nav-text"><a href="#1-&#x67E5;&#x770B;" class="headerlink" title="1.&#x67E5;&#x770B;"></a>1.&#x67E5;&#x770B;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-设置"><span class="nav-number">1.0.2.</span> <span class="nav-text"><a href="#2-&#x8BBE;&#x7F6E;" class="headerlink" title="2.&#x8BBE;&#x7F6E;"></a>2.&#x8BBE;&#x7F6E;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-取消设置"><span class="nav-number">1.0.3.</span> <span class="nav-text"><a href="#3-&#x53D6;&#x6D88;&#x8BBE;&#x7F6E;" class="headerlink" title="3.&#x53D6;&#x6D88;&#x8BBE;&#x7F6E;"></a>3.&#x53D6;&#x6D88;&#x8BBE;&#x7F6E;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、npm代理设置"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;npm&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;" class="headerlink" title="&#x4E8C;&#x3001;npm&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;"></a>&#x4E8C;&#x3001;npm&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-查看-1"><span class="nav-number">2.0.1.</span> <span class="nav-text"><a href="#1-&#x67E5;&#x770B;-1" class="headerlink" title="1.&#x67E5;&#x770B;"></a>1.&#x67E5;&#x770B;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-设置-1"><span class="nav-number">2.0.2.</span> <span class="nav-text"><a href="#2-&#x8BBE;&#x7F6E;-1" class="headerlink" title="2.&#x8BBE;&#x7F6E;"></a>2.&#x8BBE;&#x7F6E;</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -755,9 +753,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'https://roubin.me/mini-program-use-wxs-solve-text-indent/';
-          this.page.identifier = 'mini-program-use-wxs-solve-text-indent/';
-          this.page.title = '【微信小程序】使用wxs解决文本替换与首行缩进';
+          this.page.url = 'https://roubin.me/git-npm-proxy-settings/';
+          this.page.identifier = 'git-npm-proxy-settings/';
+          this.page.title = 'Git、npm代理设置';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://roubinme.disqus.com/embed.js';
