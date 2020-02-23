@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="肉饼博客">
 <meta property="og:description" content="一、Git代理设置1.查看1git config -l">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-01-25T03:30:38.916Z">
+<meta property="og:updated_time" content="2020-02-23T03:04:27.593Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git、npm代理设置">
 <meta name="twitter:description" content="一、Git代理设置1.查看1git config -l">
@@ -308,8 +308,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2020-01-25T11:30:38+08:00">
-                2020-01-25
+              <time title="更新于" itemprop="dateModified" datetime="2020-02-23T11:04:27+08:00">
+                2020-02-23
               </time>
             
           </span>
@@ -381,6 +381,8 @@
 <h5 id="3-取消设置"><a href="#3-取消设置" class="headerlink" title="3.取消设置"></a>3.取消设置</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global --unset http.proxy</span><br><span class="line">git config --global --unset https.proxy</span><br></pre></td></tr></table></figure>
 <h3 id="二、npm代理设置"><a href="#二、npm代理设置" class="headerlink" title="二、npm代理设置"></a>二、npm代理设置</h3><h5 id="1-查看-1"><a href="#1-查看-1" class="headerlink" title="1.查看"></a>1.查看</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config list</span><br></pre></td></tr></table></figure>
 <h5 id="2-设置-1"><a href="#2-设置-1" class="headerlink" title="2.设置"></a>2.设置</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config set proxy=http://localhost:1080</span><br><span class="line">npm config set https-proxy=http://localhost:1080</span><br></pre></td></tr></table></figure>
+<h5 id="3-取消设置-1"><a href="#3-取消设置-1" class="headerlink" title="3.取消设置"></a>3.取消设置</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config delete proxy</span><br><span class="line">npm config delete https-proxy</span><br></pre></td></tr></table></figure>
+<h3 id="三、使用nrm"><a href="#三、使用nrm" class="headerlink" title="三、使用nrm"></a>三、使用nrm</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//1.先安装nrm工具</span><br><span class="line">npm install -g nrm</span><br><span class="line"></span><br><span class="line">//2.查看当前可用的镜像源</span><br><span class="line">nrm ls</span><br><span class="line"></span><br><span class="line">//3.切换npm源</span><br><span class="line">nrm use 镜像源名称</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -422,6 +424,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/npm-commands/" rel="prev" title="npm常用命令">
+                npm常用命令 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -512,7 +518,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">76</span>
+                  <span class="site-state-item-count">77</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -523,7 +529,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -583,7 +589,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Git代理设置"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x4E00;&#x3001;Git&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;" class="headerlink" title="&#x4E00;&#x3001;Git&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;"></a>&#x4E00;&#x3001;Git&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-查看"><span class="nav-number">1.0.1.</span> <span class="nav-text"><a href="#1-&#x67E5;&#x770B;" class="headerlink" title="1.&#x67E5;&#x770B;"></a>1.&#x67E5;&#x770B;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-设置"><span class="nav-number">1.0.2.</span> <span class="nav-text"><a href="#2-&#x8BBE;&#x7F6E;" class="headerlink" title="2.&#x8BBE;&#x7F6E;"></a>2.&#x8BBE;&#x7F6E;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-取消设置"><span class="nav-number">1.0.3.</span> <span class="nav-text"><a href="#3-&#x53D6;&#x6D88;&#x8BBE;&#x7F6E;" class="headerlink" title="3.&#x53D6;&#x6D88;&#x8BBE;&#x7F6E;"></a>3.&#x53D6;&#x6D88;&#x8BBE;&#x7F6E;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、npm代理设置"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;npm&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;" class="headerlink" title="&#x4E8C;&#x3001;npm&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;"></a>&#x4E8C;&#x3001;npm&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-查看-1"><span class="nav-number">2.0.1.</span> <span class="nav-text"><a href="#1-&#x67E5;&#x770B;-1" class="headerlink" title="1.&#x67E5;&#x770B;"></a>1.&#x67E5;&#x770B;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-设置-1"><span class="nav-number">2.0.2.</span> <span class="nav-text"><a href="#2-&#x8BBE;&#x7F6E;-1" class="headerlink" title="2.&#x8BBE;&#x7F6E;"></a>2.&#x8BBE;&#x7F6E;</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Git代理设置"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x4E00;&#x3001;Git&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;" class="headerlink" title="&#x4E00;&#x3001;Git&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;"></a>&#x4E00;&#x3001;Git&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-查看"><span class="nav-number">1.0.1.</span> <span class="nav-text"><a href="#1-&#x67E5;&#x770B;" class="headerlink" title="1.&#x67E5;&#x770B;"></a>1.&#x67E5;&#x770B;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-设置"><span class="nav-number">1.0.2.</span> <span class="nav-text"><a href="#2-&#x8BBE;&#x7F6E;" class="headerlink" title="2.&#x8BBE;&#x7F6E;"></a>2.&#x8BBE;&#x7F6E;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-取消设置"><span class="nav-number">1.0.3.</span> <span class="nav-text"><a href="#3-&#x53D6;&#x6D88;&#x8BBE;&#x7F6E;" class="headerlink" title="3.&#x53D6;&#x6D88;&#x8BBE;&#x7F6E;"></a>3.&#x53D6;&#x6D88;&#x8BBE;&#x7F6E;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、npm代理设置"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;npm&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;" class="headerlink" title="&#x4E8C;&#x3001;npm&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;"></a>&#x4E8C;&#x3001;npm&#x4EE3;&#x7406;&#x8BBE;&#x7F6E;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-查看-1"><span class="nav-number">2.0.1.</span> <span class="nav-text"><a href="#1-&#x67E5;&#x770B;-1" class="headerlink" title="1.&#x67E5;&#x770B;"></a>1.&#x67E5;&#x770B;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-设置-1"><span class="nav-number">2.0.2.</span> <span class="nav-text"><a href="#2-&#x8BBE;&#x7F6E;-1" class="headerlink" title="2.&#x8BBE;&#x7F6E;"></a>2.&#x8BBE;&#x7F6E;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-取消设置-1"><span class="nav-number">2.0.3.</span> <span class="nav-text"><a href="#3-&#x53D6;&#x6D88;&#x8BBE;&#x7F6E;-1" class="headerlink" title="3.&#x53D6;&#x6D88;&#x8BBE;&#x7F6E;"></a>3.&#x53D6;&#x6D88;&#x8BBE;&#x7F6E;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、使用nrm"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x4E09;&#x3001;&#x4F7F;&#x7528;nrm" class="headerlink" title="&#x4E09;&#x3001;&#x4F7F;&#x7528;nrm"></a>&#x4E09;&#x3001;&#x4F7F;&#x7528;nrm</span></a></li></ol></div>
             
 
           </div>
