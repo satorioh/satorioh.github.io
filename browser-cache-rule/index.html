@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="cache," />
+
+
+
+
+
+
+
+
+
+
+<meta name="keywords" content="cache">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器缓存策略">
+<meta property="og:url" content="https://roubin.me/browser-cache-rule/index.html">
+<meta property="og:site_name" content="肉饼博客">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://roubin.me/images/browser-cache.jpeg">
+<meta property="og:updated_time" content="2020-03-03T06:47:14.997Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浏览器缓存策略">
+<meta name="twitter:image" content="https://roubin.me/images/browser-cache.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://roubin.me/browser-cache-rule/"/>
+
+
+
+
+
+  <title>浏览器缓存策略 | 肉饼博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">肉饼博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Talk is cheap. Show me the code.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://roubin.me/browser-cache-rule/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="roubin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="肉饼博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">浏览器缓存策略</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-03T11:05:25+08:00">
+                2020-03-03
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-03T14:47:14+08:00">
+                2020-03-03
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Cache/" itemprop="url" rel="index">
+                    <span itemprop="name">Cache</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/browser-cache-rule/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="browser-cache-rule/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="../images/browser-cache.jpeg" alt=""><br><a id="more"></a></p>
+<h4 id="一、过程"><a href="#一、过程" class="headerlink" title="一、过程"></a>一、过程</h4><h5 id="1-浏览器发送第一次请求：不缓存，服务端根据设定的缓存策略，返回相应的header：cache-control，expires，last-Modified，ETag。"><a href="#1-浏览器发送第一次请求：不缓存，服务端根据设定的缓存策略，返回相应的header：cache-control，expires，last-Modified，ETag。" class="headerlink" title="1.浏览器发送第一次请求：不缓存，服务端根据设定的缓存策略，返回相应的header：cache-control，expires，last-Modified，ETag。"></a>1.浏览器发送第一次请求：不缓存，服务端根据设定的缓存策略，返回相应的header：cache-control，expires，last-Modified，ETag。</h5><h5 id="2-浏览器发送第二次请求："><a href="#2-浏览器发送第二次请求：" class="headerlink" title="2.浏览器发送第二次请求："></a>2.浏览器发送第二次请求：</h5><p><strong>强缓存阶段：</strong></p>
+<ul>
+<li>有cache-control且不过期。是：返回本地磁盘缓存，状态值200(from cache)；否：走下一步</li>
+<li>有expires且不过期。是：返回本地磁盘缓存，状态值200(from cache)；否：走下一步</li>
+</ul>
+<p><strong>协商缓存阶段</strong></p>
+<ul>
+<li>有Etag。是的话请求头添加If-None-Match，值就是上次返回的Etag值，然后发送给服务端。服务端对比If-None-Match与现有的Etag值是否一样；一样的话只返回header，状态码304，浏览器从本地磁盘获取缓存信息；不一样走正常流程，返回header+body，状态码200。否：走下一步</li>
+<li>有last-Modified。是的话添加请求头If-Modified-Since，值是上次返回的last-Modified，然后发送给服务端。服务端对比If-Modified-Since与现有的是否一样；一样的话返回只返回header，状态码304，浏览器从本地磁盘获取缓存信息；不一样走正常流程，返回header+body，状态码200。否：走下一步</li>
+<li>没有缓存，正常请求</li>
+</ul>
+<h4 id="二、HTTP缓存控制头字段"><a href="#二、HTTP缓存控制头字段" class="headerlink" title="二、HTTP缓存控制头字段"></a>二、HTTP缓存控制头字段</h4><h5 id="1-Expires-响应头"><a href="#1-Expires-响应头" class="headerlink" title="1.Expires(响应头)"></a>1.Expires(响应头)</h5><p>包含日期/时间， 即在此时候之后，响应过期。无效的日期，比如 0, 代表着过去的日期，即该资源已经过期。</p>
+<p>示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Expires: Wed, 21 Oct 2015 07:28:00 GMT</span><br></pre></td></tr></table></figure></p>
+<h5 id="2-Cache-Control-请求-响应头-：优先级高于Expires"><a href="#2-Cache-Control-请求-响应头-：优先级高于Expires" class="headerlink" title="2.Cache-Control(请求/响应头)：优先级高于Expires"></a>2.Cache-Control(请求/响应头)：优先级高于Expires</h5><p>被用于在http请求和响应中，通过指定指令来实现缓存机制。缓存指令是单向的，这意味着在请求中设置的指令，不一定被包含在响应中。</p>
+<p>常用的指令如下:</p>
+<p><strong>public:</strong> 该响应可以被任何对象缓存，该对象可以是中间代理或者是发送本请求的客户端。</p>
+<p><strong>private:</strong> 该响应可以被单个用户缓存，不可以被任何中间对象（如中间代理器）缓存。</p>
+<p><strong>no-cache:</strong> 当客户缓存了此响应，然后在再次使用此缓存之前，必须向服务器验证此缓存的有效性。值得注意的是，此指令也可以出现在请求头中。当此指令出现在请求头中时，表示客户端强制重新请求最新的服务器资源，而不使用缓存。</p>
+<p><strong>no-store:</strong> 任何对象（代理器和个人浏览器）不可以缓存该响应。</p>
+<p><strong>max-age:</strong> 在指定的时间内，客户端不应该再向浏览器请求该响应，而应该使用本地缓存</p>
+<p><strong>s-maxage:</strong> 覆盖max-age或者Expires头，但是仅适用于共享缓存(比如各个代理)，私有缓存会忽略它。</p>
+<p><strong>must-revalidate:</strong> 一旦资源过期（比如已经超过max-age），在成功向原始服务器验证之前，缓存不能用该资源响应后续请求。</p>
+<h5 id="3-Pragma-响应头"><a href="#3-Pragma-响应头" class="headerlink" title="3.Pragma(响应头)"></a>3.Pragma(响应头)</h5><p>HTTP/1.0标准中定义，效果跟Cache-Control: no-cache相同，通常定义Pragma以向后兼容基于HTTP/1.0的客户端。</p>
+<h5 id="4-Last-Modified-响应头"><a href="#4-Last-Modified-响应头" class="headerlink" title="4.Last-Modified(响应头)"></a>4.Last-Modified(响应头)</h5><p>其值为一个GMT日期（时间戳），指示请求的资源最后更改时间</p>
+<p>示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Last-Modified: Wed, 21 Oct 2015 07:28:00 GMT</span><br></pre></td></tr></table></figure></p>
+<h5 id="5-ETag-响应头-：优先级高于Last-Modified"><a href="#5-ETag-响应头-：优先级高于Last-Modified" class="headerlink" title="5.ETag(响应头)：优先级高于Last-Modified"></a>5.ETag(响应头)：优先级高于Last-Modified</h5><p>全称为entity-tag，是请求的文件的一个标识符，当文件被修改时，该标识符也会发生变化</p>
+<p>如果用户再次访问给定的URL（设有ETag字段），显示资源过期了且不可用，客户端就发送值为ETag的If-None-Match header字段：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">If-None-Match: &quot;33a64df551425fcc55e4d42a148795d9f25f89d4&quot;</span><br></pre></td></tr></table></figure></p>
+<p>服务器将客户端的ETag（作为If-None-Match字段的值一起发送）与其当前版本的资源的ETag进行比较，如果两个值匹配（即资源未更改），服务器将返回不带任何内容的304未修改状态，告诉客户端缓存版本可用（新鲜）。</p>
+<h5 id="6-If-None-Match-请求头-：优先级高于If-Modified-Since"><a href="#6-If-None-Match-请求头-：优先级高于If-Modified-Since" class="headerlink" title="6.If-None-Match(请求头)：优先级高于If-Modified-Since"></a>6.If-None-Match(请求头)：优先级高于If-Modified-Since</h5><p>验证缓存的资源的 ETag 是否和服务器上的资源的 ETag 相匹配。匹配时，服务器返回304状态码。否则服务器返回200状态码，并向客户端发送请求的资源文件。</p>
+<h5 id="7-If-Modified-Since-请求头"><a href="#7-If-Modified-Since-请求头" class="headerlink" title="7.If-Modified-Since(请求头)"></a>7.If-Modified-Since(请求头)</h5><p>验证缓存的资源在一个给定的时间后是否被修改过，此给定的时间来自服务器返回的 Last-Modified 响应头。如果资源在此时间后被修改过了，服务器会返回304状态码。否则服务器将返回200状态码，并向客户端发送请求的资源文件。</p>
+<h4 id="三、缓存寿命计算"><a href="#三、缓存寿命计算" class="headerlink" title="三、缓存寿命计算"></a>三、缓存寿命计算</h4><p>对于含有特定头信息的请求，会去计算缓存寿命。比如Cache-control: max-age=N的头，相应的缓存的寿命就是N。通常情况下，对于不含这个属性的请求则会去查看是否包含Expires属性，通过比较Expires的值和头里面Date属性的值来判断是否缓存还有效。如果max-age和expires属性都没有，找找头里的Last-Modified信息。如果有，缓存的寿命就等于头里面Date的值减去Last-Modified的值除以10</p>
+<p>参考：</p>
+<ul>
+<li><a href="https://juejin.im/post/5df886896fb9a0161104cd45" target="_blank" rel="noopener">浏览器缓存策略与webpack持久化缓存</a></li>
+<li><a href="https://blog.wildcoder.me/2019/10/27/http-cache/" target="_blank" rel="noopener">HTTP缓存机制详解</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Cache-Control" target="_blank" rel="noopener">MDN Cache-Control</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Caching_FAQ" target="_blank" rel="noopener">MDN Caching_FAQ</a></li>
+<li><a href="https://tools.ietf.org/html/rfc7234" target="_blank" rel="noopener">RFC7234</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cache/" rel="tag"># cache</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/npm-commands/" rel="next" title="npm常用命令">
+                <i class="fa fa-chevron-left"></i> npm常用命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="roubin" />
+            
+              <p class="site-author-name" itemprop="name">roubin</p>
+              <p class="site-description motion-element" itemprop="description">芝兰其室，金石其心<br/>仁义为友，道德为师</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">78</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/satorioh" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:wangbinxp@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、过程"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x4E00;&#x3001;&#x8FC7;&#x7A0B;" class="headerlink" title="&#x4E00;&#x3001;&#x8FC7;&#x7A0B;"></a>&#x4E00;&#x3001;&#x8FC7;&#x7A0B;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-浏览器发送第一次请求：不缓存，服务端根据设定的缓存策略，返回相应的header：cache-control，expires，last-Modified，ETag。"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#1-&#x6D4F;&#x89C8;&#x5668;&#x53D1;&#x9001;&#x7B2C;&#x4E00;&#x6B21;&#x8BF7;&#x6C42;&#xFF1A;&#x4E0D;&#x7F13;&#x5B58;&#xFF0C;&#x670D;&#x52A1;&#x7AEF;&#x6839;&#x636E;&#x8BBE;&#x5B9A;&#x7684;&#x7F13;&#x5B58;&#x7B56;&#x7565;&#xFF0C;&#x8FD4;&#x56DE;&#x76F8;&#x5E94;&#x7684;header&#xFF1A;cache-control&#xFF0C;expires&#xFF0C;last-Modified&#xFF0C;ETag&#x3002;" class="headerlink" title="1.&#x6D4F;&#x89C8;&#x5668;&#x53D1;&#x9001;&#x7B2C;&#x4E00;&#x6B21;&#x8BF7;&#x6C42;&#xFF1A;&#x4E0D;&#x7F13;&#x5B58;&#xFF0C;&#x670D;&#x52A1;&#x7AEF;&#x6839;&#x636E;&#x8BBE;&#x5B9A;&#x7684;&#x7F13;&#x5B58;&#x7B56;&#x7565;&#xFF0C;&#x8FD4;&#x56DE;&#x76F8;&#x5E94;&#x7684;header&#xFF1A;cache-control&#xFF0C;expires&#xFF0C;last-Modified&#xFF0C;ETag&#x3002;"></a>1.&#x6D4F;&#x89C8;&#x5668;&#x53D1;&#x9001;&#x7B2C;&#x4E00;&#x6B21;&#x8BF7;&#x6C42;&#xFF1A;&#x4E0D;&#x7F13;&#x5B58;&#xFF0C;&#x670D;&#x52A1;&#x7AEF;&#x6839;&#x636E;&#x8BBE;&#x5B9A;&#x7684;&#x7F13;&#x5B58;&#x7B56;&#x7565;&#xFF0C;&#x8FD4;&#x56DE;&#x76F8;&#x5E94;&#x7684;header&#xFF1A;cache-control&#xFF0C;expires&#xFF0C;last-Modified&#xFF0C;ETag&#x3002;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-浏览器发送第二次请求："><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#2-&#x6D4F;&#x89C8;&#x5668;&#x53D1;&#x9001;&#x7B2C;&#x4E8C;&#x6B21;&#x8BF7;&#x6C42;&#xFF1A;" class="headerlink" title="2.&#x6D4F;&#x89C8;&#x5668;&#x53D1;&#x9001;&#x7B2C;&#x4E8C;&#x6B21;&#x8BF7;&#x6C42;&#xFF1A;"></a>2.&#x6D4F;&#x89C8;&#x5668;&#x53D1;&#x9001;&#x7B2C;&#x4E8C;&#x6B21;&#x8BF7;&#x6C42;&#xFF1A;</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、HTTP缓存控制头字段"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;HTTP&#x7F13;&#x5B58;&#x63A7;&#x5236;&#x5934;&#x5B57;&#x6BB5;" class="headerlink" title="&#x4E8C;&#x3001;HTTP&#x7F13;&#x5B58;&#x63A7;&#x5236;&#x5934;&#x5B57;&#x6BB5;"></a>&#x4E8C;&#x3001;HTTP&#x7F13;&#x5B58;&#x63A7;&#x5236;&#x5934;&#x5B57;&#x6BB5;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-Expires-响应头"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#1-Expires-&#x54CD;&#x5E94;&#x5934;" class="headerlink" title="1.Expires(&#x54CD;&#x5E94;&#x5934;)"></a>1.Expires(&#x54CD;&#x5E94;&#x5934;)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-Cache-Control-请求-响应头-：优先级高于Expires"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#2-Cache-Control-&#x8BF7;&#x6C42;-&#x54CD;&#x5E94;&#x5934;-&#xFF1A;&#x4F18;&#x5148;&#x7EA7;&#x9AD8;&#x4E8E;Expires" class="headerlink" title="2.Cache-Control(&#x8BF7;&#x6C42;/&#x54CD;&#x5E94;&#x5934;)&#xFF1A;&#x4F18;&#x5148;&#x7EA7;&#x9AD8;&#x4E8E;Expires"></a>2.Cache-Control(&#x8BF7;&#x6C42;/&#x54CD;&#x5E94;&#x5934;)&#xFF1A;&#x4F18;&#x5148;&#x7EA7;&#x9AD8;&#x4E8E;Expires</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-Pragma-响应头"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#3-Pragma-&#x54CD;&#x5E94;&#x5934;" class="headerlink" title="3.Pragma(&#x54CD;&#x5E94;&#x5934;)"></a>3.Pragma(&#x54CD;&#x5E94;&#x5934;)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-Last-Modified-响应头"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#4-Last-Modified-&#x54CD;&#x5E94;&#x5934;" class="headerlink" title="4.Last-Modified(&#x54CD;&#x5E94;&#x5934;)"></a>4.Last-Modified(&#x54CD;&#x5E94;&#x5934;)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-ETag-响应头-：优先级高于Last-Modified"><span class="nav-number">2.5.</span> <span class="nav-text"><a href="#5-ETag-&#x54CD;&#x5E94;&#x5934;-&#xFF1A;&#x4F18;&#x5148;&#x7EA7;&#x9AD8;&#x4E8E;Last-Modified" class="headerlink" title="5.ETag(&#x54CD;&#x5E94;&#x5934;)&#xFF1A;&#x4F18;&#x5148;&#x7EA7;&#x9AD8;&#x4E8E;Last-Modified"></a>5.ETag(&#x54CD;&#x5E94;&#x5934;)&#xFF1A;&#x4F18;&#x5148;&#x7EA7;&#x9AD8;&#x4E8E;Last-Modified</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-If-None-Match-请求头-：优先级高于If-Modified-Since"><span class="nav-number">2.6.</span> <span class="nav-text"><a href="#6-If-None-Match-&#x8BF7;&#x6C42;&#x5934;-&#xFF1A;&#x4F18;&#x5148;&#x7EA7;&#x9AD8;&#x4E8E;If-Modified-Since" class="headerlink" title="6.If-None-Match(&#x8BF7;&#x6C42;&#x5934;)&#xFF1A;&#x4F18;&#x5148;&#x7EA7;&#x9AD8;&#x4E8E;If-Modified-Since"></a>6.If-None-Match(&#x8BF7;&#x6C42;&#x5934;)&#xFF1A;&#x4F18;&#x5148;&#x7EA7;&#x9AD8;&#x4E8E;If-Modified-Since</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-If-Modified-Since-请求头"><span class="nav-number">2.7.</span> <span class="nav-text"><a href="#7-If-Modified-Since-&#x8BF7;&#x6C42;&#x5934;" class="headerlink" title="7.If-Modified-Since(&#x8BF7;&#x6C42;&#x5934;)"></a>7.If-Modified-Since(&#x8BF7;&#x6C42;&#x5934;)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、缓存寿命计算"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x4E09;&#x3001;&#x7F13;&#x5B58;&#x5BFF;&#x547D;&#x8BA1;&#x7B97;" class="headerlink" title="&#x4E09;&#x3001;&#x7F13;&#x5B58;&#x5BFF;&#x547D;&#x8BA1;&#x7B97;"></a>&#x4E09;&#x3001;&#x7F13;&#x5B58;&#x5BFF;&#x547D;&#x8BA1;&#x7B97;</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roubin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://roubinme.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://roubin.me/browser-cache-rule/';
+          this.page.identifier = 'browser-cache-rule/';
+          this.page.title = '浏览器缓存策略';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://roubinme.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
