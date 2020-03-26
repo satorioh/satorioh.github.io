@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://roubin.me/js-util-functions/</loc>
+    
+    <lastmod>2020-03-26T07:27:12.473Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/nginx-deploy-website/</loc>
     
     <lastmod>2020-03-26T05:27:23.793Z</lastmod>
@@ -121,14 +128,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-web-app-initialization/</loc>
+    <loc>https://roubin.me/vue-vw-layout/</loc>
     
     <lastmod>2020-01-21T06:51:33.857Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-vw-layout/</loc>
+    <loc>https://roubin.me/vue-web-app-initialization/</loc>
     
     <lastmod>2020-01-21T06:51:33.857Z</lastmod>
     
@@ -163,14 +170,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-modifiers/</loc>
+    <loc>https://roubin.me/vue-keepalive-activated-lifecycle/</loc>
     
     <lastmod>2020-01-21T06:51:33.856Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-keepalive-activated-lifecycle/</loc>
+    <loc>https://roubin.me/vue-modifiers/</loc>
     
     <lastmod>2020-01-21T06:51:33.856Z</lastmod>
     
@@ -332,13 +339,6 @@
   
   <url>
     <loc>https://roubin.me/js-match-search-replace-split-exec-test/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.851Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/js-util-functions/</loc>
     
     <lastmod>2020-01-21T06:51:33.851Z</lastmod>
     
