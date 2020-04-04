@@ -1,130 +1,51 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="zh-Hans">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"roubin.me","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="前端,js," />
-
-
-
-
-
-
-
-
-
-
-<meta name="description" content="一、使用数组sort方法对数组元素随机排序，并取指定长度的元素1234567Array.prototype.shuffle = function (n) &amp;#123;  var len = this.length,      num = n ? Math.min(n, len) : len,      arr = this.slice(0);  arr.sort(function (a, b) &amp;">
-<meta name="keywords" content="前端,js">
+  <meta name="description" content="一、使用数组sort方法对数组元素随机排序，并取指定长度的元素1234567Array.prototype.shuffle &#x3D; function (n) &amp;#123;  var len &#x3D; this.length,      num &#x3D; n ? Math.min(n, len) : len,      arr &#x3D; this.slice(0);  arr.sort(function (a, b) &amp;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【JS】数组取随机数">
 <meta property="og:url" content="https://roubin.me/randomize-shuffle-a-javascript-array/index.html">
 <meta property="og:site_name" content="肉饼博客">
-<meta property="og:description" content="一、使用数组sort方法对数组元素随机排序，并取指定长度的元素1234567Array.prototype.shuffle = function (n) &amp;#123;  var len = this.length,      num = n ? Math.min(n, len) : len,      arr = this.slice(0);  arr.sort(function (a, b) &amp;">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-01-21T06:51:33.854Z">
+<meta property="og:description" content="一、使用数组sort方法对数组元素随机排序，并取指定长度的元素1234567Array.prototype.shuffle &#x3D; function (n) &amp;#123;  var len &#x3D; this.length,      num &#x3D; n ? Math.min(n, len) : len,      arr &#x3D; this.slice(0);  arr.sort(function (a, b) &amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-01-10T03:20:33.000Z">
+<meta property="article:modified_time" content="2020-01-21T06:51:33.854Z">
+<meta property="article:author" content="roubin">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="js">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【JS】数组取随机数">
-<meta name="twitter:description" content="一、使用数组sort方法对数组元素随机排序，并取指定长度的元素1234567Array.prototype.shuffle = function (n) &amp;#123;  var len = this.length,      num = n ? Math.min(n, len) : len,      arr = this.slice(0);  arr.sort(function (a, b) &amp;">
+
+<link rel="canonical" href="https://roubin.me/randomize-shuffle-a-javascript-array/">
 
 
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '5.1.3',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
   };
 </script>
-
-
-
-  <link rel="canonical" href="https://roubin.me/randomize-shuffle-a-javascript-array/"/>
-
-
-
-
 
   <title>【JS】数组取随机数 | 肉饼博客</title>
   
@@ -134,237 +55,160 @@
 
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">肉饼博客</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-      
-        <p class="site-subtitle">Talk is cheap. Show me the code.</p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">肉饼博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Talk is cheap. Show me the code.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
+
+
+
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            关于
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
 
-      
-    </ul>
-  
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
-  
+  </li>
+  </ul>
 </nav>
 
 
 
- </div>
+
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://roubin.me/randomize-shuffle-a-javascript-array/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="roubin">
-      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="roubin">
+      <meta itemprop="description" content="芝兰其室，金石其心<br/>仁义为友，道德为师">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="肉饼博客">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">【JS】数组取随机数</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          【JS】数组取随机数
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T11:20:33+08:00">
-                2018-01-10
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2020-01-21T14:51:33+08:00">
-                2020-01-21
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
-                    <span itemprop="name">JavaScript</span>
-                  </a>
-                </span>
-
-                
-                
-              
+              <time title="创建时间：2018-01-10 11:20:33" itemprop="dateCreated datePublished" datetime="2018-01-10T11:20:33+08:00">2018-01-10</time>
             </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-                <a href="/randomize-shuffle-a-javascript-array/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="randomize-shuffle-a-javascript-array/" itemprop="commentCount"></span>
-                </a>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-21 14:51:33" itemprop="dateModified" datetime="2020-01-21T14:51:33+08:00">2020-01-21</time>
               </span>
-            
-          
-
-          
-          
-
-          
-
-          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
+                </span>
+            </span>
 
           
 
         </div>
       </header>
-    
 
     
     
@@ -372,299 +216,192 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
         <h2 id="一、使用数组sort方法对数组元素随机排序，并取指定长度的元素"><a href="#一、使用数组sort方法对数组元素随机排序，并取指定长度的元素" class="headerlink" title="一、使用数组sort方法对数组元素随机排序，并取指定长度的元素"></a>一、使用数组sort方法对数组元素随机排序，并取指定长度的元素</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Array</span>.prototype.shuffle = <span class="function"><span class="keyword">function</span> (<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> len = <span class="keyword">this</span>.length,</span><br><span class="line">      num = n ? <span class="built_in">Math</span>.min(n, len) : len,</span><br><span class="line">      arr = <span class="keyword">this</span>.slice(<span class="number">0</span>);</span><br><span class="line">  arr.sort(<span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123; <span class="keyword">return</span> <span class="built_in">Math</span>.random() - <span class="number">0.5</span>; &#125;);</span><br><span class="line">  <span class="keyword">return</span> arr.slice(<span class="number">0</span>, num - <span class="number">1</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
+
 <h2 id="二、随机交换数组内的元素"><a href="#二、随机交换数组内的元素" class="headerlink" title="二、随机交换数组内的元素"></a>二、随机交换数组内的元素</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">lib = &#123;&#125;;</span><br><span class="line">lib.range = <span class="function"><span class="keyword">function</span> (<span class="params">min, max</span>) </span>&#123; <span class="keyword">return</span> min + <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (max - min + <span class="number">1</span>)); &#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">Array</span>.prototype.shuffle = <span class="function"><span class="keyword">function</span> (<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> len = <span class="keyword">this</span>.length,</span><br><span class="line">      num = n ? <span class="built_in">Math</span>.min(n, len) : len,</span><br><span class="line">      arr = <span class="keyword">this</span>.slice(<span class="number">0</span>), </span><br><span class="line">      temp, </span><br><span class="line">      index;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">    index = lib.range(i, len - <span class="number">1</span>);</span><br><span class="line">    temp = arr[i];</span><br><span class="line">    arr[i] = arr[index];</span><br><span class="line">    arr[index] = temp;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> arr.slice(<span class="number">0</span>, num);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 <h2 id="三、随机从原数组抽取一个元素-加入到新数组"><a href="#三、随机从原数组抽取一个元素-加入到新数组" class="headerlink" title="三、随机从原数组抽取一个元素,加入到新数组"></a>三、随机从原数组抽取一个元素,加入到新数组</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">lib = &#123;&#125;;</span><br><span class="line">lib.range = <span class="function"><span class="keyword">function</span> (<span class="params">min, max</span>) </span>&#123; <span class="keyword">return</span> min + <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (max - min + <span class="number">1</span>)); &#125;;</span><br><span class="line"><span class="built_in">Array</span>.prototype.shuffle = <span class="function"><span class="keyword">function</span> (<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> len = <span class="keyword">this</span>.length,</span><br><span class="line">    num = n ? <span class="built_in">Math</span>.min(n, len) : len,</span><br><span class="line">    arr = <span class="keyword">this</span>.slice(<span class="number">0</span>),</span><br><span class="line">    result = [],</span><br><span class="line">    index;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; num; i++) &#123;</span><br><span class="line">    index = lib.range(<span class="number">0</span>, len - <span class="number">1</span> - i);</span><br><span class="line">    <span class="comment">// 或者 result.concat(arr.splice(index,1)) </span></span><br><span class="line">    result.push(arr.splice(index, <span class="number">1</span>)[<span class="number">0</span>]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 <h2 id="简易版本"><a href="#简易版本" class="headerlink" title="简易版本"></a>简易版本</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">"use strict"</span>;</span><br><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>];</span><br><span class="line"><span class="built_in">console</span>.log(arr.sort(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">Math</span>.random() - <span class="number">0.5</span>)[<span class="number">0</span>]);</span><br></pre></td></tr></table></figure>
-<p>参考：<a href="https://www.w3cplus.com/javascript/how-to-randomize-shuffle-a-javascript-array.html" title="JavaScript学习笔记：数组随机排序" target="_blank" rel="noopener">JavaScript学习笔记：数组随机排序</a></p>
 
-      
+<p>参考：<a href="https://www.w3cplus.com/javascript/how-to-randomize-shuffle-a-javascript-array.html" target="_blank" rel="noopener" title="JavaScript学习笔记：数组随机排序">JavaScript学习笔记：数组随机排序</a></p>
+
     </div>
+
     
     
     
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/前端/" rel="tag"># 前端</a>
-          
-            <a href="/tags/js/" rel="tag"># js</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/js-match-search-replace-split-exec-test/" rel="next" title="【JS】match、search、replace、split、exec、test对比总结">
-                <i class="fa fa-chevron-left"></i> 【JS】match、search、replace、split、exec、test对比总结
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag"># 前端</a>
+              <a href="/tags/js/" rel="tag"># js</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/jsonp-learning-summary/" rel="prev" title="【学习小结】JSONP原理与实现">
-                【学习小结】JSONP原理与实现 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/js-match-search-replace-split-exec-test/" rel="prev" title="【JS】match、search、replace、split、exec、test对比总结">
+      <i class="fa fa-chevron-left"></i> 【JS】match、search、replace、split、exec、test对比总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/jsonp-learning-summary/" rel="next" title="【学习小结】JSONP原理与实现">
+      【学习小结】JSONP原理与实现 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
 
 
           </div>
           
 
-
-          
-
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpg"
-                alt="roubin" />
-            
-              <p class="site-author-name" itemprop="name">roubin</p>
-              <p class="site-description motion-element" itemprop="description">芝兰其室，金石其心<br/>仁义为友，道德为师</p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">81</span>
-                  <span class="site-state-item-name">日志</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">21</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">34</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
-          
-
-          <div class="links-of-author motion-element">
-            
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/satorioh" target="_blank" title="GitHub">
-                    
-                      <i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="mailto:wangbinxp@gmail.com" target="_blank" title="E-Mail">
-                    
-                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-            
-          </div>
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、使用数组sort方法对数组元素随机排序，并取指定长度的元素"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x4E00;&#x3001;&#x4F7F;&#x7528;&#x6570;&#x7EC4;sort&#x65B9;&#x6CD5;&#x5BF9;&#x6570;&#x7EC4;&#x5143;&#x7D20;&#x968F;&#x673A;&#x6392;&#x5E8F;&#xFF0C;&#x5E76;&#x53D6;&#x6307;&#x5B9A;&#x957F;&#x5EA6;&#x7684;&#x5143;&#x7D20;" class="headerlink" title="&#x4E00;&#x3001;&#x4F7F;&#x7528;&#x6570;&#x7EC4;sort&#x65B9;&#x6CD5;&#x5BF9;&#x6570;&#x7EC4;&#x5143;&#x7D20;&#x968F;&#x673A;&#x6392;&#x5E8F;&#xFF0C;&#x5E76;&#x53D6;&#x6307;&#x5B9A;&#x957F;&#x5EA6;&#x7684;&#x5143;&#x7D20;"></a>&#x4E00;&#x3001;&#x4F7F;&#x7528;&#x6570;&#x7EC4;sort&#x65B9;&#x6CD5;&#x5BF9;&#x6570;&#x7EC4;&#x5143;&#x7D20;&#x968F;&#x673A;&#x6392;&#x5E8F;&#xFF0C;&#x5E76;&#x53D6;&#x6307;&#x5B9A;&#x957F;&#x5EA6;&#x7684;&#x5143;&#x7D20;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、随机交换数组内的元素"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;&#x968F;&#x673A;&#x4EA4;&#x6362;&#x6570;&#x7EC4;&#x5185;&#x7684;&#x5143;&#x7D20;" class="headerlink" title="&#x4E8C;&#x3001;&#x968F;&#x673A;&#x4EA4;&#x6362;&#x6570;&#x7EC4;&#x5185;&#x7684;&#x5143;&#x7D20;"></a>&#x4E8C;&#x3001;&#x968F;&#x673A;&#x4EA4;&#x6362;&#x6570;&#x7EC4;&#x5185;&#x7684;&#x5143;&#x7D20;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、随机从原数组抽取一个元素-加入到新数组"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x4E09;&#x3001;&#x968F;&#x673A;&#x4ECE;&#x539F;&#x6570;&#x7EC4;&#x62BD;&#x53D6;&#x4E00;&#x4E2A;&#x5143;&#x7D20;-&#x52A0;&#x5165;&#x5230;&#x65B0;&#x6570;&#x7EC4;" class="headerlink" title="&#x4E09;&#x3001;&#x968F;&#x673A;&#x4ECE;&#x539F;&#x6570;&#x7EC4;&#x62BD;&#x53D6;&#x4E00;&#x4E2A;&#x5143;&#x7D20;,&#x52A0;&#x5165;&#x5230;&#x65B0;&#x6570;&#x7EC4;"></a>&#x4E09;&#x3001;&#x968F;&#x673A;&#x4ECE;&#x539F;&#x6570;&#x7EC4;&#x62BD;&#x53D6;&#x4E00;&#x4E2A;&#x5143;&#x7D20;,&#x52A0;&#x5165;&#x5230;&#x65B0;&#x6570;&#x7EC4;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简易版本"><span class="nav-number">4.</span> <span class="nav-text"><a href="#&#x7B80;&#x6613;&#x7248;&#x672C;" class="headerlink" title="&#x7B80;&#x6613;&#x7248;&#x672C;"></a>&#x7B80;&#x6613;&#x7248;&#x672C;</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">roubin</span>
-
-  
-</div>
-
-
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、使用数组sort方法对数组元素随机排序，并取指定长度的元素"><span class="nav-number">1.</span> <span class="nav-text">一、使用数组sort方法对数组元素随机排序，并取指定长度的元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、随机交换数组内的元素"><span class="nav-number">2.</span> <span class="nav-text">二、随机交换数组内的元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、随机从原数组抽取一个元素-加入到新数组"><span class="nav-number">3.</span> <span class="nav-text">三、随机从原数组抽取一个元素,加入到新数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简易版本"><span class="nav-number">4.</span> <span class="nav-text">简易版本</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="roubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">roubin</p>
+  <div class="site-description" itemprop="description">芝兰其室，金石其心<br/>仁义为友，道德为师</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">81</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
 
 
 
 
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -682,134 +419,8 @@
 
 
 
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
 
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
 
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://roubinme.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'https://roubin.me/randomize-shuffle-a-javascript-array/';
-          this.page.identifier = 'randomize-shuffle-a-javascript-array/';
-          this.page.title = '【JS】数组取随机数';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://roubinme.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
 
   
 
