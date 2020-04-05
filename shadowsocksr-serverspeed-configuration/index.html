@@ -53,6 +53,11 @@
 
 
 
+  <script>
+    !function(e,t,n,g,i){e[i]=e[i]||function(){(e[i].q=e[i].q||[]).push(arguments)},n=t.createElement("script"),tag=t.getElementsByTagName("script")[0],n.async=1,n.src=('https:'==document.location.protocol?'https://':'http://')+g,tag.parentNode.insertBefore(n,tag)}(window,document,"script","assets.growingio.com/2.1/gio.js","gio");
+    gio('init', 'b55ece62ebeb2e72a8efe3f8b5b43960', {});
+    gio('send');
+  </script>
 
 
   <noscript>
@@ -334,7 +339,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-VPS安全设置"><span class="nav-number">1.</span> <span class="nav-text">1.VPS安全设置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-关闭Selinux"><span class="nav-number">2.</span> <span class="nav-text">2.关闭Selinux</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-检查python版本，要有2-6-or-2-7"><span class="nav-number">3.</span> <span class="nav-text">3.检查python版本，要有2.6 or 2.7</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-查看并调整时间和时区（参考CentOS-7时区设置）"><span class="nav-number">4.</span> <span class="nav-text">4.查看并调整时间和时区（参考CentOS 7时区设置）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-安装ShadowsocksR（参考ShadowsocksR-服务端安装教程、配置文件介绍、协议和混淆插件说明）"><span class="nav-number">5.</span> <span class="nav-text">5.安装ShadowsocksR（参考ShadowsocksR 服务端安装教程、配置文件介绍、协议和混淆插件说明）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-配置开机自启动脚本-参考启动脚本"><span class="nav-number">6.</span> <span class="nav-text">6.配置开机自启动脚本(参考启动脚本)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-锐速安装（参考VPS科学上网教程）"><span class="nav-number">7.</span> <span class="nav-text">7.锐速安装（参考VPS科学上网教程）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8-TCP优化和锐速优化（参考TCP优化配置）"><span class="nav-number">8.</span> <span class="nav-text">8.TCP优化和锐速优化（参考TCP优化配置）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-重启回来检查各服务是否自启动正常"><span class="nav-number">9.</span> <span class="nav-text">9.重启回来检查各服务是否自启动正常</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#10-【可选】更改为chacha20加密"><span class="nav-number">10.</span> <span class="nav-text">10.【可选】更改为chacha20加密</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-VPS安全设置"><span class="nav-text">1.VPS安全设置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-关闭Selinux"><span class="nav-text">2.关闭Selinux</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-检查python版本，要有2-6-or-2-7"><span class="nav-text">3.检查python版本，要有2.6 or 2.7</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-查看并调整时间和时区（参考CentOS-7时区设置）"><span class="nav-text">4.查看并调整时间和时区（参考CentOS 7时区设置）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-安装ShadowsocksR（参考ShadowsocksR-服务端安装教程、配置文件介绍、协议和混淆插件说明）"><span class="nav-text">5.安装ShadowsocksR（参考ShadowsocksR 服务端安装教程、配置文件介绍、协议和混淆插件说明）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-配置开机自启动脚本-参考启动脚本"><span class="nav-text">6.配置开机自启动脚本(参考启动脚本)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-锐速安装（参考VPS科学上网教程）"><span class="nav-text">7.锐速安装（参考VPS科学上网教程）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8-TCP优化和锐速优化（参考TCP优化配置）"><span class="nav-text">8.TCP优化和锐速优化（参考TCP优化配置）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9-重启回来检查各服务是否自启动正常"><span class="nav-text">9.重启回来检查各服务是否自启动正常</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#10-【可选】更改为chacha20加密"><span class="nav-text">10.【可选】更改为chacha20加密</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -368,6 +373,14 @@
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/satorioh" title="GitHub → https://github.com/satorioh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wangbinxp@gmail.com" title="E-Mail → mailto:wangbinxp@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
 
 
 
@@ -431,6 +444,15 @@
 
 
   
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
 
 
 
