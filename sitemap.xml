@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://roubin.me/cross-browser-tab-communication/</loc>
+    
+    <lastmod>2020-05-22T09:29:05.258Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/cors-methods/</loc>
+    
+    <lastmod>2020-05-22T08:20:21.179Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/how-to-learn-javascript/</loc>
     
     <lastmod>2020-05-21T08:57:01.417Z</lastmod>
@@ -184,6 +198,13 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/vue-use-mock-data-component-communication/</loc>
+    
+    <lastmod>2020-01-21T06:51:33.857Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/vue-vw-layout/</loc>
     
     <lastmod>2020-01-21T06:51:33.857Z</lastmod>
@@ -199,13 +220,6 @@
   
   <url>
     <loc>https://roubin.me/vuex-basic/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.857Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/vue-use-mock-data-component-communication/</loc>
     
     <lastmod>2020-01-21T06:51:33.857Z</lastmod>
     
@@ -247,14 +261,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-packed-with-cordova/</loc>
+    <loc>https://roubin.me/vue-recursion-component/</loc>
     
     <lastmod>2020-01-21T06:51:33.856Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-recursion-component/</loc>
+    <loc>https://roubin.me/vue-packed-with-cordova/</loc>
     
     <lastmod>2020-01-21T06:51:33.856Z</lastmod>
     
@@ -359,14 +373,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/mini-program-custom-image-button/</loc>
+    <loc>https://roubin.me/margin-top-overlap-problem/</loc>
     
     <lastmod>2020-01-21T06:51:33.852Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/margin-top-overlap-problem/</loc>
+    <loc>https://roubin.me/mini-program-custom-image-button/</loc>
     
     <lastmod>2020-01-21T06:51:33.852Z</lastmod>
     
@@ -394,14 +408,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/js-match-search-replace-split-exec-test/</loc>
+    <loc>https://roubin.me/js-data-type-detection/</loc>
     
     <lastmod>2020-01-21T06:51:33.851Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/js-data-type-detection/</loc>
+    <loc>https://roubin.me/js-match-search-replace-split-exec-test/</loc>
     
     <lastmod>2020-01-21T06:51:33.851Z</lastmod>
     
@@ -464,14 +478,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/es6-class-difference-between-es5-constructor/</loc>
+    <loc>https://roubin.me/es6-let-string-number-destruction/</loc>
     
     <lastmod>2020-01-21T06:51:33.849Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/es6-let-string-number-destruction/</loc>
+    <loc>https://roubin.me/es6-class-difference-between-es5-constructor/</loc>
     
     <lastmod>2020-01-21T06:51:33.849Z</lastmod>
     
@@ -485,7 +499,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/cors-methods/</loc>
+    <loc>https://roubin.me/css-layout-summary/</loc>
+    
+    <lastmod>2020-01-21T06:51:33.848Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/css-spinner-bounce/</loc>
     
     <lastmod>2020-01-21T06:51:33.848Z</lastmod>
     
@@ -499,21 +520,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/css-layout-summary/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.848Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/deep-clone/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.848Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/css-spinner-bounce/</loc>
     
     <lastmod>2020-01-21T06:51:33.848Z</lastmod>
     
@@ -541,6 +548,13 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/communication-between-vue-components/</loc>
+    
+    <lastmod>2020-01-21T06:51:33.847Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/closure/</loc>
     
     <lastmod>2020-01-21T06:51:33.847Z</lastmod>
@@ -548,9 +562,9 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/communication-between-vue-components/</loc>
+    <loc>https://roubin.me/angular-integrated-with-adminlte/</loc>
     
-    <lastmod>2020-01-21T06:51:33.847Z</lastmod>
+    <lastmod>2020-01-21T06:51:33.846Z</lastmod>
     
   </url>
   
@@ -569,13 +583,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-reactive-forms/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.846Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/angular-routing-params/</loc>
     
     <lastmod>2020-01-21T06:51:33.846Z</lastmod>
@@ -583,21 +590,21 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-integrated-with-adminlte/</loc>
+    <loc>https://roubin.me/angular-reactive-forms/</loc>
     
     <lastmod>2020-01-21T06:51:33.846Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-adminlte-body-height-cut-off-fix/</loc>
+    <loc>https://roubin.me/angular-data-bind/</loc>
     
     <lastmod>2020-01-21T06:51:33.845Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-data-bind/</loc>
+    <loc>https://roubin.me/angular-adminlte-body-height-cut-off-fix/</loc>
     
     <lastmod>2020-01-21T06:51:33.845Z</lastmod>
     
@@ -618,14 +625,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/2017-year-end-summary/</loc>
+    <loc>https://roubin.me/2018-year-end-summary/</loc>
     
     <lastmod>2020-01-21T06:51:33.844Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/2018-year-end-summary/</loc>
+    <loc>https://roubin.me/2017-year-end-summary/</loc>
     
     <lastmod>2020-01-21T06:51:33.844Z</lastmod>
     
