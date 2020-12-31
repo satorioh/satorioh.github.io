@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://roubin.me/k8s-service/</loc>
+    
+    <lastmod>2020-12-31T03:25:37.822Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/use-k9s-kubecm-manage-k8s-cluster/</loc>
     
     <lastmod>2020-12-31T03:04:11.923Z</lastmod>
@@ -226,7 +233,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-web-app-initialization/</loc>
+    <loc>https://roubin.me/vue-vw-layout/</loc>
     
     <lastmod>2020-01-21T06:51:33.857Z</lastmod>
     
@@ -240,7 +247,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-vw-layout/</loc>
+    <loc>https://roubin.me/vue-web-app-initialization/</loc>
     
     <lastmod>2020-01-21T06:51:33.857Z</lastmod>
     
@@ -387,13 +394,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/mini-program-custom-image-button/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.852Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/margin-top-overlap-problem/</loc>
     
     <lastmod>2020-01-21T06:51:33.852Z</lastmod>
@@ -401,14 +401,21 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/integrate-jquery-plugin-in-angular/</loc>
+    <loc>https://roubin.me/mini-program-custom-image-button/</loc>
+    
+    <lastmod>2020-01-21T06:51:33.852Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/ionic-environment-build-and-basic-command/</loc>
     
     <lastmod>2020-01-21T06:51:33.851Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/ionic-environment-build-and-basic-command/</loc>
+    <loc>https://roubin.me/integrate-jquery-plugin-in-angular/</loc>
     
     <lastmod>2020-01-21T06:51:33.851Z</lastmod>
     
@@ -457,14 +464,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/how-to-ride-in-subway-train/</loc>
+    <loc>https://roubin.me/inheritance-method-summary/</loc>
     
     <lastmod>2020-01-21T06:51:33.850Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/inheritance-method-summary/</loc>
+    <loc>https://roubin.me/how-to-ride-in-subway-train/</loc>
     
     <lastmod>2020-01-21T06:51:33.850Z</lastmod>
     
@@ -492,14 +499,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/es6-let-string-number-destruction/</loc>
+    <loc>https://roubin.me/echarts-options/</loc>
     
     <lastmod>2020-01-21T06:51:33.849Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/echarts-options/</loc>
+    <loc>https://roubin.me/es6-let-string-number-destruction/</loc>
     
     <lastmod>2020-01-21T06:51:33.849Z</lastmod>
     
@@ -534,14 +541,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/deploy-angular-to-non-root-path/</loc>
+    <loc>https://roubin.me/deep-clone/</loc>
     
     <lastmod>2020-01-21T06:51:33.848Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/deep-clone/</loc>
+    <loc>https://roubin.me/deploy-angular-to-non-root-path/</loc>
     
     <lastmod>2020-01-21T06:51:33.848Z</lastmod>
     
@@ -562,14 +569,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/closure/</loc>
+    <loc>https://roubin.me/communication-between-vue-components/</loc>
     
     <lastmod>2020-01-21T06:51:33.847Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/communication-between-vue-components/</loc>
+    <loc>https://roubin.me/closure/</loc>
     
     <lastmod>2020-01-21T06:51:33.847Z</lastmod>
     
@@ -597,14 +604,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-reactive-forms/</loc>
+    <loc>https://roubin.me/angular-routing-params/</loc>
     
     <lastmod>2020-01-21T06:51:33.846Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-routing-params/</loc>
+    <loc>https://roubin.me/angular-reactive-forms/</loc>
     
     <lastmod>2020-01-21T06:51:33.846Z</lastmod>
     
@@ -625,13 +632,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-http/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.845Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/angular-dependency-injection-summary/</loc>
     
     <lastmod>2020-01-21T06:51:33.845Z</lastmod>
@@ -639,14 +639,21 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/2018-year-end-summary/</loc>
+    <loc>https://roubin.me/angular-http/</loc>
+    
+    <lastmod>2020-01-21T06:51:33.845Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/2017-year-end-summary/</loc>
     
     <lastmod>2020-01-21T06:51:33.844Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/2017-year-end-summary/</loc>
+    <loc>https://roubin.me/2018-year-end-summary/</loc>
     
     <lastmod>2020-01-21T06:51:33.844Z</lastmod>
     
