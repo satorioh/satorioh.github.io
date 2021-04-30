@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://roubin.me/babel-basic/</loc>
+    
+    <lastmod>2021-04-30T05:28:10.390Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/my-life-list/</loc>
     
     <lastmod>2021-04-25T09:36:09.148Z</lastmod>
@@ -254,14 +261,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-vw-layout/</loc>
+    <loc>https://roubin.me/vue-web-app-initialization/</loc>
     
     <lastmod>2020-01-21T06:51:33.857Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-web-app-initialization/</loc>
+    <loc>https://roubin.me/vue-vw-layout/</loc>
     
     <lastmod>2020-01-21T06:51:33.857Z</lastmod>
     
@@ -296,14 +303,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-keepalive-activated-lifecycle/</loc>
+    <loc>https://roubin.me/vue-modifiers/</loc>
     
     <lastmod>2020-01-21T06:51:33.856Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/vue-modifiers/</loc>
+    <loc>https://roubin.me/vue-keepalive-activated-lifecycle/</loc>
     
     <lastmod>2020-01-21T06:51:33.856Z</lastmod>
     
@@ -387,13 +394,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/mini-program-use-behavior-encapsulate-search-component/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.853Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/mini-program-use-wxs-solve-text-indent/</loc>
     
     <lastmod>2020-01-21T06:51:33.853Z</lastmod>
@@ -408,7 +408,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/login-with-temp-profile-and-desktop-lost/</loc>
+    <loc>https://roubin.me/mini-program-use-behavior-encapsulate-search-component/</loc>
+    
+    <lastmod>2020-01-21T06:51:33.853Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/mini-program-custom-image-button/</loc>
     
     <lastmod>2020-01-21T06:51:33.852Z</lastmod>
     
@@ -422,7 +429,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/mini-program-custom-image-button/</loc>
+    <loc>https://roubin.me/login-with-temp-profile-and-desktop-lost/</loc>
     
     <lastmod>2020-01-21T06:51:33.852Z</lastmod>
     
@@ -485,14 +492,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/how-to-ride-in-subway-train/</loc>
+    <loc>https://roubin.me/inheritance-method-summary/</loc>
     
     <lastmod>2020-01-21T06:51:33.850Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/inheritance-method-summary/</loc>
+    <loc>https://roubin.me/how-to-ride-in-subway-train/</loc>
     
     <lastmod>2020-01-21T06:51:33.850Z</lastmod>
     
@@ -541,14 +548,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/css-layout-summary/</loc>
+    <loc>https://roubin.me/css-scrollbar-style-change/</loc>
     
     <lastmod>2020-01-21T06:51:33.848Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/css-scrollbar-style-change/</loc>
+    <loc>https://roubin.me/css-layout-summary/</loc>
     
     <lastmod>2020-01-21T06:51:33.848Z</lastmod>
     
@@ -646,13 +653,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-data-bind/</loc>
-    
-    <lastmod>2020-01-21T06:51:33.845Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/angular-dependency-injection-summary/</loc>
     
     <lastmod>2020-01-21T06:51:33.845Z</lastmod>
@@ -661,6 +661,13 @@
   
   <url>
     <loc>https://roubin.me/angular-http/</loc>
+    
+    <lastmod>2020-01-21T06:51:33.845Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/angular-data-bind/</loc>
     
     <lastmod>2020-01-21T06:51:33.845Z</lastmod>
     
