@@ -24,21 +24,20 @@
     var CONFIG = {"hostname":"roubin.me","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="一、原理我的理解：因为script标签（类似的还有img，iframe）不受同源策略限制，故可以用于跨域数据的获取，这是根本原因。 客户端设置一个script，其url指向支持JSONP的后端API，再声明一个callback函数，函数名需与url中?callback&#x3D;字段值相同。当包含特定url的script载入时，会向后端API发起请求，后端会将数据包裹进一个函数的参数里，当然这个函数的名称是">
+  <meta name="description" content="一、Cookie1.作用：用于在连接时证明客户端的身份 2.设置：服务端Set-Cookie方式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【学习小结】JSONP原理与实现">
-<meta property="og:url" content="https://roubin.me/jsonp-learning-summary/index.html">
+<meta property="og:title" content="Cookie、Session 和 Token">
+<meta property="og:url" content="https://roubin.me/cookie-session-token/index.html">
 <meta property="og:site_name" content="肉饼博客">
-<meta property="og:description" content="一、原理我的理解：因为script标签（类似的还有img，iframe）不受同源策略限制，故可以用于跨域数据的获取，这是根本原因。 客户端设置一个script，其url指向支持JSONP的后端API，再声明一个callback函数，函数名需与url中?callback&#x3D;字段值相同。当包含特定url的script载入时，会向后端API发起请求，后端会将数据包裹进一个函数的参数里，当然这个函数的名称是">
+<meta property="og:description" content="一、Cookie1.作用：用于在连接时证明客户端的身份 2.设置：服务端Set-Cookie方式">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2018-01-30T03:22:04.000Z">
-<meta property="article:modified_time" content="2020-07-31T05:44:01.708Z">
+<meta property="article:published_time" content="2021-05-31T08:38:41.000Z">
+<meta property="article:modified_time" content="2021-06-16T06:15:19.230Z">
 <meta property="article:author" content="roubin">
-<meta property="article:tag" content="跨域">
-<meta property="article:tag" content="jsonp">
+<meta property="article:tag" content="js">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://roubin.me/jsonp-learning-summary/">
+<link rel="canonical" href="https://roubin.me/cookie-session-token/">
 
 
 <script id="page-configurations">
@@ -51,7 +50,7 @@
   };
 </script>
 
-  <title>【学习小结】JSONP原理与实现 | 肉饼博客</title>
+  <title>Cookie、Session 和 Token | 肉饼博客</title>
   
 
 
@@ -204,7 +203,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://roubin.me/jsonp-learning-summary/">
+    <link itemprop="mainEntityOfPage" href="https://roubin.me/cookie-session-token/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -217,7 +216,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【学习小结】JSONP原理与实现
+          Cookie、Session 和 Token
         </h1>
 
         <div class="post-meta">
@@ -227,14 +226,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-01-30 11:22:04" itemprop="dateCreated datePublished" datetime="2018-01-30T11:22:04+08:00">2018-01-30</time>
+              <time title="创建时间：2021-05-31 16:38:41" itemprop="dateCreated datePublished" datetime="2021-05-31T16:38:41+08:00">2021-05-31</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-31 13:44:01" itemprop="dateModified" datetime="2020-07-31T13:44:01+08:00">2020-07-31</time>
+                <time title="修改时间：2021-06-16 14:15:19" itemprop="dateModified" datetime="2021-06-16T14:15:19+08:00">2021-06-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -242,7 +241,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%B7%A8%E5%9F%9F/" itemprop="url" rel="index"><span itemprop="name">跨域</span></a>
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index"><span itemprop="name">JavaScript</span></a>
                 </span>
             </span>
 
@@ -255,8 +254,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/jsonp-learning-summary/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="jsonp-learning-summary/" itemprop="commentCount"></span>
+    <a title="disqus" href="/cookie-session-token/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="cookie-session-token/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -266,7 +265,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.6k</span>
+              <span>1.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -285,20 +284,48 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h3><p>我的理解：因为script标签（类似的还有img，iframe）不受同源策略限制，故可以用于跨域数据的获取，这是根本原因。</p>
-<p>客户端设置一个script，其url指向支持JSONP的后端API，再声明一个callback函数，函数名需与url中?callback=字段值相同。当包含特定url的script载入时，会向后端API发起请求，后端会将数据包裹进一个函数的参数里，当然这个函数的名称是根据前端url参数自动生成的，前端script载入完成则自动调用已有的callback函数，对接受到的数据（此刻是函数参数）做出处理，从而实现了跨域。<a id="more"></a></p>
-<h3 id="二、实现"><a href="#二、实现" class="headerlink" title="二、实现"></a>二、实现</h3><h4 id="1-JS实现"><a href="#1-JS实现" class="headerlink" title="1.JS实现"></a>1.JS实现</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>test<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="meta">  "use strict"</span>;</span></span><br><span class="line"><span class="javascript">  <span class="keyword">let</span> test = <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;<span class="comment">//返回数据后的处理函数</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(data);</span></span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line"><span class="javascript">  <span class="keyword">let</span> url = <span class="string">"http://cache.video.iqiyi.com/jp/avlist/202861101/1/?callback=test"</span>;<span class="comment">//支持JSONP的API</span></span></span><br><span class="line"></span><br><span class="line"><span class="javascript">  <span class="keyword">let</span> script = <span class="built_in">document</span>.createElement(<span class="string">"script"</span>);</span></span><br><span class="line"><span class="actionscript">  script.setAttribute(<span class="string">"src"</span>,url);</span></span><br><span class="line"><span class="javascript">  <span class="built_in">document</span>.getElementsByTagName(<span class="string">"body"</span>)[<span class="number">0</span>].appendChild(script);</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+        <h3 id="一、Cookie"><a href="#一、Cookie" class="headerlink" title="一、Cookie"></a>一、Cookie</h3><p>1.作用：用于在连接时证明客户端的身份</p>
+<p>2.设置：服务端Set-Cookie方式</p>
+<a id="more"></a>
 
-<h4 id="2-jQuery实现"><a href="#2-jQuery实现" class="headerlink" title="2.jQuery实现"></a>2.jQuery实现</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>test<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"jquery.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="meta">  "use strict"</span>;</span></span><br><span class="line"><span class="javascript">  $(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">    $.ajax(&#123;</span></span><br><span class="line"><span class="actionscript">      url: <span class="string">"http://cache.video.iqiyi.com/jp/avlist/202861101/1/"</span>,</span></span><br><span class="line"><span class="actionscript">      dataType: <span class="string">"jsonp"</span>,</span></span><br><span class="line"><span class="actionscript">      jsonp: <span class="string">"callback"</span>,</span></span><br><span class="line"><span class="actionscript">      success: <span class="function"><span class="keyword">function</span> <span class="params">(data)</span> </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="built_in">console</span>.log(data);</span></span><br><span class="line">      &#125;,</span><br><span class="line"><span class="actionscript">      error: <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;</span></span><br><span class="line"><span class="actionscript">        alert(<span class="string">"fail"</span>);</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;)</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>注：jQuery的callback函数名是随机生成的，返回的数据直接放入success函数处理，很方便。</p>
-<h3 id="三、JSONP与AJAX的区别"><a href="#三、JSONP与AJAX的区别" class="headerlink" title="三、JSONP与AJAX的区别"></a>三、JSONP与AJAX的区别</h3><p>我的理解：</p>
-<p>1.AJAX基于xhr对象实现，而JSONP是通过script标签动态加载后端js实现，原理不同<br>2.AJAX支持get/post，而JSONP因为需要在script的url中传参，所以只支持get</p>
-<h3 id="四、JSONP优缺点"><a href="#四、JSONP优缺点" class="headerlink" title="四、JSONP优缺点"></a>四、JSONP优缺点</h3><p>优点：极好的浏览器兼容性</p>
-<p>缺点：存在脚本注入的安全隐患</p>
-<p>参考：</p>
-<p><a href="http://www.cnblogs.com/dowinning/archive/2012/04/19/json-jsonp-jquery.html" target="_blank" rel="noopener">【原创】说说JSON和JSONP，也许你会豁然开朗，含jQuery用例</a></p>
-<p><a href="https://tonghuashuo.github.io/blog/jsonp.html" target="_blank" rel="noopener">5 分钟彻底明白 JSONP</a></p>
-<p><a href="https://www.jianshu.com/p/9a5a6f853fa8" target="_blank" rel="noopener">JSONP原理优缺点(只能GET不支持POST)</a></p>
+<p>3.相关字段：</p>
+<ul>
+<li>Expires 设置 cookie 的过期时间（时间戳），这个时间是客户端时间</li>
+<li>Max-Age 设置 cookie 的保留时长（秒数），同时存在 Expires 和 Max-Age 的话，Max-Age 优先</li>
+<li>Domain 设置生效的域名，默认就是当前域名，不包含子域名</li>
+<li>Path 设置生效路径，/ 全匹配</li>
+<li>Secure 设置 cookie 只在 https 下发送，防止中间人攻击</li>
+<li>HttpOnly 设置禁止 JavaScript 访问 cookie，防止XSS</li>
+<li>SameSite 设置跨域时不携带 cookie，防止CSRF</li>
+</ul>
+<h3 id="二、Session"><a href="#二、Session" class="headerlink" title="二、Session"></a>二、Session</h3><h4 id="1-存储方式"><a href="#1-存储方式" class="headerlink" title="1.存储方式"></a>1.存储方式</h4><p>可以储存在客户端，也可以存储在服务器</p>
+<ul>
+<li><p>客户端存储：服务器通过set-cookie把信息写入浏览器cookie，在下次浏览器发送请求时，信息又通过 cookie 原样带回来，所以服务器什么东西都不用存。缺点是无法即时取消</p>
+</li>
+<li><p>服务端存储：将sessionID存储在客户端cookie中，在客户端发送请求时，拿到sessionId，再使用 id 在服务端 store 中获取 session 信息。</p>
+</li>
+</ul>
+<h4 id="2-后台是如何通过-SessionID-知道是哪个用户呢？"><a href="#2-后台是如何通过-SessionID-知道是哪个用户呢？" class="headerlink" title="2.后台是如何通过 SessionID 知道是哪个用户呢？"></a>2.后台是如何通过 SessionID 知道是哪个用户呢？</h4><ul>
+<li>数据库存储关联：将 SessionID 与数据信息关联，存储在 Redis、Mysql 等数据库中；</li>
+<li>数据加密直接存储：比如 JWT 方式，用户数据直接从 SessionID 值解密出来（此方式时 Cookie 名称以 Token 居多）</li>
+</ul>
+<h4 id="3-服务端存储的缺点："><a href="#3-服务端存储的缺点：" class="headerlink" title="3.服务端存储的缺点："></a>3.服务端存储的缺点：</h4><ul>
+<li>多集群支持: 当网站采用集群部署的时候，会遇到多台web服务器之间如何做session共享的问题。因为session是由单个服务创建，处理请求的服务器可能不是创建session的服务器，那么该服务器就无法拿到之前放入到session中的登录凭证之类的信息</li>
+<li>性能差：当流量高峰期时，由于每个请求的用户信息都需要存储在数据库中，对资源会是一种负担</li>
+<li>低扩展性：当扩容服务端的时候，session store也需要扩容。这会占用额外的资源和增加复杂性</li>
+</ul>
+<h3 id="三、Token"><a href="#三、Token" class="headerlink" title="三、Token"></a>三、Token</h3><p>本质上 token 的功能就是和 session id 一模一样。区别在于，session id 一般存在 cookie 里，自动带上；token 一般是要你主动放在请求中，例如设置请求头的 Authorization 为 bearer:<access_token></p>
+<h4 id="1-JWT"><a href="#1-JWT" class="headerlink" title="1.JWT"></a>1.JWT</h4><p>客户端储存 session 信息的一种方式。</p>
+<p>用户访问需要授权的连接时，可以把 token 放在 cookie，也可以在请求头带上 Authorization: Bearer <token>。（手动放在请求头不受 CORS 限制，不怕 CSRF）</p>
+<p>缺点：</p>
+<ul>
+<li>无法废弃: 在签发后，在到期之前会始终有效，无法中途废弃。</li>
+<li>性能差: session方案中，cookie需要携带的sessionId是一个很短的字符串。但是由于jwt是无状态的，需要携带一些必要的信息，体积会比较大。</li>
+<li>安全性：jwt中的payload是base64编码的，没有加密，因此不能存储敏感数据</li>
+<li>续签: 传统的cookie续签方案都是框架自带的，session有效期30分钟，30分钟内如果有访问，有效期被刷新至30分钟。如果要改变jwt的有效时间，就需要签发新的jwt。一种方案是每次请求都更新jwt，这样性能太差了；第二种方案为每个jwt设置过期时间，每次访问刷新jwt的过期时间，就失去了jwt无状态的优势了</li>
+</ul>
+<p>参考文章：</p>
+<p><a href="https://ssshooter.com/2021-02-21-auth/" target="_blank" rel="noopener">前后端接口鉴权全解</a><br><a href="http://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html" target="_blank" rel="noopener">JSON Web Token 入门教程</a><br><a href="https://mp.weixin.qq.com/s/9SC6Dtgkfvq1ehOq76bpbA" target="_blank" rel="noopener">搞懂 JWT 这个知识点</a></p>
 
     </div>
 
@@ -309,8 +336,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/%E8%B7%A8%E5%9F%9F/" rel="tag"><i class="fa fa-tag"></i> 跨域</a>
-              <a href="/tags/jsonp/" rel="tag"><i class="fa fa-tag"></i> jsonp</a>
+              <a href="/tags/js/" rel="tag"><i class="fa fa-tag"></i> js</a>
           </div>
 
         
@@ -319,13 +345,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/randomize-shuffle-a-javascript-array/" rel="prev" title="【JS】数组取随机数">
-      <i class="fa fa-chevron-left"></i> 【JS】数组取随机数
+    <a href="/elegant-way-for-complex-judgment/" rel="prev" title="js复杂判断的简化">
+      <i class="fa fa-chevron-left"></i> js复杂判断的简化
     </a></div>
-      <div class="post-nav-item">
-    <a href="/differences-between-null-and-undefined/" rel="next" title="【JS】null和undefined的区别">
-      【JS】null和undefined的区别 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -391,7 +414,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、原理"><span class="nav-text">一、原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、实现"><span class="nav-text">二、实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-JS实现"><span class="nav-text">1.JS实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-jQuery实现"><span class="nav-text">2.jQuery实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、JSONP与AJAX的区别"><span class="nav-text">三、JSONP与AJAX的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、JSONP优缺点"><span class="nav-text">四、JSONP优缺点</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Cookie"><span class="nav-text">一、Cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Session"><span class="nav-text">二、Session</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-存储方式"><span class="nav-text">1.存储方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-后台是如何通过-SessionID-知道是哪个用户呢？"><span class="nav-text">2.后台是如何通过 SessionID 知道是哪个用户呢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-服务端存储的缺点："><span class="nav-text">3.服务端存储的缺点：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、Token"><span class="nav-text">三、Token</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-JWT"><span class="nav-text">1.JWT</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -540,9 +563,9 @@
 </script>
 <script>
   var disqus_config = function() {
-    this.page.url = "https://roubin.me/jsonp-learning-summary/";
-    this.page.identifier = "jsonp-learning-summary/";
-    this.page.title = "【学习小结】JSONP原理与实现";
+    this.page.url = "https://roubin.me/cookie-session-token/";
+    this.page.identifier = "cookie-session-token/";
+    this.page.title = "Cookie、Session 和 Token";
     };
   NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
     if (window.DISQUS) {
