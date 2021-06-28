@@ -297,7 +297,6 @@ th,
 td {
   font-weight: normal;
   padding: 8px;
-  text-align: left;
   vertical-align: middle;
 }
 th,
@@ -1221,7 +1220,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #e4ff58;
+  background: #abff32;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1299,7 +1298,7 @@ pre .javascript .function {
 }
 .sidebar-nav li {
   border-bottom: 1px solid transparent;
-  color: #555;
+  color: var(--text-color);
   cursor: pointer;
   display: inline-block;
   font-size: 0.875em;
@@ -1986,10 +1985,10 @@ pre .javascript .function {
   width: 90%;
 }
 .reward-container button {
-  background: #ff2a2a;
-  border: 0;
-  border-radius: 5px;
-  color: #fff;
+  background: transparent;
+  border: 1px solid #fc6423;
+  border-radius: 0;
+  color: #fc6423;
   cursor: pointer;
   line-height: 2;
   outline: 0;
@@ -1997,7 +1996,9 @@ pre .javascript .function {
   vertical-align: text-top;
 }
 .reward-container button:hover {
-  background: #f55;
+  background: #fc6423;
+  border: 1px solid transparent;
+  color: #fa9366;
 }
 #qr {
   padding-top: 20px;
@@ -2191,7 +2192,7 @@ ul.breadcrumb li + li:last-child {
   margin: 10px;
 }
 .tag-cloud a:hover {
-  color: #222 !important;
+  color: var(--link-hover-color) !important;
 }
 .search-pop-overlay {
   background: rgba(0,0,0,0);
@@ -2426,17 +2427,6 @@ ul.breadcrumb li + li:last-child {
     display: none;
   }
 }
-.menu-item-active a::after {
-  background: #bbb;
-  border-radius: 50%;
-  content: ' ';
-  height: 6px;
-  margin-top: -3px;
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  width: 6px;
-}
 .menu .menu-item {
   display: block;
   margin: 0;
@@ -2462,6 +2452,17 @@ ul.breadcrumb li + li:last-child {
   text-shadow: 1px 1px 0 rgba(0,0,0,0.1);
   vertical-align: middle;
 }
+.main-menu .menu-item-active a::after {
+  background: #bbb;
+  border-radius: 50%;
+  content: ' ';
+  height: 6px;
+  margin-top: -3px;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  width: 6px;
+}
 .sub-menu {
   background: var(--content-bg-color);
   border-bottom: 1px solid #ddd;
@@ -2481,10 +2482,6 @@ ul.breadcrumb li + li:last-child {
 .sub-menu .menu-item span.exturl:hover {
   background: transparent;
   color: #fc6423;
-}
-.sub-menu .menu-item a::after,
-.sub-menu .menu-item span.exturl::after {
-  content: initial !important;
 }
 .sub-menu .menu-item-active a {
   border-bottom-color: #fc6423;
