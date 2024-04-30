@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"roubin.me","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在上一篇《启用 WebGPU 加速 Web 端模型推理》中提到“可以将 tensorflow.js 和现代化的前端框架结合”，基于这个想法，我继续展开迭代，将代码迁移到 Next.js 14 框架中，并针对模型在浏览器端遇到的一些加载和推理问题，进行了一番优化，整个过程大致包含如下步骤：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Next.js + Tensorflow.js的模型加载与推理优化小结">
+<meta property="og:url" content="https://roubin.me/web-model-load-infer-optimization-summary/index.html">
+<meta property="og:site_name" content="肉饼博客">
+<meta property="og:description" content="在上一篇《启用 WebGPU 加速 Web 端模型推理》中提到“可以将 tensorflow.js 和现代化的前端框架结合”，基于这个想法，我继续展开迭代，将代码迁移到 Next.js 14 框架中，并针对模型在浏览器端遇到的一些加载和推理问题，进行了一番优化，整个过程大致包含如下步骤：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://roubin.me/images/next_web_indexeddb.png">
+<meta property="og:image" content="https://roubin.me/images/next_web_indexeddb_saved.png">
+<meta property="og:image" content="https://roubin.me/images/next_web_wasm_limit.png">
+<meta property="og:image" content="https://roubin.me/images/next_web_memory_leak.png">
+<meta property="og:image" content="https://roubin.me/images/next_web_memory_increase.png">
+<meta property="og:image" content="https://roubin.me/images/next_web_tf_tidy.png">
+<meta property="og:image" content="https://roubin.me/images/next_web_memory_sync.png">
+<meta property="og:image" content="https://roubin.me/images/next_web_memory_async.png">
+<meta property="og:image" content="https://roubin.me/images/next_web_model_warm_up.png">
+<meta property="og:image" content="https://roubin.me/images/next_web_pc_data.png">
+<meta property="og:image" content="https://roubin.me/images/next_web_pc_chart.png">
+<meta property="og:image" content="https://roubin.me/images/next_web_mobile_data.png">
+<meta property="og:image" content="https://roubin.me/images/next_web_mobile_chart.png">
+<meta property="article:published_time" content="2024-04-30T03:36:24.000Z">
+<meta property="article:modified_time" content="2024-04-30T09:53:09.713Z">
+<meta property="article:author" content="roubin">
+<meta property="article:tag" content="目标检测">
+<meta property="article:tag" content="yolo">
+<meta property="article:tag" content="tensorflow">
+<meta property="article:tag" content="nextjs">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://roubin.me/images/next_web_indexeddb.png">
+
+<link rel="canonical" href="https://roubin.me/web-model-load-infer-optimization-summary/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Next.js + Tensorflow.js的模型加载与推理优化小结 | 肉饼博客</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b55ece62ebeb2e72a8efe3f8b5b43960";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">肉饼博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Talk is cheap. Show me the code.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://roubin.me/web-model-load-infer-optimization-summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="roubin">
+      <meta itemprop="description" content="芝兰其室，金石其心<br/>仁义为友，道德为师">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="肉饼博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Next.js + Tensorflow.js的模型加载与推理优化小结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-04-30 11:36:24 / 修改时间：17:53:09" itemprop="dateCreated datePublished" datetime="2024-04-30T11:36:24+08:00">2024-04-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CV/" itemprop="url" rel="index"><span itemprop="name">CV</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/web-model-load-infer-optimization-summary/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="web-model-load-infer-optimization-summary/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在上一篇<a href="https://roubin.me/enable-webgpu-accelerate-model-inference/">《启用 WebGPU 加速 Web 端模型推理》</a>中提到“可以将 tensorflow.js 和现代化的前端框架结合”，基于这个想法，我继续展开迭代，将代码迁移到 Next.js 14 框架中，并针对模型在浏览器端遇到的一些加载和推理问题，进行了一番优化，整个过程大致包含如下步骤：<a id="more"></a></p>
+<ul>
+<li><p>将 tensorflow.js 与 Next.js 整合</p>
+</li>
+<li><p>基于 IndexedDB 的模型文件缓存</p>
+</li>
+<li><p>针对 webgl backend 的内存管理</p>
+</li>
+<li><p>针对 webgl backend 的模型 warm up</p>
+</li>
+<li><p>基于 webgl backend 的推理速度对比</p>
+</li>
+</ul>
+<h3 id="一、与-Next-js-的整合"><a href="#一、与-Next-js-的整合" class="headerlink" title="一、与 Next.js 的整合"></a>一、与 Next.js 的整合</h3><p>使用的版本：Next.js 14.2.3，Tensorflow.js 4.18.0</p>
+<p>这部分其实是比较简单的，主要是将原本的vanilla js转换成react代码，因为绝大部分代码都需要跑在client side，所以并不涉及RSC，加之原始代码量也不多，所以没花多少功夫。值得留意的一点是web worker在Next.js中的写法略有不同，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// page.tsx</span></span><br><span class="line"><span class="keyword">import</span> &#123; useEffect, useRef, useCallback &#125; <span class="keyword">from</span> <span class="string">"react"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">Index</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> workerRef = useRef&lt;Worker&gt;();</span><br><span class="line"></span><br><span class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    workerRef.current = <span class="keyword">new</span> Worker(<span class="keyword">new</span> URL(<span class="string">"../worker.ts"</span>, <span class="keyword">import</span>.meta.url));</span><br><span class="line">    workerRef.current.onmessage = <span class="function">(<span class="params">event: MessageEvent&lt;number&gt;</span>) =&gt;</span></span><br><span class="line">      alert(<span class="string">`WebWorker Response =&gt; <span class="subst">$&#123;event.data&#125;</span>`</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      workerRef.current?.terminate();</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> handleWork = useCallback(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">    workerRef.current?.postMessage(<span class="number">100000</span>);</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;&gt;</span><br><span class="line">      &lt;p&gt;Do work <span class="keyword">in</span> a WebWorker!&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">      &lt;button onClick=&#123;handleWork&#125;&gt;Calculate PI&lt;/</span>button&gt;</span><br><span class="line">    &lt;<span class="regexp">/&gt;</span></span><br><span class="line"><span class="regexp">  );</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// worker.ts</span></span><br><span class="line"><span class="keyword">import</span> pi <span class="keyword">from</span> <span class="string">"./utils/pi"</span>;</span><br><span class="line"></span><br><span class="line">addEventListener(<span class="string">"message"</span>, (event: MessageEvent&lt;number&gt;) =&gt; &#123;</span><br><span class="line">  postMessage(pi(event.data));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、使用-IndexedDB"><a href="#二、使用-IndexedDB" class="headerlink" title="二、使用 IndexedDB"></a>二、使用 IndexedDB</h3><h4 id="1-缓存模型文件"><a href="#1-缓存模型文件" class="headerlink" title="1.缓存模型文件"></a>1.缓存模型文件</h4><p>IndexedDB 是一种浏览器内建的数据库，拥有比 localStorage 大得多的容量，还支持索引和事务，可用于离线数据的存储，并且浏览器的支持度也不错：</p>
+<p><img src="../images/next_web_indexeddb.png" alt="next_web_indexeddb"></p>
+<p>因为模型文件通常比较大，使用 IndexedDB 缓存到客户端，可以有效提升页面二次加载的速度。</p>
+<p>tensorflow.js 的<code>model.save</code>方法支持传入一个 IndexedDB url，会自动将下载的模型文件储存到客户端的IndexedDB中，然后可以通过<code>loadGraphModel</code>加载刚才的 IndexedDB url来初始化模型，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> IDB_URL = <span class="string">"indexeddb://rps-model"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模型保存到IndexedDB</span></span><br><span class="line"><span class="keyword">await</span> model.save(IDB_URL);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从IndexedDB加载模型</span></span><br><span class="line"><span class="keyword">const</span> model = <span class="keyword">await</span> tf.loadLayersModel(IDB_URL);</span><br></pre></td></tr></table></figure>
+
+<p>保存后的模型数据如下图：<code>tensorflowjs</code>相当于一个db，其中包含2个table（model_info_store和models_store）<br><img src="../images/next_web_indexeddb_saved.png" alt="next_web_indexeddb_saved"></p>
+<p>之后就可以通过如下代码，来判断本地是否已经保存了模型，从而避免重复下载</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> modelInfo = <span class="keyword">await</span> tf.io.listModels(); <span class="comment">// 列出客户端已经保存的模型</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (modelInfo[IDB_URL]) &#123;<span class="comment">// 已经存在模型文件</span></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-更新模型文件"><a href="#2-更新模型文件" class="headerlink" title="2.更新模型文件"></a>2.更新模型文件</h4><p>在缓存了模型文件后，很自然的会想到一个问题：后续该如何更新呢？</p>
+<p>由于我的线上模型文件存储在AWS S3桶中，这里采用的策略是：通过比对本地模型的saved time和线上模型的lastUpdate time来判断是否更新，当然更严谨的方式，我觉得还是应该使用version来控制。使用saved time的好处是，tf在保存模型时自动会添加这个字段，不需要手动操作了。</p>
+<p>对于从S3桶中获取lastUpdate time，考虑到当前请求是无状态的，其实是有几种方式可以选择的：</p>
+<ul>
+<li>next.js client side -&gt; S3</li>
+<li>next.js server side -&gt; S3 -&gt; client side</li>
+<li>backend -&gt; S3 -&gt; client side</li>
+</ul>
+<p>最终我选择了第3种，原因如下：</p>
+<ul>
+<li>如果选择第1种方式，势必需要在client端加载s3-sdk，以及配置访问密钥等，相对来说不够安全，而且，我也不想把client搞的太重</li>
+<li>如果选择第2种方式，后续如果请求要改为有状态的（比如鉴权）会有点麻烦</li>
+<li>因为之前在AWS EC2上用Django构建了一个后端服务，集成了S3的访问，所以这里直接加个接口会更方便</li>
+</ul>
+<p>具体实现如下：</p>
+<p>Django添加的查询lastUpdateTime接口：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_model_last_update_time</span><span class="params">(model_name, config_file=<span class="string">'model.json'</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    获取模型model.json文件的上次更新时间:'Key': 'tfjs/model/rps/model.json'</span></span><br><span class="line"><span class="string">    :param model_name: 模型名称</span></span><br><span class="line"><span class="string">    :param config_file: 模型配置文件名称</span></span><br><span class="line"><span class="string">    :return: "2024-04-28T06:14:21Z"</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    key = <span class="string">f'<span class="subst">&#123;settings.S3_WEBML_FOLDER&#125;</span>/model/<span class="subst">&#123;model_name&#125;</span>/<span class="subst">&#123;config_file&#125;</span>'</span></span><br><span class="line">    logger.info(<span class="string">f"get model last update time -&gt; <span class="subst">&#123;key&#125;</span>"</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        objects = s3.list_objects_v2(Bucket=settings.S3_SIG_BUCKET_NAME)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">'Contents'</span> <span class="keyword">in</span> objects:</span><br><span class="line">            obj = [content <span class="keyword">for</span> content <span class="keyword">in</span> objects[<span class="string">'Contents'</span>] <span class="keyword">if</span> content[<span class="string">'Key'</span>] == key]</span><br><span class="line">            <span class="keyword">return</span> obj[<span class="number">0</span>][<span class="string">'LastModified'</span>]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            logger.error(<span class="string">f"get model last update time error -&gt; No objects in the bucket"</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logger.error(<span class="string">f"get model last update time error -&gt; <span class="subst">&#123;e&#125;</span>"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<p>client side拿到lastUpdateTime后进行比对</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">isModelLatest</span>(<span class="params">dateSaved: Date</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> lastUpdateTime = <span class="keyword">await</span> getModelLastUpdateTime();</span><br><span class="line">  <span class="keyword">if</span> (!lastUpdateTime) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(</span><br><span class="line">    <span class="string">`model lastUpdateTime: <span class="subst">$&#123;lastUpdateTime.toLocaleString()&#125;</span>, savedTime: <span class="subst">$&#123;dateSaved.toLocaleString()&#125;</span>`</span>,</span><br><span class="line">  );</span><br><span class="line">  <span class="keyword">return</span> dateSaved.getTime() &gt;= lastUpdateTime.getTime();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样当线上模型更新后，本地也能拉取到，唯一不好的是多了一次请求</p>
+<h3 id="三、启用-webgl-backend"><a href="#三、启用-webgl-backend" class="headerlink" title="三、启用 webgl backend"></a>三、启用 webgl backend</h3><h4 id="1-Next-js-tf-wasm-backend的问题"><a href="#1-Next-js-tf-wasm-backend的问题" class="headerlink" title="1.Next.js + tf wasm backend的问题"></a>1.Next.js + tf wasm backend的问题</h4><p>这里也算是因祸得福，之前看一些文章讲wasm backend在启用SIMD+multi threads后，性能要优于webgl backend，以及后续webgpu会逐步取代webgl，所以一直没太关注webgl</p>
+<p>但这次在整合Next.js时，我发现无法启用wasm backend的SIMD+multi threads，原因是根据 <a href="https://github.com/tensorflow/tfjs/tree/master/tfjs-backend-wasm" target="_blank" rel="noopener">tf official readme for JS Minification</a> 这一节的说明：在基于bundlers系统（webpack）打包压缩时，需要将terserPlugin中的<code>typeofs</code> compress option关闭，才能启用SIMD+multi threads，不然会报错（实际过程中我也遇到了）<br><img src="../images/next_web_wasm_limit.png" alt="wasm_limit"></p>
+<p>但尴尬的是Next.js目前还不支持自定义terser option，详情: <a href="https://github.com/vercel/next.js/discussions/24275" target="_blank" rel="noopener">Feature Request: Support for custom terser options</a>，所以这次就使用了webgl backend，结果比预想要好的多（测试数据稍后附上）</p>
+<h4 id="2-针对-webgl-backend-的内存管理"><a href="#2-针对-webgl-backend-的内存管理" class="headerlink" title="2.针对 webgl backend 的内存管理"></a>2.针对 webgl backend 的内存管理</h4><p>在启用 webgl backend后，尝试运行，发现有内存泄露，浏览器给出了warning:<code>High memory usage in GPU: 1029.91 MB, most likely due to a memory leak</code>，查询<a href="https://www.tensorflow.org/js/guide/platform_environment?hl=zh-cn" target="_blank" rel="noopener">tf官方文档</a>得知对于webgl backend需要手动管理内存<br><img src="../images/next_web_memory_leak.png" alt="memory_leak"></p>
+<p>在模型推理过程中，GPU memory中存放着tensor数据，可以通过<code>tf.memory()</code>来查看具体的tensor数量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">"numTensors: "</span> + tf.memory().numTensors);</span><br></pre></td></tr></table></figure>
+<p>我分别打印了推理中和推理后的tensor数量（如下图），可以看到都在不断增长<br><img src="../images/next_web_memory_increase.png" alt="memory_increas"></p>
+<p>tf官方提供了多种内存清理的方法，这里我用到的是<code>tf.tidy</code>和<code>tf.dispose</code></p>
+<h5 id="（1）tf-tidy"><a href="#（1）tf-tidy" class="headerlink" title="（1）tf.tidy"></a>（1）tf.tidy</h5><p>针对同步代码中创建的tensor，使用<code>tf.tidy</code>包裹后，它会自动做清理</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> tf.tidy(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> tf_img = tf.browser.fromPixels(input);</span><br><span class="line">      <span class="keyword">const</span> inputs = tf_img.div(<span class="number">255.0</span>).expandDims().toFloat();</span><br><span class="line">      <span class="keyword">const</span> outputs = model?.predict(inputs);</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"numTensors (in predict): "</span> + tf.memory().numTensors);</span><br><span class="line">      <span class="keyword">if</span> (outputs <span class="keyword">instanceof</span> tf.Tensor) &#123;</span><br><span class="line">        <span class="keyword">return</span> outputs.dataSync();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p>这里存在的问题是：被<code>tf.tidy</code>包裹的代码，只能返回同步数据（如下图）<br><img src="../images/next_web_tf_tidy.png" alt="tf_tidy"></p>
+<p>而同步数据在推理过程中，势必存在性能问题，虽然tensor数量被控制住了，但是浏览器给出了warning（如下图），提示使用async api<br><img src="../images/next_web_memory_sync.png" alt="memory_sync"></p>
+<p>那如何针对异步数据，进行内存清理？这里可以结合使用<code>tf.dispose</code></p>
+<h5 id="（2）tf-tidy-tf-dispose"><a href="#（2）tf-tidy-tf-dispose" class="headerlink" title="（2）tf.tidy + tf.dispose"></a>（2）tf.tidy + tf.dispose</h5><p>核心代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 推理中优化</span></span><br><span class="line"><span class="keyword">return</span> tf.tidy(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> tf_img = tf.browser.fromPixels(input);</span><br><span class="line">      <span class="keyword">const</span> inputs = tf_img.div(<span class="number">255.0</span>).expandDims().toFloat();</span><br><span class="line">      <span class="keyword">const</span> outputs = model?.predict(inputs);</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"numTensors (in predict): "</span> + tf.memory().numTensors);</span><br><span class="line">      <span class="keyword">if</span> (outputs <span class="keyword">instanceof</span> tf.Tensor) &#123;</span><br><span class="line">        <span class="keyword">return</span> outputs;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 推理后优化</span></span><br><span class="line">addEventListener(<span class="string">"message"</span>, <span class="keyword">async</span> (event: MessageEvent) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; input, startTime &#125; = event.data;</span><br><span class="line">  <span class="keyword">const</span> predict = <span class="keyword">await</span> run_model(input);</span><br><span class="line">  <span class="keyword">if</span> (predict) &#123;</span><br><span class="line">    <span class="keyword">const</span> result = <span class="keyword">await</span> predict.data();</span><br><span class="line">    postMessage(&#123; <span class="attr">type</span>: <span class="string">"modelResult"</span>, result, startTime &#125;);</span><br><span class="line">    tf.dispose(predict);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"numTensors (outside predict): "</span> + tf.memory().numTensors);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>推理中，使用<code>tf.tidy</code>包裹同步代码自动清理，推理后，使用<code>tf.dispose</code>手动清理，这样即保证了异步性能，又控制住了GPU内存（如下图）<br><img src="../images/next_web_memory_async.png" alt="memory_async"></p>
+<h3 id="四、针对-webgl-backend-的模型warm-up"><a href="#四、针对-webgl-backend-的模型warm-up" class="headerlink" title="四、针对 webgl backend 的模型warm up"></a>四、针对 webgl backend 的模型warm up</h3><p>测试中遇到的另一个问题是，在推理开始时，会有短暂的几秒延迟，之前使用webgpu并没有这样的现象，查询<a href="https://www.tensorflow.org/js/guide/platform_environment?hl=zh-cn" target="_blank" rel="noopener">tf官方文档</a>后得知webgl需要做model warm up（如下图）<br><img src="../images/next_web_model_warm_up.png" alt="model_warm_up"><br>warm up就是让模型“热热身”，再开始正式推理，实现代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">warmupModel</span>(<span class="params">model: tf.GraphModel</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Warmup model before using real data"</span>);</span><br><span class="line">    <span class="keyword">const</span> inputShape = model.inputs[<span class="number">0</span>].shape;</span><br><span class="line">    <span class="keyword">if</span> (inputShape) &#123;</span><br><span class="line">        <span class="keyword">const</span> warmInput = tf.zeros(inputShape);</span><br><span class="line">        <span class="keyword">const</span> warmupResult = model.predict(warmInput);</span><br><span class="line">        tf.dispose([warmupResult, warmInput]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="五、基于-webgl-backend-的推理速度对比"><a href="#五、基于-webgl-backend-的推理速度对比" class="headerlink" title="五、基于 webgl backend 的推理速度对比"></a>五、基于 webgl backend 的推理速度对比</h3><p>这次也顺带在PC和mobile上，测了下webgl backend的推理速度，结合之前webgpu和wasm的测试数据，汇总如下：</p>
+<p>PC端：<br><img src="../images/next_web_pc_data.png" alt="pc_data"><br><img src="../images/next_web_pc_chart.png" alt="pc_chart"></p>
+<p>mobile端：<br><img src="../images/next_web_mobile_data.png" alt="mobile_data"><br><img src="../images/next_web_mobile_chart.png" alt="mobile_chart"></p>
+<p>总体感觉就是：比wasm有优势，和webgpu差距其实并不大，在某些低端设备上还更快，而且考虑到浏览器兼容性，webgl会是更好的选择</p>
+<h3 id="六、小结"><a href="#六、小结" class="headerlink" title="六、小结"></a>六、小结</h3><p>在将Tensorflow.js和Next.js整合与优化后，整体Web ML框架更趋完善合理，同时也为后续在web端构建AI原生应用提供了便利；另外也看到了webgl的优势，在webgpu还没普及开之前，它也是一种理想的选择。</p>
+<p><strong>完整代码：</strong><a href="https://github.com/satorioh/next_web_ai" target="_blank" rel="noopener">这里</a></p>
+<p><strong>演示地址：</strong><a href="https://next.regulusai.top/" target="_blank" rel="noopener">Next Web ML</a></p>
+<p>参考文章：</p>
+<p><a href="https://github.com/tensorflow/tfjs/tree/master/tfjs-backend-wasm" target="_blank" rel="noopener">tf wasm backend readme</a></p>
+<p><a href="https://www.tensorflow.org/js/guide/platform_environment?hl=zh-cn" target="_blank" rel="noopener">tensorflow 平台和环境</a></p>
+<p><a href="https://js.tensorflow.org/api/latest/" target="_blank" rel="noopener">tensorflow.js api</a></p>
+<p><a href="https://medium.com/@neerajvageele451/object-detection-in-the-image-using-tensorflow-in-nextjs-3577e64280bf" target="_blank" rel="noopener">Object detection in the image using TensorFlow in NextJS</a></p>
+<p><a href="https://medium.com/@felix.p.lindgren/hand-pose-detection-with-tensorflow-js-and-next-js-b87038c58918" target="_blank" rel="noopener">Hand pose detection with TensorFlow.js and Next.js</a></p>
+<p><a href="https://medium.com/techhappily/client-side-ai-with-transformers-js-next-js-and-web-worker-threads-259f6d955918" target="_blank" rel="noopener">Client-Side AI with Transformers.Js, Next.js, and Web Worker Threads</a></p>
+<p><a href="https://www.ruanyifeng.com/blog/2018/07/indexeddb.html" target="_blank" rel="noopener">浏览器数据库 IndexedDB 入门教程</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" rel="tag"><i class="fa fa-tag"></i> 目标检测</a>
+              <a href="/tags/yolo/" rel="tag"><i class="fa fa-tag"></i> yolo</a>
+              <a href="/tags/tensorflow/" rel="tag"><i class="fa fa-tag"></i> tensorflow</a>
+              <a href="/tags/nextjs/" rel="tag"><i class="fa fa-tag"></i> nextjs</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/enable-webgpu-accelerate-model-inference/" rel="prev" title="启用 WebGPU 加速 Web 端模型推理">
+      <i class="fa fa-chevron-left"></i> 启用 WebGPU 加速 Web 端模型推理
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、与-Next-js-的整合"><span class="nav-text">一、与 Next.js 的整合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、使用-IndexedDB"><span class="nav-text">二、使用 IndexedDB</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-缓存模型文件"><span class="nav-text">1.缓存模型文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-更新模型文件"><span class="nav-text">2.更新模型文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、启用-webgl-backend"><span class="nav-text">三、启用 webgl backend</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Next-js-tf-wasm-backend的问题"><span class="nav-text">1.Next.js + tf wasm backend的问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-针对-webgl-backend-的内存管理"><span class="nav-text">2.针对 webgl backend 的内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#（1）tf-tidy"><span class="nav-text">（1）tf.tidy</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（2）tf-tidy-tf-dispose"><span class="nav-text">（2）tf.tidy + tf.dispose</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、针对-webgl-backend-的模型warm-up"><span class="nav-text">四、针对 webgl backend 的模型warm up</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、基于-webgl-backend-的推理速度对比"><span class="nav-text">五、基于 webgl backend 的推理速度对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、小结"><span class="nav-text">六、小结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="roubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">roubin</p>
+  <div class="site-description" itemprop="description">芝兰其室，金石其心<br/>仁义为友，道德为师</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">135</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/satorioh" title="GitHub → https://github.com/satorioh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wangbinxp@gmail.com" title="E-Mail → mailto:wangbinxp@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://roubinme.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://roubin.me/web-model-load-infer-optimization-summary/";
+    this.page.identifier = "web-model-load-infer-optimization-summary/";
+    this.page.title = "Next.js + Tensorflow.js的模型加载与推理优化小结";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://roubinme.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
