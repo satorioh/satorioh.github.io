@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"roubin.me","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="魔法盾（magic shield）指的是下面这位的，熟悉漫威的朋友肯定都见过，记得我第一次看到的时候感觉还挺酷的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于 MediaPipe 和 WebRTC 的 AR 魔法盾特效">
+<meta property="og:url" content="https://roubin.me/ar-magic-shield-with-webrtc-mediapipe/index.html">
+<meta property="og:site_name" content="肉饼博客">
+<meta property="og:description" content="魔法盾（magic shield）指的是下面这位的，熟悉漫威的朋友肯定都见过，记得我第一次看到的时候感觉还挺酷的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://roubin.me/images/magic_shield.webp">
+<meta property="og:image" content="https://roubin.me/images/magic_shield_demo.jpg">
+<meta property="og:image" content="https://roubin.me/images/magic_shield_structure.png">
+<meta property="og:image" content="https://roubin.me/images/magic_shield_stun_server.gif">
+<meta property="og:image" content="https://roubin.me/images/magic_shield_nat_combine.webp">
+<meta property="og:image" content="https://roubin.me/images/magic_shield_turn_server.gif">
+<meta property="og:image" content="https://roubin.me/images/magic_shield_ice_candidate.png">
+<meta property="og:image" content="https://roubin.me/images/magic_shield_final_offer.png">
+<meta property="og:image" content="https://roubin.me/images/magic_shield_signaling.png">
+<meta property="og:image" content="https://roubin.me/images/magic_shield_mediapipe_solutions.png">
+<meta property="og:image" content="https://roubin.me/images/magic_shield_hand_landmarks.png">
+<meta property="og:image" content="https://roubin.me/images/magic_shield_cw.png">
+<meta property="og:image" content="https://roubin.me/images/magic_shield_ccw.png">
+<meta property="og:image" content="https://roubin.me/images/magic_shield_opencv_version.png">
+<meta property="article:published_time" content="2024-07-03T02:52:33.000Z">
+<meta property="article:modified_time" content="2024-07-05T09:53:06.877Z">
+<meta property="article:author" content="roubin">
+<meta property="article:tag" content="mediapipe">
+<meta property="article:tag" content="webrtc">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://roubin.me/images/magic_shield.webp">
+
+<link rel="canonical" href="https://roubin.me/ar-magic-shield-with-webrtc-mediapipe/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基于 MediaPipe 和 WebRTC 的 AR 魔法盾特效 | 肉饼博客</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b55ece62ebeb2e72a8efe3f8b5b43960";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">肉饼博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Talk is cheap. Show me the code.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://roubin.me/ar-magic-shield-with-webrtc-mediapipe/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="roubin">
+      <meta itemprop="description" content="芝兰其室，金石其心<br/>仁义为友，道德为师">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="肉饼博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于 MediaPipe 和 WebRTC 的 AR 魔法盾特效
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-07-03 10:52:33" itemprop="dateCreated datePublished" datetime="2024-07-03T10:52:33+08:00">2024-07-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-07-05 17:53:06" itemprop="dateModified" datetime="2024-07-05T17:53:06+08:00">2024-07-05</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CV/" itemprop="url" rel="index"><span itemprop="name">CV</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/ar-magic-shield-with-webrtc-mediapipe/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="ar-magic-shield-with-webrtc-mediapipe/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>魔法盾（magic shield）指的是下面这位的，熟悉漫威的朋友肯定都见过，记得我第一次看到的时候感觉还挺酷的<br><img src="../images/magic_shield.webp" alt="magic_shield"></p>
+<a id="more"></a>
+
+<p>本文旨在记录并总结基于 WebRTC 和 MediaPipe 实现的上述 AR 魔法盾特效，主要内容包括：</p>
+<ul>
+<li>MediaPipe Hand LandMarker 模型的使用</li>
+<li>WebRTC 视频传输在前后端的实现</li>
+<li>使用 OpenCV 对模型输出进行后处理</li>
+</ul>
+<p>实际效果如下：最多可以同时检测2只手，当手张开到一定程度会显示魔法盾<br><img src="../images/magic_shield_demo.jpg" alt=""></p>
+<p><strong>Demo地址：</strong><a href="https://next.regulusai.top/" target="_blank" rel="noopener">Next Web ML</a>（注：因服务端算力有限，已对客户端连接数量和连接时长作了限制）</p>
+<h3 id="一、环境与架构"><a href="#一、环境与架构" class="headerlink" title="一、环境与架构"></a>一、环境与架构</h3><h4 id="1-软硬件环境"><a href="#1-软硬件环境" class="headerlink" title="1.软硬件环境"></a>1.软硬件环境</h4><table>
+<thead>
+<tr>
+<th>硬件</th>
+<th>配置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VGA</td>
+<td>Quadro K620 (Memory 2G, 0.863 TFLOPS)</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>9 x vCPU (Intel Xeon E312xx (Sandy Bridge))</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>12G</td>
+</tr>
+<tr>
+<td>SSD</td>
+<td>160G</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>软件</th>
+<th>版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OS</td>
+<td>CentOS 8 Stream</td>
+</tr>
+<tr>
+<td>VGA Driver</td>
+<td>550.78</td>
+</tr>
+<tr>
+<td>CUDA</td>
+<td>12.4</td>
+</tr>
+<tr>
+<td>OpenGL ES</td>
+<td>3.2</td>
+</tr>
+<tr>
+<td>Python</td>
+<td>3.10.14</td>
+</tr>
+<tr>
+<td>MediaPipe</td>
+<td>0.10.14</td>
+</tr>
+<tr>
+<td>Numpy</td>
+<td>1.26</td>
+</tr>
+<tr>
+<td>OpenCV</td>
+<td>4.10.0.84</td>
+</tr>
+<tr>
+<td>aiortc</td>
+<td>1.9.0</td>
+</tr>
+<tr>
+<td>fastapi</td>
+<td>0.111.0</td>
+</tr>
+<tr>
+<td>redis</td>
+<td>5.0.3</td>
+</tr>
+</tbody></table>
+<h4 id="2-架构"><a href="#2-架构" class="headerlink" title="2.架构"></a>2.架构</h4><p><img src="../images/magic_shield_structure.png" alt="架构"><br>如上图，采用了一个典型的WebRTC架构，相较于前几次模型在client展开，这次将模型改到server端来推理。</p>
+<p>通常，将模型部署到不同位置，会带来不一样的收益和问题：</p>
+<table>
+<thead>
+<tr>
+<th>模型位置</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>client</td>
+<td>低延迟、低成本、隐私安全</td>
+<td>性能限制</td>
+</tr>
+<tr>
+<td>server</td>
+<td>高性能、灵活扩展</td>
+<td>较高延迟、较高成本、隐私问题</td>
+</tr>
+</tbody></table>
+<p>可以看到client和server两者是互补的，所以业界会大力倡导发展端侧性能或采用云端结合的方式。</p>
+<p>当然，作为开发者，还会考虑到架构复杂度和软件生态的问题。经过几轮实践后，对于cv应用，站在前后端的角度来看，我感觉基于js或python的实现，各自也存在着明显的优势/痛点：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>优势</th>
+<th>痛点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>js</td>
+<td>面向用户的ui构建和呈现方式更灵活多样</td>
+<td>cv或者说ai相关生态还不完善</td>
+</tr>
+<tr>
+<td>python</td>
+<td>ai相关生态更丰富且完善</td>
+<td>面向用户的ui构建和呈现方式不够灵活</td>
+</tr>
+</tbody></table>
+<p>所以这次决定将模型放到server端推理，综合了如下几点考量：</p>
+<ul>
+<li>针对高延迟：了解到WebRTC可以较好地解决视频帧传输的延迟问题，值得尝试</li>
+<li>针对高成本：mediapipe基于TFLite，模型对端侧设备（当前场景下指server）有较好的优化，低配置的server也可以运行推理</li>
+<li>针对软件开发：由于当前AR效果需要相对复杂的post process，离不开opencv。尝试过一版基于opencv.js实现的纯client推理，目前的opencv.js需要手动内存管理，开发体验一般，有内存溢出的风险，而python的生态则更丰富和完善</li>
+<li>针对架构：结合js和python各自优势，采用c/s架构。其实针对c/s架构，还额外考虑过让模型仍然运行在client，需要post process时，将数据给到server来处理，但这样就涉及到帧同步问题，而且当前<a href="https://github.com/w3c/webrtc-pc/issues/230" target="_blank" rel="noopener">Web Worker对WebRTC DataChannel的支持还不够</a>，实现起来有点复杂，且优势不明显，所以最终采用了更简洁的方式</li>
+</ul>
+<h3 id="二、WebRTC简介"><a href="#二、WebRTC简介" class="headerlink" title="二、WebRTC简介"></a>二、WebRTC简介</h3><h4 id="1-核心概念"><a href="#1-核心概念" class="headerlink" title="1.核心概念"></a>1.核心概念</h4><h5 id="（1）ICE"><a href="#（1）ICE" class="headerlink" title="（1）ICE"></a>（1）ICE</h5><p>WebRTC本身是一种用于音视频传输的peer-to-peer的技术，但是现实世界中，网络较为复杂，存在各种软硬件的阻隔（防火墙、路由器、NAT等），导致端与端不一定能相互连上，这时候就需要ICE（Interactive Connectivity Establishment，交互式连接创建）的帮忙，来绕过这些限制，ICE的核心是STUN/TURN。</p>
+<h5 id="（2）STUN"><a href="#（2）STUN" class="headerlink" title="（2）STUN"></a>（2）STUN</h5><p><img src="../images/magic_shield_stun_server.gif" alt="stun server"><br>STUN(Session Traversal Utilities for NAT, NAT会话穿越功能)，本质上就解决一个问题：<strong>帮client找出他们的公网ip和port</strong>。当两个client知道了自己的ip和port后，就可以相互直连进行通讯了，当然这是比较理想的情况</p>
+<h5 id="（3）Symmetric-NAT-和-Cone-NAT"><a href="#（3）Symmetric-NAT-和-Cone-NAT" class="headerlink" title="（3）Symmetric NAT 和 Cone NAT"></a>（3）Symmetric NAT 和 Cone NAT</h5><p>Symmetric NAT 和 Cone NAT 都是网络地址转换（NAT）的一种类型，用于将内部网络上的私有地址转换为公网地址。</p>
+<p>Cone NAT：在同一主机上，同一端口会被映射为相同的公网IP和端口。这意味着无论从哪个内部地址发起连接，NAT都会使用相同的外部端口号。</p>
+<p>Symmetric NAT：每次请求一个新的外部地址时，NAT会分配一个新的外部端口号。即使是从同一个内部地址和端口发起的连接，每次请求也可能被映射到不同的外部端口号</p>
+<p>下图列出了可能的NAT组合情况：<br><img src="../images/magic_shield_nat_combine.webp" alt="nat_combine"></p>
+<p>所以即使用上了stun server，还是存在无法绕过NAT的可能，这时候就需要turn出场了</p>
+<h5 id="（4）TURN"><a href="#（4）TURN" class="headerlink" title="（4）TURN"></a>（4）TURN</h5><p><img src="../images/magic_shield_turn_server.gif" alt=""><br>TURN(NAT中继穿越方式Traversal Using Relays around NAT)，用于在对等连接失败时中继流量，当然这样就需要消耗额外的资源和带宽，还有隐私风险，所以网上有很多公开免费的stun server，却很少有免费的turn server。</p>
+<h5 id="（5）Server的优势"><a href="#（5）Server的优势" class="headerlink" title="（5）Server的优势"></a>（5）Server的优势</h5><p>将server作为peer的一个显著优势，是server通常情况下都是reachable的，也就是说可以没有turn。当然，在连接建立后，还会受到网络质量、通信距离、带宽等的影响，如何保持稳定的连接，就是另外一个话题了。</p>
+<h5 id="（6）SDP"><a href="#（6）SDP" class="headerlink" title="（6）SDP"></a>（6）SDP</h5><p>会话描述协议Session Description Protocol (SDP), 是一个描述多媒体连接内容的协议，例如分辨率，格式，编码，加密算法等，在数据传输时让两端都能够理解彼此的数据。</p>
+<h4 id="2-建立连接的流程"><a href="#2-建立连接的流程" class="headerlink" title="2.建立连接的流程"></a>2.建立连接的流程</h4><p>下面的代码部分：client webrtc用纯js实现（当然也可以选用<a href="https://peerjs.com/" target="_blank" rel="noopener">peerjs</a>等三方包），server使用python版<a href="https://github.com/aiortc/aiortc" target="_blank" rel="noopener">aiortc</a>实现</p>
+<h5 id="（1）client通过navigator-mediaDevices-getUserMedia-获取本地媒体"><a href="#（1）client通过navigator-mediaDevices-getUserMedia-获取本地媒体" class="headerlink" title="（1）client通过navigator.mediaDevices.getUserMedia()获取本地媒体"></a>（1）client通过<code>navigator.mediaDevices.getUserMedia()</code>获取本地媒体</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> stream = <span class="keyword">await</span> navigator.mediaDevices.getUserMedia(&#123; <span class="attr">video</span>: <span class="literal">true</span> &#125;); <span class="comment">// 这里只获取摄像头权限</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="（2）client创建一个RTCPeerConnection，并添加一些listener"><a href="#（2）client创建一个RTCPeerConnection，并添加一些listener" class="headerlink" title="（2）client创建一个RTCPeerConnection，并添加一些listener"></a>（2）client创建一个RTCPeerConnection，并添加一些listener</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> createPeerConnection = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"createPeerConnection"</span>);</span><br><span class="line">    <span class="keyword">const</span> config = &#123;</span><br><span class="line">        sdpSemantics: <span class="string">"unified-plan"</span>,</span><br><span class="line">        iceServers: [&#123; <span class="attr">urls</span>: [STUN_SERVER] &#125;],</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    pc = <span class="keyword">new</span> RTCPeerConnection(config);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// register some listeners to help debugging</span></span><br><span class="line">    pc.addEventListener(</span><br><span class="line">        <span class="string">"icegatheringstatechange"</span>,</span><br><span class="line">        () =&gt; &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"ice gathering state change -&gt;"</span>, pc.iceGatheringState,</span><br><span class="line">            );</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="literal">false</span>,</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    pc.addEventListener(</span><br><span class="line">        <span class="string">"iceconnectionstatechange"</span>,</span><br><span class="line">        () =&gt; &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"ice connection state change --&gt;"</span>, pc.iceConnectionState,</span><br><span class="line">            );</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="literal">false</span>,</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    pc.addEventListener(</span><br><span class="line">        <span class="string">"signalingstatechange"</span>,</span><br><span class="line">        () =&gt; &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"signaling state change --&gt;"</span>, pc.signalingState);</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="literal">false</span>,</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// connect audio / video</span></span><br><span class="line">    pc.addEventListener(<span class="string">"track"</span>, (evt) =&gt; &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"get backend track -&gt;"</span>, evt);</span><br><span class="line">        <span class="keyword">if</span> (videoRef.current &amp;&amp; evt.track.kind === <span class="string">"video"</span>)</span><br><span class="line">            videoRef.current.srcObject = evt.streams[<span class="number">0</span>];</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h5 id="（3）client将音视频轨添加到PeerConnection中"><a href="#（3）client将音视频轨添加到PeerConnection中" class="headerlink" title="（3）client将音视频轨添加到PeerConnection中"></a>（3）client将音视频轨添加到PeerConnection中</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">stream.getTracks().forEach(<span class="function">(<span class="params">track</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (pc) &#123;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">"add track"</span>);</span><br><span class="line">          pc.addTrack(track, stream);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h5 id="（4）client创建offer，并设置为本地sdp描述"><a href="#（4）client创建offer，并设置为本地sdp描述" class="headerlink" title="（4）client创建offer，并设置为本地sdp描述"></a>（4）client创建offer，并设置为本地sdp描述</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> offer = <span class="keyword">await</span> pc.createOffer();</span><br><span class="line"><span class="keyword">await</span> pc.setLocalDescription(offer);</span><br></pre></td></tr></table></figure>
+
+<h5 id="（5）client请求-STUN-server-提供-ice-候选-ice-candidates"><a href="#（5）client请求-STUN-server-提供-ice-候选-ice-candidates" class="headerlink" title="（5）client请求 STUN server 提供 ice 候选 (ice candidates)"></a>（5）client请求 STUN server 提供 ice 候选 (ice candidates)</h5><p>stun server会返回多个ice候选，通过添加listener，我们可以看到相关信息：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pc.addEventListener(<span class="string">"icecandidate"</span>, (evt) =&gt; &#123;</span><br><span class="line">      <span class="keyword">if</span> (evt.candidate) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"get ice candidate -&gt;"</span>, evt.candidate);</span><br><span class="line">      &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><img src="../images/magic_shield_ice_candidate.png" alt="ice_candidate"></p>
+<p>单个candidate包含的信息如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">address:<span class="string">"192.168.87.213"</span></span><br><span class="line">candidate:<span class="string">"candidate:1529287723 1 udp 2122194687 192.168.87.213 63733 typ host generation 0 ufrag L7wO network-id 1 network-cost 10"</span></span><br><span class="line">component:<span class="string">"rtp"</span></span><br><span class="line">foundation:<span class="string">"1529287723"</span></span><br><span class="line">port:<span class="number">63733</span></span><br><span class="line">priority:<span class="number">2122194687</span></span><br><span class="line">protocol:<span class="string">"udp"</span></span><br><span class="line">relatedAddress:<span class="literal">null</span></span><br><span class="line">relatedPort:<span class="literal">null</span></span><br><span class="line">relayProtocol:<span class="literal">null</span></span><br><span class="line">sdpMLineIndex:<span class="number">1</span></span><br><span class="line">sdpMid:<span class="string">"1"</span></span><br><span class="line">tcpType:<span class="literal">null</span></span><br><span class="line">type:<span class="string">"host"</span></span><br><span class="line">url:<span class="literal">null</span></span><br><span class="line">usernameFragment:<span class="string">"L7wO"</span></span><br></pre></td></tr></table></figure>
+<h5 id="（6）client会通过一套算法，对获得的candidates进行过滤筛选，然后添加到offer中"><a href="#（6）client会通过一套算法，对获得的candidates进行过滤筛选，然后添加到offer中" class="headerlink" title="（6）client会通过一套算法，对获得的candidates进行过滤筛选，然后添加到offer中"></a>（6）client会通过一套算法，对获得的candidates进行过滤筛选，然后添加到offer中</h5><p>对比添加candidates前后的offer，可以看到这里有5个candidates被加了进来<br><img src="../images/magic_shield_final_offer.png" alt="final_offer"></p>
+<h5 id="（7）开始signaling信令交换，client通过某种方式将offer发给server"><a href="#（7）开始signaling信令交换，client通过某种方式将offer发给server" class="headerlink" title="（7）开始signaling信令交换，client通过某种方式将offer发给server"></a>（7）开始signaling信令交换，client通过某种方式将offer发给server</h5><p>这里的“某种方式”，在协议中并没有强制规定，可以是http、websocket等，如下是使用fetch的示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">`<span class="subst">$&#123;BACKEND_URL_PREFIX&#125;</span>webrtc/offer`</span>, &#123;</span><br><span class="line">    body: <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">        sdp: finalOffer.sdp,</span><br><span class="line">        type: finalOffer.type,</span><br><span class="line">        video_transform: <span class="string">"shield"</span>,</span><br><span class="line">    &#125;),</span><br><span class="line">    headers: &#123;</span><br><span class="line">        <span class="string">"Content-Type"</span>: <span class="string">"application/json"</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    method: <span class="string">"POST"</span>,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h5 id="（8）server接收offer，并创建一个peerConnection"><a href="#（8）server接收offer，并创建一个peerConnection" class="headerlink" title="（8）server接收offer，并创建一个peerConnection"></a>（8）server接收offer，并创建一个peerConnection</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@router.post("/offer", response_model=AnswerResponse)</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">handle_offer</span><span class="params">(req: OfferRequest, request: Request)</span>:</span></span><br><span class="line">    offer = RTCSessionDescription(sdp=req.sdp, type=req.type)</span><br><span class="line">    pc = RTCPeerConnection()</span><br><span class="line">    pc_id = <span class="string">f"PeerConnection(<span class="subst">&#123;uuid.uuid4()&#125;</span>)"</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="（9）server为peerConnection设置一些listener"><a href="#（9）server为peerConnection设置一些listener" class="headerlink" title="（9）server为peerConnection设置一些listener"></a>（9）server为peerConnection设置一些listener</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@pc.on("connectionstatechange")</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">on_connectionstatechange</span><span class="params">()</span>:</span></span><br><span class="line">        logger.info(<span class="string">f"<span class="subst">&#123;pc_id&#125;</span> is <span class="subst">&#123;pc.connectionState&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @pc.on("track")</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_track</span><span class="params">(track)</span>:</span></span><br><span class="line">        logger.info(<span class="string">f"Track <span class="subst">&#123;track.kind&#125;</span> received"</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">        @track.on("ended")</span></span><br><span class="line">        <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">on_ended</span><span class="params">()</span>:</span></span><br><span class="line">            logger.info(<span class="string">f"Track <span class="subst">&#123;track.kind&#125;</span> ended"</span>)</span><br></pre></td></tr></table></figure>
+
+<h5 id="（10）server将offer设置为远端sdp描述"><a href="#（10）server将offer设置为远端sdp描述" class="headerlink" title="（10）server将offer设置为远端sdp描述"></a>（10）server将offer设置为远端sdp描述</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> pc.setRemoteDescription(offer)</span><br></pre></td></tr></table></figure>
+
+<h5 id="（11）server创建answer，设置为本地sdp描述，并将answer返回给远端"><a href="#（11）server创建answer，设置为本地sdp描述，并将answer返回给远端" class="headerlink" title="（11）server创建answer，设置为本地sdp描述，并将answer返回给远端"></a>（11）server创建answer，设置为本地sdp描述，并将answer返回给远端</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">answer = <span class="keyword">await</span> pc.createAnswer()</span><br><span class="line"><span class="keyword">await</span> pc.setLocalDescription(answer)</span><br><span class="line"><span class="keyword">return</span> &#123;<span class="string">"sdp"</span>: pc.localDescription.sdp, <span class="string">"type"</span>: pc.localDescription.type&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="（12）client接收到answer，将其设置为远端sdp描述"><a href="#（12）client接收到answer，将其设置为远端sdp描述" class="headerlink" title="（12）client接收到answer，将其设置为远端sdp描述"></a>（12）client接收到answer，将其设置为远端sdp描述</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> answer = <span class="keyword">await</span> response.json();</span><br><span class="line"><span class="keyword">await</span> pc.setRemoteDescription(answer);</span><br></pre></td></tr></table></figure>
+<p>至此，signaling完成，client和server都保存了自己和对方的sdp描述信息</p>
+<h5 id="（13）建立p2p连接"><a href="#（13）建立p2p连接" class="headerlink" title="（13）建立p2p连接"></a>（13）建立p2p连接</h5><p>根据双方收集到的ice candidates，测试连通性，选择最优路径，建立p2p连接，这一步是协议自动完成的。</p>
+<p>整个流程可以用下图来表示：<br><img src="../images/magic_shield_signaling.png" alt="signaling"></p>
+<h4 id="3-DataChannel"><a href="#3-DataChannel" class="headerlink" title="3.DataChannel"></a>3.DataChannel</h4><p>WebRTC中的DataChannel可以用来发送一些额外的数据，比如在视频会议中，可以发送文件或消息。</p>
+<p>这里我是用来计算RTT和获取一些server端的资源信息：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// client</span></span><br><span class="line"><span class="keyword">const</span> createDataChannel = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!pc) <span class="keyword">return</span>;</span><br><span class="line">    dc = pc.createDataChannel(<span class="string">"shield"</span>, &#123;<span class="attr">ordered</span>: <span class="literal">false</span>, <span class="attr">maxRetransmits</span>: <span class="number">0</span>&#125;);</span><br><span class="line">    dc.addEventListener(<span class="string">"close"</span>, () =&gt; &#123;</span><br><span class="line">        clearInterval(dcInterval);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"data channel closed"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    dc.addEventListener(<span class="string">"open"</span>, () =&gt; &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"data channel opened"</span>);</span><br><span class="line">        dcInterval = <span class="built_in">window</span>.setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">const</span> message = <span class="string">"ping "</span> + performance.now();</span><br><span class="line">            dc &amp;&amp; dc.send(message);</span><br><span class="line">        &#125;, <span class="number">1000</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">    dc.addEventListener(<span class="string">"message"</span>, (evt) =&gt; &#123;</span><br><span class="line">        cnosole.log(<span class="string">"server message"</span>, evt.data)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># server</span></span><br><span class="line"><span class="meta">@pc.on("datachannel")</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_datachannel</span><span class="params">(channel)</span>:</span></span><br><span class="line"><span class="meta">        @channel.on("message")</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">on_message</span><span class="params">(message)</span>:</span></span><br><span class="line">            pcs[pc_id][<span class="string">"channel"</span>] = channel  <span class="comment"># 保存datachannel的引用</span></span><br><span class="line">            <span class="keyword">if</span> isinstance(message, str) <span class="keyword">and</span> message.startswith(<span class="string">"ping"</span>):</span><br><span class="line">                channel.send(<span class="string">"pong"</span> + message[<span class="number">4</span>:] + <span class="string">f" <span class="subst">&#123;psutil.cpu_percent()&#125;</span> <span class="subst">&#123;len(pcs)&#125;</span>"</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、MediaPipe简介"><a href="#三、MediaPipe简介" class="headerlink" title="三、MediaPipe简介"></a>三、MediaPipe简介</h3><h4 id="1-什么是MediaPipe？"><a href="#1-什么是MediaPipe？" class="headerlink" title="1.什么是MediaPipe？"></a>1.什么是MediaPipe？</h4><p><img src="../images/magic_shield_mediapipe_solutions.png" alt="mediapipe"><br>MediaPipe是Google Research开发并开源的一款跨平台多媒体机器学习应用框架，用于构建基于机器学习的应用程序，特别是涉及到计算机视觉、音频处理、姿势估计等领域。</p>
+<p>MediaPipe包括了MediaPipe Solution、MediaPipe Framework等。我这次用到的是Solution，它基于MediaPipe Framework构建，提供了很多现成的解决方案，如人脸检测、手势识别、姿态估计等，可以快速的集成到自己的应用中，并且支持多种平台，包括移动设备、桌面和网页。</p>
+<h4 id="2-MediaPipe-Hand-Landmarker"><a href="#2-MediaPipe-Hand-Landmarker" class="headerlink" title="2.MediaPipe Hand Landmarker"></a>2.MediaPipe Hand Landmarker</h4><p>该模型可以检测手部关键点，基于这些关键点信息，我们可以用来构建视觉渲染效果<br><img src="../images/magic_shield_hand_landmarks.png" alt="hand_landmarks"><br>根据上图，手点的英文可以归纳为：</p>
+<ul>
+<li>thumb【大拇指】，index【食指】，middle【中指】，ring【无名指】，pinky【小指】</li>
+<li>wrist【掌根】，mcp【指根】，tip【指尖】</li>
+</ul>
+<p>模型返回的是一个二维数组，包含左手21个点的xyz坐标，右手21个点的xyz坐标</p>
+<h3 id="四、AR魔法盾实现"><a href="#四、AR魔法盾实现" class="headerlink" title="四、AR魔法盾实现"></a>四、AR魔法盾实现</h3><p>这里主要参考了油管上<a href="https://www.youtube.com/watch?v=LffHViW9mYA&list=PLWyN7K28ZraQHPw_PdT6IlFZ1XHOi5tpP&index=7" target="_blank" rel="noopener">这位up主</a>，并做了调整改进，主要区别在于：</p>
+<ul>
+<li>up主是用python在本地摄像头上实现的，我调整成了整合前端的webrtc方式</li>
+<li>up主后半段代码有些乱，我重新对结构进行了调整优化</li>
+</ul>
+<h4 id="1-加载模型和魔法盾图片"><a href="#1-加载模型和魔法盾图片" class="headerlink" title="1.加载模型和魔法盾图片"></a>1.加载模型和魔法盾图片</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MODEL_PATH = <span class="string">f"<span class="subst">&#123;Path(__file__).parent.parent&#125;</span>/model/hand_landmarker.task"</span></span><br><span class="line">SHIELD_1 = cv2.imread(<span class="string">f"<span class="subst">&#123;Path(__file__).parent.parent&#125;</span>/asserts/magic_circle_ccw.png"</span>, <span class="number">-1</span>)</span><br><span class="line">SHIELD_2 = cv2.imread(<span class="string">f"<span class="subst">&#123;Path(__file__).parent.parent&#125;</span>/asserts/magic_circle_cw.png"</span>, <span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
+<p>图片长这样：<br><img src="../images/magic_shield_cw.png" alt=""><br><img src="../images/magic_shield_ccw.png" alt=""></p>
+<h4 id="2-模型初始化"><a href="#2-模型初始化" class="headerlink" title="2.模型初始化"></a>2.模型初始化</h4><p>num_hands最多同时侦测2只手，Delegate可以选择CPU或GPU</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_detector</span><span class="params">(callback)</span>:</span></span><br><span class="line">    logger.info(<span class="string">"init detector"</span>)</span><br><span class="line">    base_options = BaseOptions(model_asset_path=MODEL_PATH, delegate=BaseOptions.Delegate.GPU)</span><br><span class="line">    options = HandLandmarkerOptions(base_options=base_options, running_mode=VisionRunningMode.LIVE_STREAM,</span><br><span class="line">                                    num_hands=<span class="number">2</span>,</span><br><span class="line">                                    result_callback=callback)</span><br><span class="line">    <span class="keyword">return</span> HandLandmarker.create_from_options(options)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-opencv读取视频帧，并传入模型进行推理"><a href="#3-opencv读取视频帧，并传入模型进行推理" class="headerlink" title="3.opencv读取视频帧，并传入模型进行推理"></a>3.opencv读取视频帧，并传入模型进行推理</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">image = cv2.flip(frame, <span class="number">1</span>)</span><br><span class="line">image_for_detect = mp.Image(image_format=mp.ImageFormat.SRGBA, data=cv2.cvtColor(image, cv2.COLOR_BGR2RGBA))</span><br><span class="line"></span><br><span class="line">self.timestamp += <span class="number">1</span></span><br><span class="line">detector.detect_async(image_for_detect, self.timestamp)</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-解析模型输出"><a href="#4-解析模型输出" class="headerlink" title="4.解析模型输出"></a>4.解析模型输出</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">h, w, c = image.shape</span><br><span class="line"><span class="keyword">for</span> index, hand_landmark <span class="keyword">in</span> enumerate(self.result.hand_landmarks):</span><br><span class="line">    hand = self.hand0 <span class="keyword">if</span> index == <span class="number">0</span> <span class="keyword">else</span> self.hand1</span><br><span class="line"></span><br><span class="line">    <span class="comment"># set hand landmarks data</span></span><br><span class="line">    lm_list = []</span><br><span class="line">    <span class="keyword">for</span> idx, lm <span class="keyword">in</span> enumerate(hand_landmark):</span><br><span class="line">        coor_x, coor_y = int(lm.x * w), int(lm.y * h)</span><br><span class="line">        lm_list.append([coor_x, coor_y])</span><br><span class="line">    self.set_position_data(lm_list, hand)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_position_data</span><span class="params">(self, lmlist, hand)</span>:</span></span><br><span class="line">    hand[<span class="string">"wrist"</span>] = (lmlist[<span class="number">0</span>][<span class="number">0</span>], lmlist[<span class="number">0</span>][<span class="number">1</span>])</span><br><span class="line">    hand[<span class="string">"thumb_tip"</span>] = (lmlist[<span class="number">4</span>][<span class="number">0</span>], lmlist[<span class="number">4</span>][<span class="number">1</span>])</span><br><span class="line">    hand[<span class="string">"index_mcp"</span>] = (lmlist[<span class="number">5</span>][<span class="number">0</span>], lmlist[<span class="number">5</span>][<span class="number">1</span>])</span><br><span class="line">    hand[<span class="string">"index_tip"</span>] = (lmlist[<span class="number">8</span>][<span class="number">0</span>], lmlist[<span class="number">8</span>][<span class="number">1</span>])</span><br><span class="line">    hand[<span class="string">"midle_mcp"</span>] = (lmlist[<span class="number">9</span>][<span class="number">0</span>], lmlist[<span class="number">9</span>][<span class="number">1</span>])</span><br><span class="line">    hand[<span class="string">"midle_tip"</span>] = (lmlist[<span class="number">12</span>][<span class="number">0</span>], lmlist[<span class="number">12</span>][<span class="number">1</span>])</span><br><span class="line">    hand[<span class="string">"ring_tip"</span>] = (lmlist[<span class="number">16</span>][<span class="number">0</span>], lmlist[<span class="number">16</span>][<span class="number">1</span>])</span><br><span class="line">    hand[<span class="string">"pinky_tip"</span>] = (lmlist[<span class="number">20</span>][<span class="number">0</span>], lmlist[<span class="number">20</span>][<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-计算单只手的张开比例"><a href="#5-计算单只手的张开比例" class="headerlink" title="5.计算单只手的张开比例"></a>5.计算单只手的张开比例</h4><p>手的张开比例ratio = hand_open距离 / hand_close距离</p>
+<p>hand_open距离 = 食指指尖到小指指尖的距离，其实换成大拇指指尖应该也可以</p>
+<p>hand_close距离 = 掌根到食指指根距离</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># calculate distance and ratio</span></span><br><span class="line">ratio, hand_close, hand_open = self.calc_ratio(hand)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc_ratio</span><span class="params">(self, hand)</span>:</span></span><br><span class="line">    wrist = hand[<span class="string">"wrist"</span>]</span><br><span class="line">    index_mcp = hand[<span class="string">"index_mcp"</span>]</span><br><span class="line">    index_tip = hand[<span class="string">"index_tip"</span>]</span><br><span class="line">    pinky_tip = hand[<span class="string">"pinky_tip"</span>]</span><br><span class="line">    hand_close = self.calc_distance(wrist, index_mcp)</span><br><span class="line">    hand_open = self.calc_distance(index_tip, pinky_tip)</span><br><span class="line">    <span class="keyword">return</span> hand_open / hand_close, hand_close, hand_open</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc_distance</span><span class="params">(self, p1, p2)</span>:</span></span><br><span class="line">    x1, y1, x2, y2 = p1[<span class="number">0</span>], p1[<span class="number">1</span>], p2[<span class="number">0</span>], p2[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> ((x2 - x1) ** <span class="number">2</span> + (y2 - y1) ** <span class="number">2</span>) ** (<span class="number">1.0</span> / <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-如果ratio在0-5～阈值之间，则显示手指连线；超过阈值则显示魔法盾"><a href="#6-如果ratio在0-5～阈值之间，则显示手指连线；超过阈值则显示魔法盾" class="headerlink" title="6.如果ratio在0.5～阈值之间，则显示手指连线；超过阈值则显示魔法盾"></a>6.如果ratio在0.5～阈值之间，则显示手指连线；超过阈值则显示魔法盾</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># draw hand lines or show shield</span></span><br><span class="line"><span class="keyword">if</span> ratio <span class="keyword">and</span> (<span class="number">0.5</span> &lt; ratio &lt; SHOW_SHIELD_RATIO):</span><br><span class="line">    self.draw_hand_lines(image, hand)</span><br><span class="line"><span class="keyword">if</span> ratio <span class="keyword">and</span> ratio &gt; SHOW_SHIELD_RATIO:</span><br><span class="line">    logger.info(<span class="string">"show shield"</span>)</span><br><span class="line">    x1, y1, diameter, shield_size = self.calc_shield_position(image, hand, hand_close)</span><br><span class="line">    rotated1, rotated2 = self.get_rotated_image()</span><br><span class="line">    <span class="keyword">if</span> diameter != <span class="number">0</span>:</span><br><span class="line">        image = self.transparent(rotated1, x1, y1, image, shield_size)</span><br><span class="line">        image = self.transparent(rotated2, x1, y1, image, shield_size)</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-计算魔法盾显示位置和尺寸"><a href="#7-计算魔法盾显示位置和尺寸" class="headerlink" title="7.计算魔法盾显示位置和尺寸"></a>7.计算魔法盾显示位置和尺寸</h4><p>以中指指根为圆心坐标，手掌闭合时的距离放大一定比例作为直径，来计算出左上顶点的坐标，并保证直径和左上顶点不会超过图片的宽和高</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">x1, y1, diameter, shield_size = self.calc_shield_position(image, hand, hand_close)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc_shield_position</span><span class="params">(self, image, hand, hand_close)</span>:</span></span><br><span class="line">    midle_mcp = hand[<span class="string">"midle_mcp"</span>]</span><br><span class="line">    center_x, center_y = midle_mcp</span><br><span class="line">    diameter = round(hand_close * SHIELD_SCALE)</span><br><span class="line">    x1 = round(center_x - (diameter / <span class="number">2</span>))  <span class="comment"># shield left</span></span><br><span class="line">    y1 = round(center_y - (diameter / <span class="number">2</span>))  <span class="comment"># shield top</span></span><br><span class="line">    h, w, c = image.shape</span><br><span class="line">    <span class="keyword">if</span> x1 &lt; <span class="number">0</span>:</span><br><span class="line">        x1 = <span class="number">0</span></span><br><span class="line">    <span class="keyword">elif</span> x1 &gt; w:</span><br><span class="line">        x1 = w</span><br><span class="line">    <span class="keyword">if</span> y1 &lt; <span class="number">0</span>:</span><br><span class="line">        y1 = <span class="number">0</span></span><br><span class="line">    <span class="keyword">elif</span> y1 &gt; h:</span><br><span class="line">        y1 = h</span><br><span class="line">    <span class="keyword">if</span> x1 + diameter &gt; w:</span><br><span class="line">        diameter = w - x1</span><br><span class="line">    <span class="keyword">if</span> y1 + diameter &gt; h:</span><br><span class="line">        diameter = h - y1</span><br><span class="line">    shield_size = diameter, diameter</span><br><span class="line">    <span class="keyword">return</span> x1, y1, diameter, shield_size</span><br></pre></td></tr></table></figure>
+
+<h4 id="8-获取旋转一定角度的图片"><a href="#8-获取旋转一定角度的图片" class="headerlink" title="8.获取旋转一定角度的图片"></a>8.获取旋转一定角度的图片</h4><p>self.deg是实例属性，ANG_VEL为角速度，搭配旋转矩阵和仿射变换，每次都可以让图片旋转一定角度</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_rotated_image</span><span class="params">(self)</span>:</span></span><br><span class="line">    self.deg += ANG_VEL</span><br><span class="line">    <span class="keyword">if</span> self.deg &gt; <span class="number">360</span>:</span><br><span class="line">        self.deg = <span class="number">0</span></span><br><span class="line">    hei, wid, col = SHIELD_1.shape  <span class="comment"># SHIELD_1和SHIELD_2尺寸相同</span></span><br><span class="line">    cen = (wid // <span class="number">2</span>, hei // <span class="number">2</span>)</span><br><span class="line">    M1 = cv2.getRotationMatrix2D(cen, round(self.deg), <span class="number">1.0</span>)</span><br><span class="line">    M2 = cv2.getRotationMatrix2D(cen, round(<span class="number">360</span> - self.deg), <span class="number">1.0</span>)</span><br><span class="line">    rotated1 = cv2.warpAffine(SHIELD_1, M1, (wid, hei))</span><br><span class="line">    rotated2 = cv2.warpAffine(SHIELD_2, M2, (wid, hei))</span><br><span class="line">    <span class="keyword">return</span> rotated1, rotated2</span><br></pre></td></tr></table></figure>
+
+<h4 id="9-合成视频帧"><a href="#9-合成视频帧" class="headerlink" title="9.合成视频帧"></a>9.合成视频帧</h4><p>根据计算出的shield_size，对shield img做resize，并取出alpha通道做中值模糊，作为后续合成的mask。</p>
+<p>根据左上顶点坐标，在原图中裁剪出shield img大小的区域，作为背景；shield img则作为前景，两者进行图片合成</p>
+<p>将合成后的图片重新填充回原始图片，然后作为视频帧返回</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">transparent</span><span class="params">(self, shield_img, x, y, image, size=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> size <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        shield_img = cv2.resize(shield_img, size)</span><br><span class="line"></span><br><span class="line">    original_image = image.copy()</span><br><span class="line">    b, g, r, a = cv2.split(shield_img)</span><br><span class="line">    overlay_color = cv2.merge((b, g, r))</span><br><span class="line">    mask = cv2.medianBlur(a, <span class="number">1</span>)</span><br><span class="line">    h, w, _ = overlay_color.shape</span><br><span class="line">    roi = original_image[y:y + h, x:x + w]</span><br><span class="line"></span><br><span class="line">    img1_bg = cv2.bitwise_and(roi.copy(), roi.copy(), mask=cv2.bitwise_not(mask))</span><br><span class="line">    img2_fg = cv2.bitwise_and(overlay_color, overlay_color, mask=mask)</span><br><span class="line">    original_image[y:y + h, x:x + w] = cv2.add(img1_bg, img2_fg)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> original_image</span><br></pre></td></tr></table></figure>
+<p>至此整个后处理过程完成。</p>
+<h3 id="五、遇到的问题"><a href="#五、遇到的问题" class="headerlink" title="五、遇到的问题"></a>五、遇到的问题</h3><h4 id="1-ImportError-libGL-so-1-cannot-open-shared-object-file-No-such-file-or-directory"><a href="#1-ImportError-libGL-so-1-cannot-open-shared-object-file-No-such-file-or-directory" class="headerlink" title="1.ImportError: libGL.so.1: cannot open shared object file: No such file or directory"></a>1.ImportError: libGL.so.1: cannot open shared object file: No such file or directory</h4><p>python版opencv有4种包：opencv-python、opencv-contrib-python、opencv-python-headless、opencv-contrib-python-headless，<a href="https://pypi.org/project/opencv-python/" target="_blank" rel="noopener">官方建议</a>只安装4种中的1种。而mediapipe目前包含的是opencv-contrib-python，如果已经安装了其他版本的包，则可能会冲突<br><img src="../images/magic_shield_opencv_version.png" alt="opencv_version"><br>其实如果在server端使用opencv的话，官方更推荐headless版的，它不包含GUI功能，更小更轻量，但遗憾的是，mediapipe目前还未提供对headless包的支持：<a href="https://github.com/google-ai-edge/mediapipe/issues/3661" target="_blank" rel="noopener">相关issue</a></p>
+<h4 id="2-在云服务器上的ICE-Connection-Fails"><a href="#2-在云服务器上的ICE-Connection-Fails" class="headerlink" title="2.在云服务器上的ICE Connection Fails"></a>2.在云服务器上的ICE Connection Fails</h4><p>ice通信需要用到udp端口，一开始没有在防火墙上开启，开启后就连接正常了：<a href="https://stackoverflow.com/questions/78659229/ice-connection-fails-to-complete-in-webrtc-application-on-aws-ec2-instance" target="_blank" rel="noopener">相关信息</a></p>
+<h4 id="3-No-accelerated-colorspace-conversion-found-from-yuv420p-to-bgr24"><a href="#3-No-accelerated-colorspace-conversion-found-from-yuv420p-to-bgr24" class="headerlink" title="3.No accelerated colorspace conversion found from yuv420p to bgr24"></a>3.No accelerated colorspace conversion found from yuv420p to bgr24</h4><p>平台相关问题，在我的Mac M1上遇到了，而在云服务器上是好的。视频流在传输过程中用的yuv格式，而opencv在转码时用到了ffmpeg。根据目前查到的信息，Mac的ffmpeg在底层加速时用了quick time，似乎需要更新quick time才能解决。</p>
+<h4 id="4-RuntimeWarning-As-the-c-extension-couldn’t-be-imported-google-crc32c-is-using-a-pure-python-implementation-that-is-significantly-slower-If-possible-please-configure-a-c-build-environment-and-compile-the-extension"><a href="#4-RuntimeWarning-As-the-c-extension-couldn’t-be-imported-google-crc32c-is-using-a-pure-python-implementation-that-is-significantly-slower-If-possible-please-configure-a-c-build-environment-and-compile-the-extension" class="headerlink" title="4.RuntimeWarning: As the c extension couldn’t be imported, google-crc32c is using a pure python implementation that is significantly slower. If possible, please configure a c build environment and compile the extension"></a>4.RuntimeWarning: As the c extension couldn’t be imported, <code>google-crc32c</code> is using a pure python implementation that is significantly slower. If possible, please configure a c build environment and compile the extension</h4><p>暂未解决</p>
+<h4 id="5-Feedback-manager-requires-a-model-with-a-single-signature-inference-Disabling-support-for-feedback-tensors"><a href="#5-Feedback-manager-requires-a-model-with-a-single-signature-inference-Disabling-support-for-feedback-tensors" class="headerlink" title="5.Feedback manager requires a model with a single signature inference. Disabling support for feedback tensors"></a>5.Feedback manager requires a model with a single signature inference. Disabling support for feedback tensors</h4><p>暂未解决</p>
+<h3 id="六、有待改进的地方"><a href="#六、有待改进的地方" class="headerlink" title="六、有待改进的地方"></a>六、有待改进的地方</h3><p>1.实际测试中，发现signaling花费的时间较长，存在优化空间</p>
+<p>2.后端代码运行后，CPU和GPU占用率都很高，可以进一步优化，比如对待处理的视频帧进行缩小，减少计算的数据量</p>
+<p>3.server端配置一般，算力有待提高</p>
+<p>4.魔法盾的实现代码中，部分算法可以优化，个别阈值也是写死的，可以进一步调优</p>
+<p>5.整体效果上，还可以用seg模型进行背景替换，比如换成卡玛泰姬或电影中的场景，会更逼真</p>
+<h3 id="七、思考"><a href="#七、思考" class="headerlink" title="七、思考"></a>七、思考</h3><p>因为自己不玩抖音小红书之类的，所以一开始对于这种华而不实的AR特效并不关注，以为cv只能在工业领域用到，倒是老婆的一句“这多好玩啊”让我如梦初醒，想想当初，很大程度上，自己也是因为能亲手做出各种好玩的页面效果而最终转行前端，现在回过头来看，初衷原来如此简单纯粹，好玩，也许才是真正源源不断的内在驱动力。</p>
+<p>参考</p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebRTC_API/Protocols" target="_blank" rel="noopener">WebRTC 协议介绍</a></p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebRTC_API/Connectivity" target="_blank" rel="noopener">WebRTC connectivity</a></p>
+<p><a href="https://www.liveswitch.io/blog/webrtc-nat-traversal-methods-a-case-for-embedded-turn" target="_blank" rel="noopener">WebRTC NAT Traversal Methods: A Case for Embedded TURN</a></p>
+<p><a href="https://dev.to/whitphx/python-webrtc-basics-with-aiortc-48id" target="_blank" rel="noopener">Python WebRTC basics with aiortc</a></p>
+<p><a href="https://github.com/w3c/webrtc-pc/issues/230" target="_blank" rel="noopener">Add support for WebRTC Data Channel in Workers</a></p>
+<p><a href="https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker/python?hl=zh-cn" target="_blank" rel="noopener">Python 手部特征点检测指南</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/mediapipe/" rel="tag"><i class="fa fa-tag"></i> mediapipe</a>
+              <a href="/tags/webrtc/" rel="tag"><i class="fa fa-tag"></i> webrtc</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/golden-quotes-of-maybe-you-should-talk-to-someone/" rel="prev" title="《也许你该找个人聊聊》部分金句摘录">
+      <i class="fa fa-chevron-left"></i> 《也许你该找个人聊聊》部分金句摘录
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、环境与架构"><span class="nav-text">一、环境与架构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-软硬件环境"><span class="nav-text">1.软硬件环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-架构"><span class="nav-text">2.架构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、WebRTC简介"><span class="nav-text">二、WebRTC简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-核心概念"><span class="nav-text">1.核心概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#（1）ICE"><span class="nav-text">（1）ICE</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（2）STUN"><span class="nav-text">（2）STUN</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（3）Symmetric-NAT-和-Cone-NAT"><span class="nav-text">（3）Symmetric NAT 和 Cone NAT</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（4）TURN"><span class="nav-text">（4）TURN</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（5）Server的优势"><span class="nav-text">（5）Server的优势</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（6）SDP"><span class="nav-text">（6）SDP</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-建立连接的流程"><span class="nav-text">2.建立连接的流程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#（1）client通过navigator-mediaDevices-getUserMedia-获取本地媒体"><span class="nav-text">（1）client通过navigator.mediaDevices.getUserMedia()获取本地媒体</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（2）client创建一个RTCPeerConnection，并添加一些listener"><span class="nav-text">（2）client创建一个RTCPeerConnection，并添加一些listener</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（3）client将音视频轨添加到PeerConnection中"><span class="nav-text">（3）client将音视频轨添加到PeerConnection中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（4）client创建offer，并设置为本地sdp描述"><span class="nav-text">（4）client创建offer，并设置为本地sdp描述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（5）client请求-STUN-server-提供-ice-候选-ice-candidates"><span class="nav-text">（5）client请求 STUN server 提供 ice 候选 (ice candidates)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（6）client会通过一套算法，对获得的candidates进行过滤筛选，然后添加到offer中"><span class="nav-text">（6）client会通过一套算法，对获得的candidates进行过滤筛选，然后添加到offer中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（7）开始signaling信令交换，client通过某种方式将offer发给server"><span class="nav-text">（7）开始signaling信令交换，client通过某种方式将offer发给server</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（8）server接收offer，并创建一个peerConnection"><span class="nav-text">（8）server接收offer，并创建一个peerConnection</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（9）server为peerConnection设置一些listener"><span class="nav-text">（9）server为peerConnection设置一些listener</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（10）server将offer设置为远端sdp描述"><span class="nav-text">（10）server将offer设置为远端sdp描述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（11）server创建answer，设置为本地sdp描述，并将answer返回给远端"><span class="nav-text">（11）server创建answer，设置为本地sdp描述，并将answer返回给远端</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（12）client接收到answer，将其设置为远端sdp描述"><span class="nav-text">（12）client接收到answer，将其设置为远端sdp描述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（13）建立p2p连接"><span class="nav-text">（13）建立p2p连接</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-DataChannel"><span class="nav-text">3.DataChannel</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、MediaPipe简介"><span class="nav-text">三、MediaPipe简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-什么是MediaPipe？"><span class="nav-text">1.什么是MediaPipe？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-MediaPipe-Hand-Landmarker"><span class="nav-text">2.MediaPipe Hand Landmarker</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、AR魔法盾实现"><span class="nav-text">四、AR魔法盾实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-加载模型和魔法盾图片"><span class="nav-text">1.加载模型和魔法盾图片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-模型初始化"><span class="nav-text">2.模型初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-opencv读取视频帧，并传入模型进行推理"><span class="nav-text">3.opencv读取视频帧，并传入模型进行推理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-解析模型输出"><span class="nav-text">4.解析模型输出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-计算单只手的张开比例"><span class="nav-text">5.计算单只手的张开比例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-如果ratio在0-5～阈值之间，则显示手指连线；超过阈值则显示魔法盾"><span class="nav-text">6.如果ratio在0.5～阈值之间，则显示手指连线；超过阈值则显示魔法盾</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-计算魔法盾显示位置和尺寸"><span class="nav-text">7.计算魔法盾显示位置和尺寸</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-获取旋转一定角度的图片"><span class="nav-text">8.获取旋转一定角度的图片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-合成视频帧"><span class="nav-text">9.合成视频帧</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、遇到的问题"><span class="nav-text">五、遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-ImportError-libGL-so-1-cannot-open-shared-object-file-No-such-file-or-directory"><span class="nav-text">1.ImportError: libGL.so.1: cannot open shared object file: No such file or directory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-在云服务器上的ICE-Connection-Fails"><span class="nav-text">2.在云服务器上的ICE Connection Fails</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-No-accelerated-colorspace-conversion-found-from-yuv420p-to-bgr24"><span class="nav-text">3.No accelerated colorspace conversion found from yuv420p to bgr24</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-RuntimeWarning-As-the-c-extension-couldn’t-be-imported-google-crc32c-is-using-a-pure-python-implementation-that-is-significantly-slower-If-possible-please-configure-a-c-build-environment-and-compile-the-extension"><span class="nav-text">4.RuntimeWarning: As the c extension couldn’t be imported, google-crc32c is using a pure python implementation that is significantly slower. If possible, please configure a c build environment and compile the extension</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-Feedback-manager-requires-a-model-with-a-single-signature-inference-Disabling-support-for-feedback-tensors"><span class="nav-text">5.Feedback manager requires a model with a single signature inference. Disabling support for feedback tensors</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、有待改进的地方"><span class="nav-text">六、有待改进的地方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、思考"><span class="nav-text">七、思考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="roubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">roubin</p>
+  <div class="site-description" itemprop="description">芝兰其室，金石其心<br/>仁义为友，道德为师</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">139</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">79</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/satorioh" title="GitHub → https://github.com/satorioh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wangbinxp@gmail.com" title="E-Mail → mailto:wangbinxp@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://roubinme.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://roubin.me/ar-magic-shield-with-webrtc-mediapipe/";
+    this.page.identifier = "ar-magic-shield-with-webrtc-mediapipe/";
+    this.page.title = "基于 MediaPipe 和 WebRTC 的 AR 魔法盾特效";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://roubinme.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
