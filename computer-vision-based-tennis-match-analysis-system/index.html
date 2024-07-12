@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"roubin.me","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、简介正值巴黎奥运会来临之际，结合当下AI热点趋势，本文基于深度学习和数据分析技术，构建了一个简易的网球比赛视频分析系统，为广大体育爱好者，特别是专业球迷，能够借助AI和大数据赋能，实现科学看球、专业看球，提供便利。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于机器视觉的网球比赛分析系统">
+<meta property="og:url" content="https://roubin.me/computer-vision-based-tennis-match-analysis-system/index.html">
+<meta property="og:site_name" content="肉饼博客">
+<meta property="og:description" content="一、简介正值巴黎奥运会来临之际，结合当下AI热点趋势，本文基于深度学习和数据分析技术，构建了一个简易的网球比赛视频分析系统，为广大体育爱好者，特别是专业球迷，能够借助AI和大数据赋能，实现科学看球、专业看球，提供便利。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://roubin.me/images/tennis_final.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_filter_person.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_ball_train_result.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_ball.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_ball_not_detected.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_ball_interpolate.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_keypoints_training.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_person_ball_keypoints.png">
+<meta property="og:image" content="https://roubin.me/images/tennis-court-dimensions.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_mini_court_keypoint_line.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_play_ball_on_mini_court.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_ball_mid_y.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_mid_y_rolling_mean.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_delta_y.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_delta_y_hint.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_ball_issue.png">
+<meta property="og:image" content="https://roubin.me/images/tennis_keypoints_improve.gif">
+<meta property="article:published_time" content="2024-07-12T02:00:46.000Z">
+<meta property="article:modified_time" content="2024-07-12T09:39:12.421Z">
+<meta property="article:author" content="roubin">
+<meta property="article:tag" content="yolo">
+<meta property="article:tag" content="opencv">
+<meta property="article:tag" content="pandas">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://roubin.me/images/tennis_final.png">
+
+<link rel="canonical" href="https://roubin.me/computer-vision-based-tennis-match-analysis-system/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基于机器视觉的网球比赛分析系统 | 肉饼博客</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b55ece62ebeb2e72a8efe3f8b5b43960";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">肉饼博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Talk is cheap. Show me the code.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://roubin.me/computer-vision-based-tennis-match-analysis-system/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="roubin">
+      <meta itemprop="description" content="芝兰其室，金石其心<br/>仁义为友，道德为师">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="肉饼博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于机器视觉的网球比赛分析系统
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-07-12 10:00:46 / 修改时间：17:39:12" itemprop="dateCreated datePublished" datetime="2024-07-12T10:00:46+08:00">2024-07-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CV/" itemprop="url" rel="index"><span itemprop="name">CV</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/computer-vision-based-tennis-match-analysis-system/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="computer-vision-based-tennis-match-analysis-system/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h3><p>正值巴黎奥运会来临之际，结合当下AI热点趋势，本文基于深度学习和数据分析技术，构建了一个简易的网球比赛视频分析系统，为广大体育爱好者，特别是专业球迷，能够借助AI和大数据赋能，实现科学看球、专业看球，提供便利。</p>
+<a id="more"></a>
+
+<h3 id="二、需求与功能"><a href="#二、需求与功能" class="headerlink" title="二、需求与功能"></a>二、需求与功能</h3><h4 id="1-需求分析"><a href="#1-需求分析" class="headerlink" title="1.需求分析"></a>1.需求分析</h4><p>在传统赛事转播过程中，对于比赛数据的展示，存在如下局限性：</p>
+<ul>
+<li>种类少：通常只会展示局分、大局分、赛点、时间等</li>
+<li>有延迟：部分数据需要等待解说员或中场休息时才能看到</li>
+<li>个性化：对于专业球迷，更多细分数据无法获取</li>
+</ul>
+<h4 id="2-功能展示"><a href="#2-功能展示" class="headerlink" title="2.功能展示"></a>2.功能展示</h4><p>当前系统实现的功能如下：</p>
+<ul>
+<li>球员的实时追踪与标定</li>
+<li>网球的实时预测与标定</li>
+<li>球场 keypoints 的标定</li>
+<li>迷你球场（mini court，右上角），使用上帝视角，全方位动态展示球场信息</li>
+<li>数据看板（stats dashboard，右下角），可展示球员的即时球速、平均球速、即时移动速度、平均移动速度等</li>
+</ul>
+<p><strong>效果展示</strong>：</p>
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=112771010134696&bvid=BV1FcbWeaEC6&cid=500001612596980&p=1&autoplay=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+<p><img src="../images/tennis_final.png" alt=""></p>
+<p>基于当前系统，后续还可扩展更多功能：</p>
+<ul>
+<li>击球频率</li>
+<li>击球位置</li>
+<li>过界检测</li>
+<li>AR 特效</li>
+</ul>
+<h3 id="三、技术要点与难点"><a href="#三、技术要点与难点" class="headerlink" title="三、技术要点与难点"></a>三、技术要点与难点</h3><p>要点：</p>
+<ul>
+<li>基于 YOLOv8 的球员检测与追踪</li>
+<li>基于 YOLOv5 + 自定义数据集的网球检测</li>
+<li>基于 Resnet50 + 自定义数据集的球场 keypoints 检测</li>
+<li>使用 pandas 对网球运动轨迹的插值</li>
+<li>使用 pandas 进行击球计算</li>
+<li>使用 opencv 进行数据绘制和展示</li>
+</ul>
+<p>难点：</p>
+<ul>
+<li>小物体（网球）的检测</li>
+<li>keypoints 的检测</li>
+<li>物理距离与像素距离的转换</li>
+<li>击球帧的检测</li>
+</ul>
+<p><strong>完整代码见</strong>：<a href="https://github.com/satorioh/tennis_system" target="_blank" rel="noopener">这里</a></p>
+<h3 id="四、实现过程"><a href="#四、实现过程" class="headerlink" title="四、实现过程"></a>四、实现过程</h3><h4 id="1-球员追踪与标定"><a href="#1-球员追踪与标定" class="headerlink" title="1.球员追踪与标定"></a>1.球员追踪与标定</h4><p>思路：player track model直接使用yolov8x，设置classes为 0 (person)进行检测，然后根据court keypoints，计算离keypoints距离最近的前两个person，即为players</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">detect_frame</span><span class="params">(self, frame)</span>:</span></span><br><span class="line">    results = self.model.track(frame, persist=<span class="literal">True</span>, classes=[<span class="number">0</span>])[<span class="number">0</span>]![img.png](img.png)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_choose_player_ids</span><span class="params">(self, court_keypoints, player_dict_from_first_frame)</span>:</span></span><br><span class="line">    print(<span class="string">"get choose player ids..."</span>)</span><br><span class="line">    distances = []</span><br><span class="line">    <span class="keyword">for</span> track_id, bbox <span class="keyword">in</span> player_dict_from_first_frame.items():</span><br><span class="line">        player_center = get_center_of_bbox(bbox)</span><br><span class="line"></span><br><span class="line">        min_distance = float(<span class="string">'inf'</span>)</span><br><span class="line">        court_keypoints_len = len(court_keypoints)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, court_keypoints_len, <span class="number">2</span>):</span><br><span class="line">            court_keypoint = (court_keypoints[i], court_keypoints[i + <span class="number">1</span>])</span><br><span class="line">            distance = measure_distance(player_center, court_keypoint)</span><br><span class="line">            <span class="keyword">if</span> distance &lt; min_distance:</span><br><span class="line">                min_distance = distance</span><br><span class="line">        distances.append((track_id, min_distance))</span><br><span class="line">    <span class="comment"># sort the distances in ascending order</span></span><br><span class="line">    distances.sort(key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">return</span> [i[<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> distances[:<span class="number">2</span>]]</span><br></pre></td></tr></table></figure>
+<p><img src="../images/tennis_filter_person.png" alt=""></p>
+<h4 id="2-网球检测与标定"><a href="#2-网球检测与标定" class="headerlink" title="2.网球检测与标定"></a>2.网球检测与标定</h4><p>ball detect model 基于 yolov5l6u pretrain model 进行 fine tune，数据集使用 <a href="https://universe.roboflow.com/viren-dhanwani/tennis-ball-detection" target="_blank" rel="noopener">tennis-ball-detection</a>，包含576张1280x720的网球比赛图片，跑100个epoch，结果如下：<br><img src="../images/tennis_ball_train_result.png" alt=""></p>
+<p>中间oom了一次，resume回来继续跑。因为网球本身目标较小，所以training结果一般，后续通过插值方式来弥补检测时的不足。<br><img src="../images/tennis_ball.png" alt=""></p>
+<h4 id="3-对网球运动轨迹进行插值"><a href="#3-对网球运动轨迹进行插值" class="headerlink" title="3.对网球运动轨迹进行插值"></a>3.对网球运动轨迹进行插值</h4><p>由于ball detect model准确度不是很高，有时无法检测到ball，比如下图第74帧：<br><img src="../images/tennis_ball_not_detected.png" alt=""></p>
+<p>考虑到ball在空中的飞行轨迹通常是一条直线，可以采用线性插值来填补未检测到的数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">interpolate_ball_positions</span><span class="params">(self, ball_positions)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    :param ball_positions: [&#123;&#125;, &#123;1: [895.4949340820312, 613.216064453125, 909.893798828125, 637.4019165039062]&#125;, &#123;&#125;...]</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    ball_positions = [position.get(<span class="number">1</span>, []) <span class="keyword">for</span> position <span class="keyword">in</span> ball_positions]</span><br><span class="line">    <span class="comment"># convert the list into pandas dataframe</span></span><br><span class="line">    df_ball_positions = pd.DataFrame(ball_positions, columns=[<span class="string">'x1'</span>, <span class="string">'y1'</span>, <span class="string">'x2'</span>, <span class="string">'y2'</span>])</span><br><span class="line">    <span class="comment"># interpolate the missing values</span></span><br><span class="line">    df_ball_positions = df_ball_positions.interpolate()</span><br><span class="line">    df_ball_positions = df_ball_positions.bfill()  <span class="comment"># fill the first missing value</span></span><br><span class="line">    ball_positions = [&#123;<span class="number">1</span>: result&#125; <span class="keyword">for</span> result <span class="keyword">in</span> df_ball_positions.to_numpy().tolist()]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ball_positions</span><br></pre></td></tr></table></figure>
+<p>插值后的结果：<br><img src="../images/tennis_ball_interpolate.png" alt=""></p>
+<h4 id="4-keypoints的检测"><a href="#4-keypoints的检测" class="headerlink" title="4.keypoints的检测"></a>4.keypoints的检测</h4><p>keypoints detect model 基于 Resnet50，使用pytorch搭建，数据集使用<a href="https://github.com/yastrebksv/TennisCourtDetector" target="_blank" rel="noopener">TennisCourtDetector</a>里提供的链接，包含8841张各式网球场的图片</p>
+<p>create dataset:：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KeypointsDataset</span><span class="params">(Dataset)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, img_dir, data_file)</span>:</span></span><br><span class="line">        self.img_dir = img_dir</span><br><span class="line">        <span class="keyword">with</span> open(data_file, <span class="string">"r"</span>) <span class="keyword">as</span> f:</span><br><span class="line">            self.data = json.load(f)</span><br><span class="line">        </span><br><span class="line">        self.transforms = transforms.Compose([</span><br><span class="line">            transforms.ToPILImage(),</span><br><span class="line">            transforms.Resize((<span class="number">224</span>, <span class="number">224</span>)),</span><br><span class="line">            transforms.ToTensor(),</span><br><span class="line">            transforms.Normalize(mean=[<span class="number">0.485</span>, <span class="number">0.456</span>, <span class="number">0.406</span>], std=[<span class="number">0.229</span>, <span class="number">0.224</span>, <span class="number">0.225</span>])</span><br><span class="line">        ])</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.data)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, idx)</span>:</span></span><br><span class="line">        item = self.data[idx]</span><br><span class="line">        img = cv2.imread(<span class="string">f"<span class="subst">&#123;self.img_dir&#125;</span>/<span class="subst">&#123;item[<span class="string">'id'</span>]&#125;</span>.png"</span>)</span><br><span class="line">        h,w = img.shape[:<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)</span><br><span class="line">        img = self.transforms(img)</span><br><span class="line">        kps = np.array(item[<span class="string">'kps'</span>]).flatten()</span><br><span class="line">        kps = kps.astype(np.float32)</span><br><span class="line"></span><br><span class="line">        kps[::<span class="number">2</span>] *= <span class="number">224.0</span> / w <span class="comment"># Adjust x coordinates</span></span><br><span class="line">        kps[<span class="number">1</span>::<span class="number">2</span>] *= <span class="number">224.0</span> / h <span class="comment"># Adjust y coordinates</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> img, kps</span><br></pre></td></tr></table></figure>
+<p>load dataset:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">train_dataset = KeypointsDataset(<span class="string">"data/images"</span>,<span class="string">"data/data_train.json"</span>)</span><br><span class="line">val_dataset = KeypointsDataset(<span class="string">"data/images"</span>,<span class="string">"data/data_val.json"</span>)</span><br><span class="line"></span><br><span class="line">train_loader = DataLoader(train_dataset, batch_size=<span class="number">8</span>, shuffle=<span class="literal">True</span>)</span><br><span class="line">val_loader = DataLoader(val_dataset, batch_size=<span class="number">8</span>, shuffle=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>create model:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">model = models.resnet50(pretrained=<span class="literal">True</span>)</span><br><span class="line">model.fc = torch.nn.Linear(model.fc.in_features, <span class="number">14</span>*<span class="number">2</span>) <span class="comment"># Replaces the last layer</span></span><br><span class="line">model = model.to(device)</span><br></pre></td></tr></table></figure>
+<p>train model:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">criterion = torch.nn.MSELoss()</span><br><span class="line">optimizer = torch.optim.Adam(model.parameters(), lr=<span class="number">1e-4</span>)</span><br><span class="line"></span><br><span class="line">epochs=<span class="number">20</span></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(epochs):</span><br><span class="line">    <span class="keyword">for</span> i, (imgs,kps) <span class="keyword">in</span> enumerate(train_loader):</span><br><span class="line">        imgs = imgs.to(device)</span><br><span class="line">        kps = kps.to(device)</span><br><span class="line"></span><br><span class="line">        optimizer.zero_grad()</span><br><span class="line">        outputs = model(imgs)</span><br><span class="line">        loss = criterion(outputs, kps)</span><br><span class="line">        loss.backward()</span><br><span class="line">        optimizer.step()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> i % <span class="number">10</span> == <span class="number">0</span>:</span><br><span class="line">            print(<span class="string">f"Epoch <span class="subst">&#123;epoch&#125;</span>, iter <span class="subst">&#123;i&#125;</span>, loss: <span class="subst">&#123;loss.item()&#125;</span>"</span>)</span><br><span class="line">            wandb.log(&#123;<span class="string">"epoch"</span>: epoch, <span class="string">"iter"</span>: i, <span class="string">"loss"</span>: loss.item()&#125;)</span><br></pre></td></tr></table></figure>
+<p>save model:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.save(model.state_dict(), <span class="string">"keypoints_model.pth"</span>)</span><br></pre></td></tr></table></figure>
+<p>training 结果如下：<br><img src="../images/tennis_keypoints_training.png" alt=""></p>
+<p>实际检测结果：可以看到存在误差，有优化空间<br><img src="../images/tennis_person_ball_keypoints.png" alt=""></p>
+<h4 id="5-迷你球场（mini-court）"><a href="#5-迷你球场（mini-court）" class="headerlink" title="5.迷你球场（mini court）"></a>5.迷你球场（mini court）</h4><p>迷你球场，即以上帝视角，全方位动态展示球场信息，适用于大型场地比赛（比如网球、足球）。</p>
+<p>实现思路：现实世界中的网球场是有标准尺寸定义的（如下图），通过将mini court的pixel size、player和ball的pixel position/move、现实世界的meter size三者相关联，达到互相转换并展示的目的<br><img src="../images/tennis-court-dimensions.png" alt=""></p>
+<h5 id="（1）在mini-court上绘制-keypoints-和-lines"><a href="#（1）在mini-court上绘制-keypoints-和-lines" class="headerlink" title="（1）在mini court上绘制 keypoints 和 lines:"></a>（1）在mini court上绘制 keypoints 和 lines:</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw_court</span><span class="params">(self, frame)</span>:</span></span><br><span class="line">    drawing_key_points_len = len(self.drawing_key_points)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, drawing_key_points_len, <span class="number">2</span>):</span><br><span class="line">        x = int(self.drawing_key_points[i])</span><br><span class="line">        y = int(self.drawing_key_points[i + <span class="number">1</span>])</span><br><span class="line">        cv2.circle(frame, (x, y), <span class="number">5</span>, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># draw Lines</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> self.lines:</span><br><span class="line">        start_point = (int(self.drawing_key_points[line[<span class="number">0</span>] * <span class="number">2</span>]), int(self.drawing_key_points[line[<span class="number">0</span>] * <span class="number">2</span> + <span class="number">1</span>]))</span><br><span class="line">        end_point = (int(self.drawing_key_points[line[<span class="number">1</span>] * <span class="number">2</span>]), int(self.drawing_key_points[line[<span class="number">1</span>] * <span class="number">2</span> + <span class="number">1</span>]))</span><br><span class="line">        cv2.line(frame, start_point, end_point, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Draw net</span></span><br><span class="line">    net_start_point = (</span><br><span class="line">        self.drawing_key_points[<span class="number">0</span>], int((self.drawing_key_points[<span class="number">1</span>] + self.drawing_key_points[<span class="number">5</span>]) / <span class="number">2</span>))</span><br><span class="line">    net_end_point = (</span><br><span class="line">        self.drawing_key_points[<span class="number">2</span>], int((self.drawing_key_points[<span class="number">1</span>] + self.drawing_key_points[<span class="number">5</span>]) / <span class="number">2</span>))</span><br><span class="line">    cv2.line(frame, net_start_point, net_end_point, (<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> frame![img.png](img.png)</span><br></pre></td></tr></table></figure>
+<p><img src="../images/tennis_mini_court_keypoint_line.png" alt=""></p>
+<h5 id="（2）在mini-court上绘制-player-和-ball"><a href="#（2）在mini-court上绘制-player-和-ball" class="headerlink" title="（2）在mini court上绘制 player 和 ball:"></a>（2）在mini court上绘制 player 和 ball:</h5><p>核心方法如下：先将player/ball的pixel move 转换为 meter，再将 meter 转换为 mini court pixel size。之所以没有跳过meter，是考虑后续计算现实世界的物理量（比如speed）依然需要基于meter来实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_mini_court_coordinates</span><span class="params">(self,</span></span></span><br><span class="line"><span class="function"><span class="params">                               object_position,</span></span></span><br><span class="line"><span class="function"><span class="params">                               closest_court_key_point,</span></span></span><br><span class="line"><span class="function"><span class="params">                               closest_court_key_point_index,</span></span></span><br><span class="line"><span class="function"><span class="params">                               player_height_in_pixels,</span></span></span><br><span class="line"><span class="function"><span class="params">                               player_height_in_meters</span></span></span><br><span class="line"><span class="function"><span class="params">                               )</span>:</span></span><br><span class="line">    distance_from_keypoint_x_pixels, distance_from_keypoint_y_pixels = measure_xy_distance(object_position,</span><br><span class="line">                                                                                           closest_court_key_point)</span><br><span class="line">    <span class="comment"># Convert pixel distance to meters</span></span><br><span class="line">    distance_from_keypoint_x_meters = convert_pixel_distance_to_meters(distance_from_keypoint_x_pixels,</span><br><span class="line">                                                                       player_height_in_meters,</span><br><span class="line">                                                                       player_height_in_pixels</span><br><span class="line">                                                                       )</span><br><span class="line">    distance_from_keypoint_y_meters = convert_pixel_distance_to_meters(distance_from_keypoint_y_pixels,</span><br><span class="line">                                                                       player_height_in_meters,</span><br><span class="line">                                                                       player_height_in_pixels</span><br><span class="line">                                                                       )</span><br><span class="line">    <span class="comment"># Convert to mini court coordinates</span></span><br><span class="line">    mini_court_x_distance_pixels = self.convert_meters_to_pixels(distance_from_keypoint_x_meters)</span><br><span class="line">    mini_court_y_distance_pixels = self.convert_meters_to_pixels(distance_from_keypoint_y_meters)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># min court keypoint has the same order as the court keypoint</span></span><br><span class="line">    closest_mini_court_keypoint = get_key_point_by_index(closest_court_key_point_index, self.drawing_key_points)</span><br><span class="line"></span><br><span class="line">    mini_court_object_position = (closest_mini_court_keypoint[<span class="number">0</span>] + mini_court_x_distance_pixels,</span><br><span class="line">                                  closest_mini_court_keypoint[<span class="number">1</span>] + mini_court_y_distance_pixels</span><br><span class="line">                                  )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> mini_court_object_position</span><br></pre></td></tr></table></figure>
+<p><img src="../images/tennis_play_ball_on_mini_court.png" alt=""></p>
+<h4 id="6-击球帧的确定"><a href="#6-击球帧的确定" class="headerlink" title="6.击球帧的确定"></a>6.击球帧的确定</h4><p>为了后续计算speed，需要先标定击球帧，即player何时击中的球</p>
+<p>实现思路：通过在序列数据中计算ball的y坐标变化方向（delta_y），来确定ball在哪一刻被改变了方向（即被击中）</p>
+<h5 id="（1）将序列数据转换为dateFrame"><a href="#（1）将序列数据转换为dateFrame" class="headerlink" title="（1）将序列数据转换为dateFrame"></a>（1）将序列数据转换为dateFrame</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ball_positions = [position.get(<span class="number">1</span>, []) <span class="keyword">for</span> position <span class="keyword">in</span> ball_positions]</span><br><span class="line"><span class="comment"># convert the list into pandas dataframe</span></span><br><span class="line">df_ball_positions = pd.DataFrame(ball_positions, columns=[<span class="string">'x1'</span>, <span class="string">'y1'</span>, <span class="string">'x2'</span>, <span class="string">'y2'</span>])</span><br><span class="line"><span class="comment"># interpolate the missing values</span></span><br><span class="line">df_ball_positions = df_ball_positions.interpolate()</span><br><span class="line">df_ball_positions = df_ball_positions.bfill()  <span class="comment"># fill the first missing value</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="（2）以球心为y值，并使用滚动平均法来平滑数据"><a href="#（2）以球心为y值，并使用滚动平均法来平滑数据" class="headerlink" title="（2）以球心为y值，并使用滚动平均法来平滑数据"></a>（2）以球心为y值，并使用滚动平均法来平滑数据</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df_ball_positions[<span class="string">'mid_y'</span>] = (df_ball_positions[<span class="string">'y1'</span>] + df_ball_positions[<span class="string">'y2'</span>])/<span class="number">2</span></span><br><span class="line">df_ball_positions[<span class="string">'mid_y_rolling_mean'</span>] = df_ball_positions[<span class="string">'mid_y'</span>].rolling(window=<span class="number">5</span>, min_periods=<span class="number">1</span>, center=<span class="literal">False</span>).mean()</span><br></pre></td></tr></table></figure>
+<p>可以看到<code>mid_y_rolling_mean</code>有明显的周期性<br><img src="../images/tennis_ball_mid_y.png" alt=""></p>
+<p>另外，对比<code>mid_y</code>（红色），<code>mid_y_rolling_mean</code>（橙色）更平滑<br><img src="../images/tennis_mid_y_rolling_mean.png" alt=""></p>
+<h5 id="（3）使用差分计算delta-y"><a href="#（3）使用差分计算delta-y" class="headerlink" title="（3）使用差分计算delta_y"></a>（3）使用差分计算delta_y</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_ball_positions[<span class="string">'delta_y'</span>] = df_ball_positions[<span class="string">'mid_y_rolling_mean'</span>].diff()</span><br></pre></td></tr></table></figure>
+<p><img src="../images/tennis_delta_y.png" alt=""><br><code>delta_y</code>也有明显的规律</p>
+<h5 id="（4）观察击球的时刻"><a href="#（4）观察击球的时刻" class="headerlink" title="（4）观察击球的时刻"></a>（4）观察击球的时刻</h5><p><code>delta_y</code> = 当前帧<code>mid_y</code> - 前一帧<code>mid_y</code>，具体的：</p>
+<ul>
+<li>如果前一帧<code>delta_y</code>为正，当前帧<code>delta_y</code>为负，则说明球被击中（往上跑了）</li>
+<li>如果前一帧<code>delta_y</code>为负，当前帧<code>delta_y</code>为正，则说明球被击中（往下跑了）</li>
+</ul>
+<p>落到图上就是这样：<br><img src="../images/tennis_delta_y_hint.png" alt=""></p>
+<p>红点：代表击球的时刻</p>
+<p>黄色圈圈：挺有意思的，一开始没想明白，后来看了视频，才恍然大悟<br><img src="../images/tennis_ball_issue.png" alt=""></p>
+<p>理论上球的飞行轨迹为直线，但是在球下落阶段其实是抛物线，而相机架在了正中间的上方，从这个角度来看，球下落过程中y值在增加，落地后弹起，y值又减小了，才有了黄圈那部分。突然想到之前在油管上看一位DS说过：“数据科学的有趣之处，就在于看到数据背后现实世界的人和事”，真是妙不可言</p>
+<h5 id="（5）使用算法定位击球帧"><a href="#（5）使用算法定位击球帧" class="headerlink" title="（5）使用算法定位击球帧"></a>（5）使用算法定位击球帧</h5><p>对于正常击球帧，就是通过检测<code>delta_y</code>的正负变化来确定。</p>
+<p>而对于刚才黄圈部分，可以通过检测到击球帧 + 该帧后续的多少帧以内，都保持相同趋势，来屏蔽异常数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">minimum_change_frames_for_hit = <span class="number">25</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(df_ball_positions) - int(minimum_change_frames_for_hit * <span class="number">1.2</span>)):</span><br><span class="line">    negative_position_change = df_ball_positions[<span class="string">'delta_y'</span>].iloc[i] &gt; <span class="number">0</span> &gt; df_ball_positions[<span class="string">'delta_y'</span>].iloc[</span><br><span class="line">        i + <span class="number">1</span>]</span><br><span class="line">    positive_position_change = df_ball_positions[<span class="string">'delta_y'</span>].iloc[i] &lt; <span class="number">0</span> &lt; df_ball_positions[<span class="string">'delta_y'</span>].iloc[</span><br><span class="line">        i + <span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> negative_position_change <span class="keyword">or</span> positive_position_change:</span><br><span class="line">        change_count = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> change_frame <span class="keyword">in</span> range(i + <span class="number">1</span>, i + int(minimum_change_frames_for_hit * <span class="number">1.2</span>) + <span class="number">1</span>):</span><br><span class="line">            negative_position_change_following_frame = df_ball_positions[<span class="string">'delta_y'</span>].iloc[i] &gt; <span class="number">0</span> &gt; \</span><br><span class="line">                                                       df_ball_positions[<span class="string">'delta_y'</span>].iloc[change_frame]</span><br><span class="line">            positive_position_change_following_frame = df_ball_positions[<span class="string">'delta_y'</span>].iloc[i] &lt; <span class="number">0</span> &lt; \</span><br><span class="line">                                                       df_ball_positions[<span class="string">'delta_y'</span>].iloc[change_frame]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> negative_position_change <span class="keyword">and</span> negative_position_change_following_frame:</span><br><span class="line">                change_count += <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> positive_position_change <span class="keyword">and</span> positive_position_change_following_frame:</span><br><span class="line">                change_count += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> change_count &gt; minimum_change_frames_for_hit - <span class="number">1</span>:</span><br><span class="line">            df_ball_positions.loc[df_ball_positions.index[i], <span class="string">'ball_hit'</span>] = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h4 id="7-数据看板（stats-dashboard）"><a href="#7-数据看板（stats-dashboard）" class="headerlink" title="7.数据看板（stats dashboard）"></a>7.数据看板（stats dashboard）</h4><p>确定击球帧后，通过定位两个击球帧之间，player和ball的状态变化量，就可以计算各种物理量了</p>
+<h5 id="（1）计算球的飞行时间"><a href="#（1）计算球的飞行时间" class="headerlink" title="（1）计算球的飞行时间"></a>（1）计算球的飞行时间</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Get ball shot time</span></span><br><span class="line">start_frame = ball_shot_frames[ball_shot_index]</span><br><span class="line">end_frame = ball_shot_frames[ball_shot_index + <span class="number">1</span>]</span><br><span class="line">ball_shot_time_in_seconds = (end_frame - start_frame) / constants.FPS</span><br></pre></td></tr></table></figure>
+
+<h5 id="（2）计算球的飞行距离"><a href="#（2）计算球的飞行距离" class="headerlink" title="（2）计算球的飞行距离"></a>（2）计算球的飞行距离</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">distance_covered_by_ball_pixels = measure_distance(ball_mini_court_detections[start_frame][<span class="number">1</span>],</span><br><span class="line">                                                           ball_mini_court_detections[end_frame][<span class="number">1</span>])</span><br><span class="line">distance_covered_by_ball_meters = convert_pixel_distance_to_meters(distance_covered_by_ball_pixels,</span><br><span class="line">                                                                           constants.DOUBLE_LINE_WIDTH,</span><br><span class="line">                                                                           mini_court.get_width_of_mini_court()</span><br><span class="line">                                                                           )</span><br></pre></td></tr></table></figure>
+
+<h5 id="（3）计算球速"><a href="#（3）计算球速" class="headerlink" title="（3）计算球速"></a>（3）计算球速</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Speed of the ball shot in km/h</span></span><br><span class="line">speed_of_ball_shot = distance_covered_by_ball_meters / ball_shot_time_in_seconds * <span class="number">3.6</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="（4）谁击中的球"><a href="#（4）谁击中的球" class="headerlink" title="（4）谁击中的球"></a>（4）谁击中的球</h5><p>思路：球被击中那一刻，谁离球最近，就是击球者</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># player who hit the ball</span></span><br><span class="line">player_positions = player_mini_court_detections[start_frame]</span><br><span class="line">ball_position = ball_mini_court_detections[start_frame][<span class="number">1</span>]</span><br><span class="line">player_shot_ball = get_closest_player_by_point(player_positions, ball_position)</span><br></pre></td></tr></table></figure>
+
+<h5 id="（5）对手的跑动距离"><a href="#（5）对手的跑动距离" class="headerlink" title="（5）对手的跑动距离"></a>（5）对手的跑动距离</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">opponent_player_id = <span class="number">1</span> <span class="keyword">if</span> player_shot_ball == <span class="number">2</span> <span class="keyword">else</span> <span class="number">2</span></span><br><span class="line">distance_covered_by_opponent_pixels = measure_distance(</span><br><span class="line">    player_mini_court_detections[start_frame][opponent_player_id],</span><br><span class="line">    player_mini_court_detections[end_frame][opponent_player_id])</span><br><span class="line">distance_covered_by_opponent_meters = convert_pixel_distance_to_meters(distance_covered_by_opponent_pixels,</span><br><span class="line">                                                                       constants.DOUBLE_LINE_WIDTH,</span><br><span class="line">                                                                       mini_court.get_width_of_mini_court()</span><br><span class="line">                                                                       )</span><br></pre></td></tr></table></figure>
+<h5 id="（6）对手的速度"><a href="#（6）对手的速度" class="headerlink" title="（6）对手的速度"></a>（6）对手的速度</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">speed_of_opponent = distance_covered_by_opponent_meters / ball_shot_time_in_seconds * <span class="number">3.6</span></span><br></pre></td></tr></table></figure>
+
+<p>还有各种想到想不到的物理量，就不一一例举了</p>
+<h4 id="五、有待改进的地方"><a href="#五、有待改进的地方" class="headerlink" title="五、有待改进的地方"></a>五、有待改进的地方</h4><h5 id="1-ball-detect-model-有待改进"><a href="#1-ball-detect-model-有待改进" class="headerlink" title="1.ball detect model 有待改进"></a>1.ball detect model 有待改进</h5><p>针对小目标的检测，还没有进一步研究过，目前能想到的比如通过数据增强、调整学习率、更换更适合的base model来提升准确度。另外，<a href="https://github.com/aash1999/yolov5-cbam" target="_blank" rel="noopener">这里</a>还找到一篇基于HIC-YOLOv5 CBAM的实现，有空研究下</p>
+<h5 id="2-keypoints-detect-model-有待改进"><a href="#2-keypoints-detect-model-有待改进" class="headerlink" title="2.keypoints detect model 有待改进"></a>2.keypoints detect model 有待改进</h5><p>给出数据集链接的<a href="https://github.com/yastrebksv/TennisCourtDetector" target="_blank" rel="noopener">这个仓库</a>，其实就做了更好的实现，通过使用不同的backbone，搭配2种postprocess来校正keypoints的位置:<br><img src="../images/tennis_keypoints_improve.gif" alt=""></p>
+<h5 id="3-court-keypoints只检测第一帧"><a href="#3-court-keypoints只检测第一帧" class="headerlink" title="3.court keypoints只检测第一帧"></a>3.court keypoints只检测第一帧</h5><p>默认机位不变的情况下，keypoints只使用视频第一帧来检测，之后就固定下来了，如果像上图那样机位带追踪的，则需要改为实时检测</p>
+<h5 id="4-player-id的确定"><a href="#4-player-id的确定" class="headerlink" title="4.player id的确定"></a>4.player id的确定</h5><p>player id的确定，目前也是默认取第一帧中离court最近的两个人。如果第一帧中player不是离court最近（比如还没开始比赛），则会有问题</p>
+<h5 id="5-把player和ball的检测用一个模型"><a href="#5-把player和ball的检测用一个模型" class="headerlink" title="5.把player和ball的检测用一个模型"></a>5.把player和ball的检测用一个模型</h5><p>这样就能提升效率，减少推理时间，而不是现在的分两个模型</p>
+<h4 id="六、心得体会"><a href="#六、心得体会" class="headerlink" title="六、心得体会"></a>六、心得体会</h4><p>整个项目的实现，参考了油管上这位<a href="https://www.youtube.com/watch?v=L23oIHZE14w" target="_blank" rel="noopener">up</a>主，和up主training的model相比，我这边ball detect model要好一些，而keypoints model则稍逊一筹。</p>
+<p>其实在整个项目过程中，模型的training并没有花太多时间，而对于模型数据的使用、视频中有效数据的提取、解析和转化，则占了大部分时间，也让我对机器学习项目有了更全面的了解，同时认识到自己的一些不足，后续需要多实践多总结。</p>
+<p>参考文章：</p>
+<p><a href="https://universe.roboflow.com/viren-dhanwani/tennis-ball-detection" target="_blank" rel="noopener">Tennis Ball Detection_Dataset</a></p>
+<p><a href="https://github.com/aash1999/yolov5-cbam" target="_blank" rel="noopener">HIC-YOLOv5: Improved YOLOv5 for Small Object Detection</a></p>
+<p><a href="https://www.youtube.com/watch?v=L23oIHZE14w" target="_blank" rel="noopener">Build an AI/ML Tennis Analysis system with YOLO, PyTorch, and Key Point Extraction</a></p>
+<p><a href="https://blog.roboflow.com/detect-small-objects/" target="_blank" rel="noopener">How to Detect Small Objects: A Guide</a></p>
+<p><a href="https://binginagesh.medium.com/small-object-detection-an-image-tiling-based-approach-bce572d890ca" target="_blank" rel="noopener">Small Object Detection: An Image Tiling Based Approach</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/yolo/" rel="tag"><i class="fa fa-tag"></i> yolo</a>
+              <a href="/tags/opencv/" rel="tag"><i class="fa fa-tag"></i> opencv</a>
+              <a href="/tags/pandas/" rel="tag"><i class="fa fa-tag"></i> pandas</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/ar-magic-shield-with-webrtc-mediapipe/" rel="prev" title="基于 MediaPipe 和 WebRTC 的 AR 魔法盾特效">
+      <i class="fa fa-chevron-left"></i> 基于 MediaPipe 和 WebRTC 的 AR 魔法盾特效
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、简介"><span class="nav-text">一、简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、需求与功能"><span class="nav-text">二、需求与功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-需求分析"><span class="nav-text">1.需求分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-功能展示"><span class="nav-text">2.功能展示</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、技术要点与难点"><span class="nav-text">三、技术要点与难点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、实现过程"><span class="nav-text">四、实现过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-球员追踪与标定"><span class="nav-text">1.球员追踪与标定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-网球检测与标定"><span class="nav-text">2.网球检测与标定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-对网球运动轨迹进行插值"><span class="nav-text">3.对网球运动轨迹进行插值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-keypoints的检测"><span class="nav-text">4.keypoints的检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-迷你球场（mini-court）"><span class="nav-text">5.迷你球场（mini court）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#（1）在mini-court上绘制-keypoints-和-lines"><span class="nav-text">（1）在mini court上绘制 keypoints 和 lines:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（2）在mini-court上绘制-player-和-ball"><span class="nav-text">（2）在mini court上绘制 player 和 ball:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-击球帧的确定"><span class="nav-text">6.击球帧的确定</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#（1）将序列数据转换为dateFrame"><span class="nav-text">（1）将序列数据转换为dateFrame</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（2）以球心为y值，并使用滚动平均法来平滑数据"><span class="nav-text">（2）以球心为y值，并使用滚动平均法来平滑数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（3）使用差分计算delta-y"><span class="nav-text">（3）使用差分计算delta_y</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（4）观察击球的时刻"><span class="nav-text">（4）观察击球的时刻</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（5）使用算法定位击球帧"><span class="nav-text">（5）使用算法定位击球帧</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-数据看板（stats-dashboard）"><span class="nav-text">7.数据看板（stats dashboard）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#（1）计算球的飞行时间"><span class="nav-text">（1）计算球的飞行时间</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（2）计算球的飞行距离"><span class="nav-text">（2）计算球的飞行距离</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（3）计算球速"><span class="nav-text">（3）计算球速</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（4）谁击中的球"><span class="nav-text">（4）谁击中的球</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（5）对手的跑动距离"><span class="nav-text">（5）对手的跑动距离</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（6）对手的速度"><span class="nav-text">（6）对手的速度</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、有待改进的地方"><span class="nav-text">五、有待改进的地方</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-ball-detect-model-有待改进"><span class="nav-text">1.ball detect model 有待改进</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-keypoints-detect-model-有待改进"><span class="nav-text">2.keypoints detect model 有待改进</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-court-keypoints只检测第一帧"><span class="nav-text">3.court keypoints只检测第一帧</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-player-id的确定"><span class="nav-text">4.player id的确定</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-把player和ball的检测用一个模型"><span class="nav-text">5.把player和ball的检测用一个模型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#六、心得体会"><span class="nav-text">六、心得体会</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="roubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">roubin</p>
+  <div class="site-description" itemprop="description">芝兰其室，金石其心<br/>仁义为友，道德为师</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">140</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">81</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/satorioh" title="GitHub → https://github.com/satorioh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wangbinxp@gmail.com" title="E-Mail → mailto:wangbinxp@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://roubinme.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://roubin.me/computer-vision-based-tennis-match-analysis-system/";
+    this.page.identifier = "computer-vision-based-tennis-match-analysis-system/";
+    this.page.title = "基于机器视觉的网球比赛分析系统";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://roubinme.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
