@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"roubin.me","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一、链表1.简单实现一个链表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法复习">
+<meta property="og:url" content="https://roubin.me/algo-review/index.html">
+<meta property="og:site_name" content="肉饼博客">
+<meta property="og:description" content="一、链表1.简单实现一个链表">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://roubin.me/images/algo_review_queue_linked_list.png">
+<meta property="og:image" content="https://roubin.me/images/algo_review_queue_array_1.png">
+<meta property="og:image" content="https://roubin.me/images/algo_review_queue_array_2.png">
+<meta property="og:image" content="https://roubin.me/images/algo_review_hash_array.png">
+<meta property="og:image" content="https://roubin.me/images/algo_review_hash_separate_chaining.png">
+<meta property="og:image" content="https://roubin.me/images/algo_review_bst_insert_node.png">
+<meta property="og:image" content="https://roubin.me/images/algo_review_graph_bfs.png">
+<meta property="og:image" content="https://roubin.me/images/algo_review_graph_dfs.png">
+<meta property="article:published_time" content="2024-07-19T02:49:49.000Z">
+<meta property="article:modified_time" content="2024-07-22T03:54:58.854Z">
+<meta property="article:author" content="roubin">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://roubin.me/images/algo_review_queue_linked_list.png">
+
+<link rel="canonical" href="https://roubin.me/algo-review/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>算法复习 | 肉饼博客</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b55ece62ebeb2e72a8efe3f8b5b43960";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">肉饼博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Talk is cheap. Show me the code.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://roubin.me/algo-review/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="roubin">
+      <meta itemprop="description" content="芝兰其室，金石其心<br/>仁义为友，道德为师">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="肉饼博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          算法复习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-07-19 10:49:49" itemprop="dateCreated datePublished" datetime="2024-07-19T10:49:49+08:00">2024-07-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-07-22 11:54:58" itemprop="dateModified" datetime="2024-07-22T11:54:58+08:00">2024-07-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/algo-review/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="algo-review/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>16k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>14 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="一、链表"><a href="#一、链表" class="headerlink" title="一、链表"></a>一、链表</h3><h4 id="1-简单实现一个链表"><a href="#1-简单实现一个链表" class="headerlink" title="1.简单实现一个链表"></a>1.简单实现一个链表</h4><a id="more"></a>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, val)</span>:</span></span><br><span class="line">        self.val = val</span><br><span class="line">        self.next: ListNode | <span class="literal">None</span> = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化链表 1 -&gt; 3 -&gt; 2 -&gt; 5 -&gt; 4</span></span><br><span class="line">n0 = ListNode(<span class="number">1</span>)</span><br><span class="line">n1 = ListNode(<span class="number">3</span>)</span><br><span class="line">n2 = ListNode(<span class="number">2</span>)</span><br><span class="line">n3 = ListNode(<span class="number">5</span>)</span><br><span class="line">n4 = ListNode(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">n0.next = n1</span><br><span class="line">n1.next = n2</span><br><span class="line">n2.next = n3</span><br><span class="line">n3.next = n4</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 插入</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insert</span><span class="params">(n0, p)</span>:</span></span><br><span class="line">    <span class="string">"""在n0后插入节点p"""</span></span><br><span class="line">    p = ListNode(<span class="number">6</span>)</span><br><span class="line">    p.next = n1</span><br><span class="line">    n0.next = p</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove</span><span class="params">(n0)</span>:</span></span><br><span class="line">    <span class="string">"""删除n0后的节点p"""</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> n0.next:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    p = n0.next</span><br><span class="line">    n1 = p.next</span><br><span class="line">    n0.next = n1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">access</span><span class="params">(head: ListNode, index: int)</span> -&gt; ListNode | <span class="keyword">None</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> head:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(index):</span><br><span class="line">        head = head.next</span><br><span class="line">    <span class="keyword">return</span> head</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># print(access(n0, 2).val)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find</span><span class="params">(head: ListNode, val: int)</span> -&gt; int:</span></span><br><span class="line">    <span class="string">"""在链表中查找值为 target 的首个节点"""</span></span><br><span class="line">    index = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> head:</span><br><span class="line">        <span class="keyword">if</span> head.val == val:</span><br><span class="line">            <span class="keyword">return</span> index</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            index += <span class="number">1</span></span><br><span class="line">            head = head.next</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(find(n0, <span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、队列"><a href="#二、队列" class="headerlink" title="二、队列"></a>二、队列</h3><h4 id="1-基于链表实现队列"><a href="#1-基于链表实现队列" class="headerlink" title="1.基于链表实现队列"></a>1.基于链表实现队列</h4><p>我们可以将链表的“头节点”和“尾节点”分别视为“队首”和“队尾”，规定队尾仅可添加节点，队首仅可删除节点<br><img src="../images/algo_review_queue_linked_list.png" alt=""></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, val)</span>:</span></span><br><span class="line">        self.val = val</span><br><span class="line">        self.next: ListNode | <span class="literal">None</span> = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinkedListQueue</span>:</span></span><br><span class="line">    <span class="string">"""基于链表实现的队列"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._front = <span class="literal">None</span>  <span class="comment"># 头节点</span></span><br><span class="line">        self._rear = <span class="literal">None</span>  <span class="comment"># 尾节点</span></span><br><span class="line">        self._size = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">size</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._size</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.size() == <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span><span class="params">(self, num)</span>:</span></span><br><span class="line">        node = ListNode(num)</span><br><span class="line">        <span class="keyword">if</span> self._front <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            self._front = node</span><br><span class="line">            self._rear = node</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self._rear.next = node</span><br><span class="line">            self._rear = node</span><br><span class="line">            self._size += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">peek</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">raise</span> IndexError(<span class="string">"队列为空"</span>)</span><br><span class="line">        <span class="keyword">return</span> self._front.val</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self)</span>:</span></span><br><span class="line">        num = self.peek()</span><br><span class="line">        self._front = self._front.next</span><br><span class="line">        self._size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> num</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">to_list</span><span class="params">(self)</span>:</span></span><br><span class="line">        arr = []</span><br><span class="line">        node = self._front</span><br><span class="line">        <span class="keyword">while</span> node:</span><br><span class="line">            arr.append(node.val)</span><br><span class="line">            node = node.next</span><br><span class="line">        <span class="keyword">return</span> arr</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-基于数组实现队列"><a href="#2-基于数组实现队列" class="headerlink" title="2.基于数组实现队列"></a>2.基于数组实现队列</h4><p>我们可以使用一个变量 front 指向队首元素的索引，并维护一个变量 size 用于记录队列长度。定义 rear = front + size ，这个公式计算出的 rear 指向队尾元素之后的下一个位置。</p>
+<p>基于此设计，<strong>数组中包含元素的有效区间为 [front, rear - 1]</strong>，各种操作的实现方法如图所示。</p>
+<ul>
+<li>入队操作：将输入元素赋值给 rear 索引处，并将 size 增加 1 。</li>
+<li>出队操作：只需将 front 增加 1 ，并将 size 减少 1 。</li>
+</ul>
+<p><img src="../images/algo_review_queue_array_1.png" alt="img.png"></p>
+<p><img src="../images/algo_review_queue_array_2.png" alt="img.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArrayQueue</span>:</span></span><br><span class="line">    <span class="string">"""基于环形数组实现的队列"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, size)</span>:</span></span><br><span class="line">        self._nums = [<span class="number">0</span>] * size</span><br><span class="line">        self._front = <span class="number">0</span>  <span class="comment"># 队首指针</span></span><br><span class="line">        self._size = <span class="number">0</span>  <span class="comment"># 队列长度</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">capacity</span><span class="params">(self)</span> -&gt; int:</span></span><br><span class="line">        <span class="string">"""获取队列的容量"""</span></span><br><span class="line">        <span class="keyword">return</span> len(self._nums)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">size</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._size</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._size == <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span><span class="params">(self, num)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.size() == self.capacity():</span><br><span class="line">            <span class="keyword">raise</span> IndexError(<span class="string">"队列已满"</span>)</span><br><span class="line">        <span class="comment"># 计算队尾指针，指向队尾索引 + 1</span></span><br><span class="line">        <span class="comment"># 通过取余操作实现 rear 越过数组尾部后回到头部</span></span><br><span class="line">        rear: int = (self._front + self._size) % self.capacity()</span><br><span class="line">        self._nums[rear] = num</span><br><span class="line">        self._size += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self)</span> -&gt; int:</span></span><br><span class="line">        <span class="string">"""出队"""</span></span><br><span class="line">        num: int = self.peek()</span><br><span class="line">        <span class="comment"># 队首指针向后移动一位，若越过尾部，则返回到数组头部</span></span><br><span class="line">        self._front = (self._front + <span class="number">1</span>) % self.capacity()</span><br><span class="line">        self._size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> num</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">peek</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">raise</span> IndexError(<span class="string">"队列为空"</span>)</span><br><span class="line">        <span class="keyword">return</span> self._nums[self._front]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">to_list</span><span class="params">(self)</span> -&gt; list[int]:</span></span><br><span class="line">        <span class="string">"""返回列表用于打印"""</span></span><br><span class="line">        res = [<span class="number">0</span>] * self.size()</span><br><span class="line">        j: int = self._front</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.size()):</span><br><span class="line">            res[i] = self._nums[(j % self.capacity())]</span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、栈"><a href="#三、栈" class="headerlink" title="三、栈"></a>三、栈</h3><h4 id="1-基于链表实现栈"><a href="#1-基于链表实现栈" class="headerlink" title="1.基于链表实现栈"></a>1.基于链表实现栈</h4><p>使用链表实现栈时，我们可以将链表的头节点视为栈顶，尾节点视为栈底<br>对于入栈操作，我们只需将<strong>元素插入链表头部</strong>，而对于出栈操作，只需将<strong>头节点从链表中删除</strong>即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ListNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, val)</span>:</span></span><br><span class="line">        self.val = val</span><br><span class="line">        self.next: ListNode | <span class="literal">None</span> = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LinkedListStack</span>:</span></span><br><span class="line">    <span class="string">"""基于链表实现的栈"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._peek: ListNode | <span class="literal">None</span> = <span class="literal">None</span></span><br><span class="line">        self._size: int = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">size</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._size</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._size == <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span><span class="params">(self, val: int)</span>:</span></span><br><span class="line">        p = ListNode(val)</span><br><span class="line">        p.next = self._peek</span><br><span class="line">        self._peek = p</span><br><span class="line">        self._size += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">peek</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">raise</span> IndexError(<span class="string">"栈为空"</span>)</span><br><span class="line">        <span class="keyword">return</span> self._peek.val</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self)</span>:</span></span><br><span class="line">        num = self.peek()</span><br><span class="line">        self._peek = self._peek.next</span><br><span class="line">        self._size -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> num</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">to_list</span><span class="params">(self)</span>:</span></span><br><span class="line">        node = self._peek</span><br><span class="line">        arr = []</span><br><span class="line">        <span class="keyword">while</span> node:</span><br><span class="line">            arr.append(node)</span><br><span class="line">            node = node.next</span><br><span class="line">        <span class="keyword">return</span> arr</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-基于数组实现栈"><a href="#2-基于数组实现栈" class="headerlink" title="2.基于数组实现栈"></a>2.基于数组实现栈</h4><p>可以将数组的尾部作为栈顶。入栈与出栈操作分别对应在数组尾部添加元素与删除元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArrayStack</span>:</span></span><br><span class="line">    <span class="string">"""基于数组实现的栈"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self._stack = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">size</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self._stack)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.size() == <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span><span class="params">(self, item)</span>:</span></span><br><span class="line">        self._stack.append(item)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">raise</span> IndexError(<span class="string">"栈为空"</span>)</span><br><span class="line">        <span class="keyword">return</span> self._stack.pop()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">peek</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">raise</span> IndexError(<span class="string">"栈为空"</span>)</span><br><span class="line">        <span class="keyword">return</span> self._stack[<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">to_list</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._stack</span><br></pre></td></tr></table></figure>
+
+<h3 id="四、哈希表"><a href="#四、哈希表" class="headerlink" title="四、哈希表"></a>四、哈希表</h3><h4 id="1-基于数组实现哈希表"><a href="#1-基于数组实现哈希表" class="headerlink" title="1.基于数组实现哈希表"></a>1.基于数组实现哈希表</h4><p><img src="../images/algo_review_hash_array.png" alt="img.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pair</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, key, val)</span>:</span></span><br><span class="line">        self.key = key</span><br><span class="line">        self.val = val</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArrayHashMap</span>:</span></span><br><span class="line">    <span class="string">"""基于数组实现的哈希表"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.buckets: list[Pair | <span class="literal">None</span>] = [<span class="literal">None</span>] * <span class="number">100</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hash_func</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        index = key % <span class="number">100</span></span><br><span class="line">        <span class="keyword">return</span> index</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        index = self.hash_func(key)</span><br><span class="line">        pair: Pair = self.buckets[index]</span><br><span class="line">        <span class="keyword">if</span> pair <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">return</span> pair.val</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">put</span><span class="params">(self, key, val)</span>:</span></span><br><span class="line">        pair = Pair(key, val)</span><br><span class="line">        index = self.hash_func(key)</span><br><span class="line">        self.buckets[index] = pair</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">remove</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        index = self.hash_func(key)</span><br><span class="line">        self.buckets[index] = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">entry_set</span><span class="params">(self)</span> -&gt; list[Pair]:</span></span><br><span class="line">        <span class="string">"""获取所有键值对"""</span></span><br><span class="line">        result: list[Pair] = []</span><br><span class="line">        <span class="keyword">for</span> pair <span class="keyword">in</span> self.buckets:</span><br><span class="line">            <span class="keyword">if</span> pair <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                result.append(pair)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">key_set</span><span class="params">(self)</span> -&gt; list[int]:</span></span><br><span class="line">        <span class="string">"""获取所有键"""</span></span><br><span class="line">        result = []</span><br><span class="line">        <span class="keyword">for</span> pair <span class="keyword">in</span> self.buckets:</span><br><span class="line">            <span class="keyword">if</span> pair <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                result.append(pair.key)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">value_set</span><span class="params">(self)</span> -&gt; list[str]:</span></span><br><span class="line">        <span class="string">"""获取所有值"""</span></span><br><span class="line">        result = []</span><br><span class="line">        <span class="keyword">for</span> pair <span class="keyword">in</span> self.buckets:</span><br><span class="line">            <span class="keyword">if</span> pair <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                result.append(pair.val)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""打印哈希表"""</span></span><br><span class="line">        <span class="keyword">for</span> pair <span class="keyword">in</span> self.buckets:</span><br><span class="line">            <span class="keyword">if</span> pair <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                print(pair.key, <span class="string">"-&gt;"</span>, pair.val)</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-基于链式地址实现哈希表"><a href="#2-基于链式地址实现哈希表" class="headerlink" title="2.基于链式地址实现哈希表"></a>2.基于链式地址实现哈希表</h4><p>链式地址（separate chaining）将单个元素转换为链表，将键值对作为链表节点，将所有发生冲突的键值对都存储在同一链表中。</p>
+<p>基于链式地址实现的哈希表的操作方法发生了以下变化。</p>
+<ul>
+<li>查询元素：输入 key ，经过哈希函数得到桶索引，即可访问链表头节点，然后遍历链表并对比 key 以查找目标键值对。</li>
+<li>添加元素：首先通过哈希函数访问链表头节点，然后将节点（键值对）添加到链表中。<br>-删除元素：根据哈希函数的结果访问链表头部，接着遍历链表以查找目标节点并将其删除。</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>占用空间增大：链表包含节点指针，它相比数组更加耗费内存空间。</li>
+<li>查询效率降低：因为需要线性遍历链表来查找对应元素。</li>
+</ul>
+<p><strong>可优化：</strong>值得注意的是，当链表很长时，查询效率 𝑂(𝑛) 很差。此时可以将链表转换为“AVL 树”或“红黑树”，从而将查询操作的时间复杂度优化至 𝑂(log⁡𝑛) 。<br><img src="../images/algo_review_hash_separate_chaining.png" alt="img.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pair</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, key, val)</span>:</span></span><br><span class="line">        self.key = key</span><br><span class="line">        self.val = val</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HashMapChaining</span>:</span></span><br><span class="line">    <span class="string">"""基于数组实现的链式地址哈希表"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""构造方法"""</span></span><br><span class="line">        self.size = <span class="number">0</span>  <span class="comment"># 键值对数量</span></span><br><span class="line">        self.capacity = <span class="number">4</span>  <span class="comment"># 哈希表容量</span></span><br><span class="line">        self.load_thres = <span class="number">2.0</span> / <span class="number">3.0</span>  <span class="comment"># 触发扩容的负载因子阈值</span></span><br><span class="line">        self.extend_ratio = <span class="number">2</span>  <span class="comment"># 扩容倍数</span></span><br><span class="line">        self.buckets = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> range(self.capacity)]  <span class="comment"># 桶数组</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hash_func</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> key % self.capacity</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">load_factor</span><span class="params">(self)</span> -&gt; float:</span></span><br><span class="line">        <span class="string">"""负载因子"""</span></span><br><span class="line">        <span class="keyword">return</span> self.size / self.capacity</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        index = self.hash_func(key)</span><br><span class="line">        bucket = self.buckets[index]</span><br><span class="line">        <span class="keyword">for</span> pair <span class="keyword">in</span> bucket:</span><br><span class="line">            <span class="keyword">if</span> pair.key == key:</span><br><span class="line">                <span class="keyword">return</span> pair.val</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">put</span><span class="params">(self, key, val)</span>:</span></span><br><span class="line">        <span class="string">"""添加操作"""</span></span><br><span class="line">        <span class="comment"># 当负载因子超过阈值时，执行扩容</span></span><br><span class="line">        <span class="keyword">if</span> self.load_factor() &gt; self.load_thres:</span><br><span class="line">            self.extend()</span><br><span class="line">        index = self.hash_func(key)</span><br><span class="line">        bucket = self.buckets[index]</span><br><span class="line">        <span class="comment"># 遍历桶，若遇到指定 key ，则更新对应 val 并返回</span></span><br><span class="line">        <span class="keyword">for</span> pair <span class="keyword">in</span> bucket:</span><br><span class="line">            <span class="keyword">if</span> pair.key == key:</span><br><span class="line">                pair.val = val</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">        <span class="comment"># 若无该 key ，则将键值对添加至尾部</span></span><br><span class="line">        pair = Pair(key, val)</span><br><span class="line">        bucket.append(pair)</span><br><span class="line">        self.size += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">remove</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        index = self.hash_func(key)</span><br><span class="line">        bucket = self.buckets[index]</span><br><span class="line">        <span class="keyword">for</span> pair <span class="keyword">in</span> bucket:</span><br><span class="line">            <span class="keyword">if</span> pair.key == key:</span><br><span class="line">                bucket.remove(pair)</span><br><span class="line">                self.size -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">extend</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""扩容哈希表"""</span></span><br><span class="line">        <span class="comment"># 暂存原哈希表</span></span><br><span class="line">        buckets = self.buckets</span><br><span class="line">        self.capacity *= self.extend_ratio</span><br><span class="line">        self.buckets = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> range(self.capacity)]</span><br><span class="line">        <span class="comment"># 将键值对从原哈希表搬运至新哈希表</span></span><br><span class="line">        <span class="keyword">for</span> bucket <span class="keyword">in</span> buckets:</span><br><span class="line">            <span class="keyword">for</span> pair <span class="keyword">in</span> bucket:</span><br><span class="line">                self.put(pair.key, pair.val)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""打印哈希表"""</span></span><br><span class="line">        <span class="keyword">for</span> bucket <span class="keyword">in</span> self.buckets:</span><br><span class="line">            res = []</span><br><span class="line">            <span class="keyword">for</span> pair <span class="keyword">in</span> bucket:</span><br><span class="line">                res.append(str(pair.key) + <span class="string">" -&gt; "</span> + pair.val)</span><br><span class="line">            print(res)</span><br></pre></td></tr></table></figure>
+
+<h3 id="五、二叉树"><a href="#五、二叉树" class="headerlink" title="五、二叉树"></a>五、二叉树</h3><h4 id="1-简单二叉树的实现"><a href="#1-简单二叉树的实现" class="headerlink" title="1.简单二叉树的实现"></a>1.简单二叉树的实现</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, val)</span>:</span></span><br><span class="line">        self.val = val</span><br><span class="line">        self.left: TreeNode | <span class="literal">None</span> = <span class="literal">None</span></span><br><span class="line">        self.right: TreeNode | <span class="literal">None</span> = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">n1 = TreeNode(val=<span class="number">1</span>)</span><br><span class="line">n2 = TreeNode(val=<span class="number">2</span>)</span><br><span class="line">n3 = TreeNode(val=<span class="number">3</span>)</span><br><span class="line">n4 = TreeNode(val=<span class="number">4</span>)</span><br><span class="line">n5 = TreeNode(val=<span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">n1.left = n2</span><br><span class="line">n1.right = n3</span><br><span class="line">n2.left = n4</span><br><span class="line">n2.right = n5</span><br><span class="line"></span><br><span class="line"><span class="comment"># 插入：在 n1 -&gt; n2 中间插入节点 P</span></span><br><span class="line">p = TreeNode(val=<span class="number">6</span>)</span><br><span class="line">n1.left = p</span><br><span class="line">p.left = n2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除p</span></span><br><span class="line">n1.left = n2</span><br></pre></td></tr></table></figure>
+<h4 id="2-基于数组实现的二叉树"><a href="#2-基于数组实现的二叉树" class="headerlink" title="2.基于数组实现的二叉树"></a>2.基于数组实现的二叉树</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArrayBinaryTree</span>:</span></span><br><span class="line">    <span class="string">"""数组表示下的二叉树类"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, arr: list[int | None])</span>:</span></span><br><span class="line">        <span class="string">"""构造方法"""</span></span><br><span class="line">        self._tree = list(arr)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">size</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""列表容量"""</span></span><br><span class="line">        <span class="keyword">return</span> len(self._tree)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">val</span><span class="params">(self, i: int)</span> -&gt; int | <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="string">"""获取索引为 i 节点的值"""</span></span><br><span class="line">        <span class="comment"># 若索引越界，则返回 None ，代表空位</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; <span class="number">0</span> <span class="keyword">or</span> i &gt;= self.size():</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">return</span> self._tree[i]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">left</span><span class="params">(self, i: int)</span> -&gt; int | <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="string">"""获取索引为 i 节点的左子节点的索引"""</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span> * i + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">right</span><span class="params">(self, i: int)</span> -&gt; int | <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="string">"""获取索引为 i 节点的右子节点的索引"""</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span> * i + <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parent</span><span class="params">(self, i: int)</span> -&gt; int | <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="string">"""获取索引为 i 节点的父节点的索引"""</span></span><br><span class="line">        <span class="keyword">return</span> (i - <span class="number">1</span>) // <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">level_order</span><span class="params">(self)</span> -&gt; list[int]:</span></span><br><span class="line">        <span class="string">"""层序遍历"""</span></span><br><span class="line">        self.res = []</span><br><span class="line">        <span class="comment"># 直接遍历数组</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.size()):</span><br><span class="line">            <span class="keyword">if</span> self.val(i) <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                self.res.append(self.val(i))</span><br><span class="line">        <span class="keyword">return</span> self.res</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(self, i: int, order: str)</span>:</span></span><br><span class="line">        <span class="string">"""深度优先遍历"""</span></span><br><span class="line">        <span class="keyword">if</span> self.val(i) <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        <span class="comment"># 前序遍历</span></span><br><span class="line">        <span class="keyword">if</span> order == <span class="string">"pre"</span>:</span><br><span class="line">            self.res.append(self.val(i))</span><br><span class="line">        self.dfs(self.left(i), order)</span><br><span class="line">        <span class="comment"># 中序遍历</span></span><br><span class="line">        <span class="keyword">if</span> order == <span class="string">"in"</span>:</span><br><span class="line">            self.res.append(self.val(i))</span><br><span class="line">        self.dfs(self.right(i), order)</span><br><span class="line">        <span class="comment"># 后序遍历</span></span><br><span class="line">        <span class="keyword">if</span> order == <span class="string">"post"</span>:</span><br><span class="line">            self.res.append(self.val(i))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pre_order</span><span class="params">(self)</span> -&gt; list[int]:</span></span><br><span class="line">        <span class="string">"""前序遍历"""</span></span><br><span class="line">        self.res = []</span><br><span class="line">        self.dfs(<span class="number">0</span>, order=<span class="string">"pre"</span>)</span><br><span class="line">        <span class="keyword">return</span> self.res</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">in_order</span><span class="params">(self)</span> -&gt; list[int]:</span></span><br><span class="line">        <span class="string">"""中序遍历"""</span></span><br><span class="line">        self.res = []</span><br><span class="line">        self.dfs(<span class="number">0</span>, order=<span class="string">"in"</span>)</span><br><span class="line">        <span class="keyword">return</span> self.res</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post_order</span><span class="params">(self)</span> -&gt; list[int]:</span></span><br><span class="line">        <span class="string">"""后序遍历"""</span></span><br><span class="line">        self.res = []</span><br><span class="line">        self.dfs(<span class="number">0</span>, order=<span class="string">"post"</span>)</span><br><span class="line">        <span class="keyword">return</span> self.res</span><br></pre></td></tr></table></figure>
+
+<h3 id="六、二叉搜索树"><a href="#六、二叉搜索树" class="headerlink" title="六、二叉搜索树"></a>六、二叉搜索树</h3><p>二叉搜索树（binary search tree）满足以下条件。</p>
+<ol>
+<li>对于根节点，左子树中所有节点的值 &lt; 根节点的值 &lt; 右子树中所有节点的值。</li>
+<li>任意节点的左、右子树也是二叉搜索树，即同样满足条件 1.</li>
+<li>不允许存在重复节点</li>
+</ol>
+<h4 id="1-查找节点"><a href="#1-查找节点" class="headerlink" title="1.查找节点"></a>1.查找节点</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(root, num)</span>:</span></span><br><span class="line">    cur = root</span><br><span class="line">    <span class="keyword">while</span> cur:</span><br><span class="line">        <span class="keyword">if</span> cur.val &lt; num:</span><br><span class="line">            cur = cur.right</span><br><span class="line">        <span class="keyword">elif</span> cur.val &gt; num:</span><br><span class="line">            cur = cur.left</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> cur</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-插入节点"><a href="#2-插入节点" class="headerlink" title="2.插入节点"></a>2.插入节点</h4><p>给定一个待插入元素 num ，为了保持二叉搜索树“左子树 &lt; 根节点 &lt; 右子树”的性质，插入操作流程如图所示。</p>
+<ol>
+<li>查找插入位置：与查找操作相似，从根节点出发，根据当前节点值和 num 的大小关系循环向下搜索，直到越过叶节点（遍历至 None ）时跳出循环。</li>
+<li>在该位置插入节点：初始化节点 num ，将该节点置于 None 的位置</li>
+</ol>
+<p><img src="../images/algo_review_bst_insert_node.png" alt="img.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insert</span><span class="params">(root, num)</span>:</span></span><br><span class="line">    <span class="string">"""插入节点"""</span></span><br><span class="line">    <span class="comment"># 若树为空，则初始化为根节点</span></span><br><span class="line">    <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        root = TreeNode(num)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    cur, pre = root, <span class="literal">None</span></span><br><span class="line">    <span class="keyword">while</span> cur <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="comment"># 找到重复节点，直接返回</span></span><br><span class="line">        <span class="keyword">if</span> cur.val == num:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        pre = cur</span><br><span class="line">        <span class="keyword">if</span> cur.val &lt; num:</span><br><span class="line">            cur = cur.right</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cur = cur.left</span><br><span class="line">    <span class="comment"># 插入节点</span></span><br><span class="line">    node = TreeNode(num)</span><br><span class="line">    <span class="keyword">if</span> pre.val &lt; num:</span><br><span class="line">        pre.right = node</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        pre.left = node</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-删除节点"><a href="#3-删除节点" class="headerlink" title="3.删除节点"></a>3.删除节点</h4><p>根据目标节点的子节点数量，分 0、1 和 2 三种情况:</p>
+<ol>
+<li>度为0：直接删除</li>
+<li>度为1：将待删除节点替换为其子节点</li>
+<li>度为2：找到待删除节点在“中序遍历序列”中的下一个节点，记为 tmp；用 tmp 的值覆盖待删除节点的值，并在树中递归删除节点 tmp</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove</span><span class="params">(self, num: int)</span>:</span></span><br><span class="line">    <span class="string">"""删除节点"""</span></span><br><span class="line">    <span class="comment"># 若树为空，直接提前返回</span></span><br><span class="line">    <span class="keyword">if</span> self._root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="comment"># 循环查找，越过叶节点后跳出</span></span><br><span class="line">    cur, pre = self._root, <span class="literal">None</span></span><br><span class="line">    <span class="keyword">while</span> cur <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="comment"># 找到待删除节点，跳出循环</span></span><br><span class="line">        <span class="keyword">if</span> cur.val == num:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        pre = cur</span><br><span class="line">        <span class="comment"># 待删除节点在 cur 的右子树中</span></span><br><span class="line">        <span class="keyword">if</span> cur.val &lt; num:</span><br><span class="line">            cur = cur.right</span><br><span class="line">        <span class="comment"># 待删除节点在 cur 的左子树中</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cur = cur.left</span><br><span class="line">    <span class="comment"># 若无待删除节点，则直接返回</span></span><br><span class="line">    <span class="keyword">if</span> cur <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 子节点数量 = 0 or 1</span></span><br><span class="line">    <span class="keyword">if</span> cur.left <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> cur.right <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="comment"># 当子节点数量 = 0 / 1 时， child = null / 该子节点</span></span><br><span class="line">        child = cur.left <span class="keyword">or</span> cur.right</span><br><span class="line">        <span class="comment"># 删除节点 cur</span></span><br><span class="line">        <span class="keyword">if</span> cur != self._root:</span><br><span class="line">            <span class="keyword">if</span> pre.left == cur:</span><br><span class="line">                pre.left = child</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                pre.right = child</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 若删除节点为根节点，则重新指定根节点</span></span><br><span class="line">            self._root = child</span><br><span class="line">    <span class="comment"># 子节点数量 = 2</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># 获取中序遍历中 cur 的下一个节点</span></span><br><span class="line">        tmp: TreeNode = cur.right</span><br><span class="line">        <span class="keyword">while</span> tmp.left <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            tmp = tmp.left</span><br><span class="line">        <span class="comment"># 递归删除节点 tmp</span></span><br><span class="line">        self.remove(tmp.val)</span><br><span class="line">        <span class="comment"># 用 tmp 覆盖 cur</span></span><br><span class="line">        cur.val = tmp.val</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-将list转换为bst（二叉搜索树）"><a href="#4-将list转换为bst（二叉搜索树）" class="headerlink" title="4.将list转换为bst（二叉搜索树）"></a>4.将list转换为bst（二叉搜索树）</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">7</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">10</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, val)</span>:</span></span><br><span class="line">        self.val = val</span><br><span class="line">        self.left = <span class="literal">None</span></span><br><span class="line">        self.right = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">build_bst</span><span class="params">(arr)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> arr:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    arr.sort()</span><br><span class="line">    mid = len(arr) // <span class="number">2</span></span><br><span class="line">    root = TreeNode(arr[mid])</span><br><span class="line">    root.left = build_bst(arr[:mid])</span><br><span class="line">    root.right = build_bst(arr[mid + <span class="number">1</span>:])</span><br><span class="line">    <span class="keyword">return</span> root</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">root = build_bst(a)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inorder</span><span class="params">(root)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    inorder(root.left)</span><br><span class="line">    print(root.val)</span><br><span class="line">    inorder(root.right)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">inorder(root)</span><br></pre></td></tr></table></figure>
+
+<h3 id="七、堆"><a href="#七、堆" class="headerlink" title="七、堆"></a>七、堆</h3><h4 id="1-使用数组实现大顶堆"><a href="#1-使用数组实现大顶堆" class="headerlink" title="1.使用数组实现大顶堆"></a>1.使用数组实现大顶堆</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyMaxHeap</span>:</span></span><br><span class="line">    <span class="string">"""使用数组实现大顶堆"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.max_heap = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">size</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.max_heap)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">not</span> self.max_heap</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">left</span><span class="params">(self, i: int)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span> * i + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">right</span><span class="params">(self, i: int)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span> * i + <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parent</span><span class="params">(self, i: int)</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">return</span> (i - <span class="number">1</span>) // <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">peek</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.max_heap[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">swap</span><span class="params">(self, i, j)</span>:</span></span><br><span class="line">        <span class="string">"""交换堆中的两个元素"""</span></span><br><span class="line">        self.max_heap[i], self.max_heap[j] = self.max_heap[j], self.max_heap[i]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span><span class="params">(self, val)</span>:</span></span><br><span class="line">        self.max_heap.append(val)</span><br><span class="line">        self.sift_up(self.size() - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sift_up</span><span class="params">(self, i)</span>:</span></span><br><span class="line">        <span class="string">"""从节点 i 开始，从底至顶堆化"""</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            p_index = self.parent(i)</span><br><span class="line">            <span class="comment"># 当“越过根节点”或“节点无须修复”时，结束堆化</span></span><br><span class="line">            <span class="keyword">if</span> p_index &lt; <span class="number">0</span> <span class="keyword">or</span> self.max_heap[i] &lt;= self.max_heap[p_index]:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="comment"># 交换两节点</span></span><br><span class="line">            self.swap(i, p_index)</span><br><span class="line">            <span class="comment"># 循环向上堆化</span></span><br><span class="line">            i = p_index</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.is_empty():</span><br><span class="line">            <span class="keyword">raise</span> IndexError(<span class="string">"堆为空"</span>)</span><br><span class="line">        <span class="comment"># 交换根节点和最后一个节点</span></span><br><span class="line">        self.swap(<span class="number">0</span>, self.size() - <span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 删除最后一个节点</span></span><br><span class="line">        val = self.max_heap.pop()</span><br><span class="line">        <span class="comment"># 从顶至下进行堆化</span></span><br><span class="line">        self.sift_down(<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> val</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sift_down</span><span class="params">(self, i: int)</span>:</span></span><br><span class="line">        <span class="string">"""从节点 i 开始，从顶至底堆化"""</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="comment"># 判断节点 i, l, r 中值最大的节点，记为 ma</span></span><br><span class="line">            l_index, r_index, max_index = self.left(i), self.right(i), i</span><br><span class="line">            <span class="keyword">if</span> l_index &lt; self.size() <span class="keyword">and</span> self.max_heap[l_index] &gt; self.max_heap[max_index]:</span><br><span class="line">                max_index = l_index</span><br><span class="line">            <span class="keyword">if</span> r_index &lt; self.size() <span class="keyword">and</span> self.max_heap[r_index] &gt; self.max_heap[max_index]:</span><br><span class="line">                max_index = r_index</span><br><span class="line">            <span class="comment"># 若节点 i 最大或索引 l, r 越界，则无须继续堆化，跳出</span></span><br><span class="line">            <span class="keyword">if</span> max_index == i:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="comment"># 交换两节点</span></span><br><span class="line">            self.swap(i, max_index)</span><br><span class="line">            <span class="comment"># 循环向下堆化</span></span><br><span class="line">            i = max_index</span><br></pre></td></tr></table></figure>
+<h4 id="2-Top-k-问题"><a href="#2-Top-k-问题" class="headerlink" title="2.Top-k 问题"></a>2.Top-k 问题</h4><ol>
+<li>初始化一个小顶堆，其堆顶元素最小。</li>
+<li>先将数组的前 𝑘 个元素依次入堆。</li>
+<li>从第 𝑘+1 个元素开始，若当前元素大于堆顶元素，则将堆顶元素出堆，并将当前元素入堆（并堆化）。</li>
+<li>遍历完成后，堆中保存的就是最大的 𝑘 个元素。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">top_k_heap</span><span class="params">(nums: list[int], k: int)</span> -&gt; list[int]:</span></span><br><span class="line">    <span class="string">"""基于堆查找数组中最大的 k 个元素"""</span></span><br><span class="line">    <span class="comment"># 初始化小顶堆</span></span><br><span class="line">    heap = []</span><br><span class="line">    <span class="comment"># 将数组的前 k 个元素入堆</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(k):</span><br><span class="line">        heapq.heappush(heap, nums[i])</span><br><span class="line">    <span class="comment"># 从第 k+1 个元素开始，保持堆的长度为 k</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(k, len(nums)):</span><br><span class="line">        <span class="comment"># 若当前元素大于堆顶元素，则将堆顶元素出堆、当前元素入堆</span></span><br><span class="line">        <span class="keyword">if</span> nums[i] &gt; heap[<span class="number">0</span>]:</span><br><span class="line">            heapq.heappop(heap)</span><br><span class="line">            heapq.heappush(heap, nums[i])</span><br><span class="line">    <span class="keyword">return</span> heap</span><br></pre></td></tr></table></figure>
+<h3 id="八、图"><a href="#八、图" class="headerlink" title="八、图"></a>八、图</h3><h4 id="1-基于邻接矩阵实现图"><a href="#1-基于邻接矩阵实现图" class="headerlink" title="1.基于邻接矩阵实现图"></a>1.基于邻接矩阵实现图</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GraphAdjMat</span>:</span></span><br><span class="line">    <span class="string">"""基于邻接矩阵实现的无向图类"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, vertices: list[int], edges: list[list[int]])</span>:</span></span><br><span class="line">        <span class="comment"># 顶点列表，元素代表“顶点值”，索引代表“顶点索引”</span></span><br><span class="line">        self.vertices: list[int] = []</span><br><span class="line">        <span class="comment"># 邻接矩阵，行列索引对应“顶点索引”</span></span><br><span class="line">        self.adj_mat: list[list[int]] = []</span><br><span class="line">        <span class="keyword">for</span> val <span class="keyword">in</span> vertices:</span><br><span class="line">            self.add_vertex(val)</span><br><span class="line">        <span class="keyword">for</span> pair <span class="keyword">in</span> edges:</span><br><span class="line">            self.add_edge(pair[<span class="number">0</span>], pair[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">size</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""获取顶点数量"""</span></span><br><span class="line">        <span class="keyword">return</span> len(self.vertices)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_vertex</span><span class="params">(self, val)</span>:</span></span><br><span class="line">        n = self.size()</span><br><span class="line">        self.vertices.append(val)</span><br><span class="line">        new_row = [<span class="number">0</span>] * n</span><br><span class="line">        <span class="comment"># 添加行</span></span><br><span class="line">        self.adj_mat.append(new_row)</span><br><span class="line">        <span class="comment"># 添加列</span></span><br><span class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> self.adj_mat:</span><br><span class="line">            row.append(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">remove_vertex</span><span class="params">(self, index)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> index &gt; self.size():</span><br><span class="line">            <span class="keyword">raise</span> IndexError</span><br><span class="line">        self.vertices.pop(index)</span><br><span class="line">        self.adj_mat.pop(index)</span><br><span class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> self.adj_mat:</span><br><span class="line">            row.pop(index)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_edge</span><span class="params">(self, i, j)</span>:</span></span><br><span class="line">        <span class="comment"># 索引越界与相等处理</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; <span class="number">0</span> <span class="keyword">or</span> j &lt; <span class="number">0</span> <span class="keyword">or</span> i &gt; self.size() <span class="keyword">or</span> j &gt; self.size() <span class="keyword">or</span> i == j:</span><br><span class="line">            <span class="keyword">raise</span> IndexError</span><br><span class="line">        <span class="comment"># 在无向图中，邻接矩阵关于主对角线对称，即满足 (i, j) == (j, i)</span></span><br><span class="line">        self.adj_mat[i][j] = <span class="number">1</span></span><br><span class="line">        self.adj_mat[j][i] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">remove_edge</span><span class="params">(self, i, j)</span>:</span></span><br><span class="line">        <span class="comment"># 索引越界与相等处理</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; <span class="number">0</span> <span class="keyword">or</span> j &lt; <span class="number">0</span> <span class="keyword">or</span> i &gt; self.size() <span class="keyword">or</span> j &gt; self.size() <span class="keyword">or</span> i == j:</span><br><span class="line">            <span class="keyword">raise</span> IndexError</span><br><span class="line">        <span class="comment"># 在无向图中，邻接矩阵关于主对角线对称，即满足 (i, j) == (j, i)</span></span><br><span class="line">        self.adj_mat[i][j] = <span class="number">0</span></span><br><span class="line">        self.adj_mat[j][i] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""打印邻接矩阵"""</span></span><br><span class="line">        print(<span class="string">"顶点列表 ="</span>, self.vertices)</span><br><span class="line">        print(<span class="string">"邻接矩阵 ="</span>)</span><br><span class="line">        print(self.adj_mat)</span><br></pre></td></tr></table></figure>
+<h4 id="2-基于邻接表实现图"><a href="#2-基于邻接表实现图" class="headerlink" title="2.基于邻接表实现图"></a>2.基于邻接表实现图</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vertex</span>:</span></span><br><span class="line">    <span class="string">"""顶点类"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, val: int)</span>:</span></span><br><span class="line">        self.val = val</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GraphAdjList</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    基于邻接表实现的无向图类</span></span><br><span class="line"><span class="string">    顶点使用dict存储，边用list存储</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, edges: list[list[Vertex]])</span>:</span></span><br><span class="line">        self.adj_dict = dict[Vertex, list[Vertex]]()</span><br><span class="line">        <span class="keyword">for</span> edge <span class="keyword">in</span> edges:</span><br><span class="line">            self.add_vertex(edge[<span class="number">0</span>])</span><br><span class="line">            self.add_vertex(edge[<span class="number">1</span>])</span><br><span class="line">            self.add_edge(edge[<span class="number">0</span>], edge[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">size</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.adj_dict)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_vertex</span><span class="params">(self, vet: Vertex)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> vet <span class="keyword">in</span> self.adj_dict:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        self.adj_dict[vet] = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">remove_vertex</span><span class="params">(self, vet: Vertex)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> vet <span class="keyword">not</span> <span class="keyword">in</span> self.adj_dict:</span><br><span class="line">            <span class="keyword">raise</span> ValueError</span><br><span class="line">        self.adj_dict.pop(vet)</span><br><span class="line">        <span class="keyword">for</span> key <span class="keyword">in</span> self.adj_dict:</span><br><span class="line">            edge_list = self.adj_dict[key]</span><br><span class="line">            <span class="keyword">if</span> vet <span class="keyword">in</span> edge_list:</span><br><span class="line">                edge_list.remove(vet)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_edge</span><span class="params">(self, vet1: Vertex, vet2: Vertex)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> vet1 <span class="keyword">not</span> <span class="keyword">in</span> self.adj_dict <span class="keyword">or</span> vet2 <span class="keyword">not</span> <span class="keyword">in</span> self.adj_dict <span class="keyword">or</span> vet1 == vet2:</span><br><span class="line">            <span class="keyword">raise</span> ValueError()</span><br><span class="line">        self.adj_dict[vet1].append(vet2)</span><br><span class="line">        self.adj_dict[vet2].append(vet1)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">remove_edge</span><span class="params">(self, vet1: Vertex, vet2: Vertex)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> vet1 <span class="keyword">not</span> <span class="keyword">in</span> self.adj_dict <span class="keyword">or</span> vet2 <span class="keyword">not</span> <span class="keyword">in</span> self.adj_dict <span class="keyword">or</span> vet1 == vet2:</span><br><span class="line">            <span class="keyword">raise</span> ValueError()</span><br><span class="line">        self.adj_dict[vet1].remove(vet2)</span><br><span class="line">        self.adj_dict[vet2].remove(vet1)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""打印邻接表"""</span></span><br><span class="line">        print(<span class="string">"邻接表 ="</span>)</span><br><span class="line">        <span class="keyword">for</span> vertex <span class="keyword">in</span> self.adj_dict:</span><br><span class="line">            tmp = [v.val <span class="keyword">for</span> v <span class="keyword">in</span> self.adj_dict[vertex]]</span><br><span class="line">            print(<span class="string">f"<span class="subst">&#123;vertex.val&#125;</span>: <span class="subst">&#123;tmp&#125;</span>,"</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="3-基于邻接表的bfs"><a href="#3-基于邻接表的bfs" class="headerlink" title="3.基于邻接表的bfs"></a>3.基于邻接表的bfs</h4><p>广度优先遍历是一种由近及远的遍历方式，从某个节点出发，始终优先访问距离最近的顶点，并一层层向外扩张。<br>从左上角顶点出发，首先遍历该顶点的所有邻接顶点，然后遍历下一个顶点的所有邻接顶点，以此类推，直至所有顶点访问完毕。</p>
+<p><img src="../images/algo_review_graph_bfs.png" alt="img.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> graph_adjacency_list <span class="keyword">import</span> Vertex, GraphAdjList</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">graph_bfs</span><span class="params">(graph: GraphAdjList, start_vet: Vertex)</span> -&gt; list[Vertex]:</span></span><br><span class="line">    <span class="string">"""广度优先遍历"""</span></span><br><span class="line">    <span class="comment"># 使用邻接表来表示图，以便获取指定顶点的所有邻接顶点</span></span><br><span class="line">    <span class="comment"># 顶点遍历序列</span></span><br><span class="line">    res = []</span><br><span class="line">    <span class="comment"># 哈希集合，用于记录已被访问过的顶点</span></span><br><span class="line">    visited = set[Vertex]([start_vet])</span><br><span class="line">    que = deque[Vertex]([start_vet])</span><br><span class="line">    <span class="comment"># 以顶点 vet 为起点，循环直至访问完所有顶点</span></span><br><span class="line">    <span class="keyword">while</span> len(que) &gt; <span class="number">0</span>:</span><br><span class="line">        vet = que.popleft()</span><br><span class="line">        res.append(vet)</span><br><span class="line">        vet_list = graph.adj_dict[vet]</span><br><span class="line">        <span class="keyword">for</span> v <span class="keyword">in</span> vet_list:</span><br><span class="line">            <span class="keyword">if</span> v <span class="keyword">in</span> visited:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            visited.add(v)</span><br><span class="line">            que.append(v)</span><br><span class="line">    <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+<h4 id="4-基于邻接表的dfs"><a href="#4-基于邻接表的dfs" class="headerlink" title="4.基于邻接表的dfs"></a>4.基于邻接表的dfs</h4><p>深度优先遍历是一种优先走到底、无路可走再回头的遍历方式。如图所示，从左上角顶点出发，访问当前顶点的某个邻接顶点，直到走到尽头时返回，再继续走到尽头并返回，以此类推，直至所有顶点遍历完成。<br><img src="../images/algo_review_graph_dfs.png" alt="img.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> graph_adjacency_list <span class="keyword">import</span> Vertex, GraphAdjList</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(graph: GraphAdjList, visited: set[Vertex], res: list[Vertex], vet: Vertex)</span>:</span></span><br><span class="line">    <span class="string">"""深度优先遍历辅助函数"""</span></span><br><span class="line">    res.append(vet)</span><br><span class="line">    visited.add(vet)</span><br><span class="line">    vet_list = graph.adj_dict[vet]</span><br><span class="line">    <span class="keyword">for</span> v <span class="keyword">in</span> vet_list:</span><br><span class="line">        <span class="keyword">if</span> v <span class="keyword">in</span> visited:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        dfs(graph, visited, res, v)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">graph_dfs</span><span class="params">(graph: GraphAdjList, start_vet: Vertex)</span> -&gt; list[Vertex]:</span></span><br><span class="line">    <span class="string">"""深度优先遍历"""</span></span><br><span class="line">    <span class="comment"># 使用邻接表来表示图，以便获取指定顶点的所有邻接顶点</span></span><br><span class="line">    res = []</span><br><span class="line">    visited = set[Vertex]()</span><br><span class="line">    dfs(graph, visited, res, start_vet)</span><br><span class="line">    <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/time-never-speaks-but-answers-all-questions/" rel="prev" title="《时间从来不语，却回答了所有问题》金句摘录">
+      <i class="fa fa-chevron-left"></i> 《时间从来不语，却回答了所有问题》金句摘录
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、链表"><span class="nav-text">一、链表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-简单实现一个链表"><span class="nav-text">1.简单实现一个链表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、队列"><span class="nav-text">二、队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基于链表实现队列"><span class="nav-text">1.基于链表实现队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-基于数组实现队列"><span class="nav-text">2.基于数组实现队列</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、栈"><span class="nav-text">三、栈</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基于链表实现栈"><span class="nav-text">1.基于链表实现栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-基于数组实现栈"><span class="nav-text">2.基于数组实现栈</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、哈希表"><span class="nav-text">四、哈希表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基于数组实现哈希表"><span class="nav-text">1.基于数组实现哈希表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-基于链式地址实现哈希表"><span class="nav-text">2.基于链式地址实现哈希表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、二叉树"><span class="nav-text">五、二叉树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-简单二叉树的实现"><span class="nav-text">1.简单二叉树的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-基于数组实现的二叉树"><span class="nav-text">2.基于数组实现的二叉树</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、二叉搜索树"><span class="nav-text">六、二叉搜索树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-查找节点"><span class="nav-text">1.查找节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-插入节点"><span class="nav-text">2.插入节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-删除节点"><span class="nav-text">3.删除节点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-将list转换为bst（二叉搜索树）"><span class="nav-text">4.将list转换为bst（二叉搜索树）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、堆"><span class="nav-text">七、堆</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-使用数组实现大顶堆"><span class="nav-text">1.使用数组实现大顶堆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Top-k-问题"><span class="nav-text">2.Top-k 问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#八、图"><span class="nav-text">八、图</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-基于邻接矩阵实现图"><span class="nav-text">1.基于邻接矩阵实现图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-基于邻接表实现图"><span class="nav-text">2.基于邻接表实现图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-基于邻接表的bfs"><span class="nav-text">3.基于邻接表的bfs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-基于邻接表的dfs"><span class="nav-text">4.基于邻接表的dfs</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="roubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">roubin</p>
+  <div class="site-description" itemprop="description">芝兰其室，金石其心<br/>仁义为友，道德为师</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">142</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">82</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/satorioh" title="GitHub → https://github.com/satorioh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wangbinxp@gmail.com" title="E-Mail → mailto:wangbinxp@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://roubinme.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://roubin.me/algo-review/";
+    this.page.identifier = "algo-review/";
+    this.page.title = "算法复习";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://roubinme.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
