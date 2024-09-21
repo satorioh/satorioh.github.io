@@ -197,6 +197,109 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://roubin.me/uvicorn-gunicorn-deploy-django-fastapi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="roubin">
+      <meta itemprop="description" content="芝兰其室，金石其心<br/>仁义为友，道德为师">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="肉饼博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/uvicorn-gunicorn-deploy-django-fastapi/" class="post-title-link" itemprop="url">Uvicorn + Gunicorn 部署 Django 和 FastAPI</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-09-21 09:11:07 / 修改时间：09:33:32" itemprop="dateCreated datePublished" datetime="2024-09-21T09:11:07+08:00">2024-09-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FastAPI/" itemprop="url" rel="index"><span itemprop="name">FastAPI</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/uvicorn-gunicorn-deploy-django-fastapi/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="uvicorn-gunicorn-deploy-django-fastapi/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="一、优势"><a href="#一、优势" class="headerlink" title="一、优势"></a>一、优势</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">你提到的这个问题非常有意义。Uvicorn 确实可以单独作为 ASGI 服务器运行，而 Gunicorn 通常用于运行 WSGI 应用程序。但是，当你将它们结合在一起使用时，会有一些特定的好处：</span><br><span class="line"></span><br><span class="line">1.稳定性：Gunicorn 作为一个长期存在且经过良好测试的项目，它的稳定性和健壮性是有保障的。通过将 Gunicorn 与 Uvicorn 结合使用，可以利用 Gunicorn 的管理能力和稳定性，以及 Uvicorn 的异步性能。</span><br><span class="line"></span><br><span class="line">2.进程管理：Gunicorn 提供了一些强大的进程管理功能，例如工作进程的启动、停止和重启。当系统负载增加时，它可以更好地管理资源，而 Uvicorn 单独运行时可能没有这些特性。</span><br><span class="line"></span><br><span class="line">3.部署的简化：对于那些已经习惯使用 Gunicorn 来部署 WSGI 应用程序的组织来说，将 Gunicorn 与 Uvicorn 结合使用可以简化迁移到 ASGI 的过程。团队可以利用现有的 Gunicorn 部署、监控和日志记录基础设施。</span><br><span class="line"></span><br><span class="line">4.配置灵活性：Gunicorn 提供了许多配置选项和插件，可以方便地自定义应用程序的行为。与 Uvicorn 结合使用时，你可以利用这些灵活性，并允许在同一台机器上同时运行 WSGI 和 ASGI 应用程序。</span><br><span class="line"></span><br><span class="line">5.负载均衡：Gunicorn 能够在多个工作进程之间进行负载均衡。这不仅能够更好地利用多核 CPU ，还可以增加系统的可扩展性和冗余性。</span><br><span class="line"></span><br><span class="line">总而言之，尽管 Uvicorn 单独使用具有优势，但将 Gunicorn 与 Uvicorn 结合使用可以提供额外的稳定性、灵活性和管理功能。这种组合在具有大量流量和需要高可用性的生产环境中可能尤为有用</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/uvicorn-gunicorn-deploy-django-fastapi/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://roubin.me/ec2-frp-configuration/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1160,109 +1263,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://roubin.me/web-model-load-infer-optimization-summary/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="roubin">
-      <meta itemprop="description" content="芝兰其室，金石其心<br/>仁义为友，道德为师">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="肉饼博客">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/web-model-load-infer-optimization-summary/" class="post-title-link" itemprop="url">Next.js + Tensorflow.js的模型加载与推理优化小结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-04-30 11:36:24 / 修改时间：17:53:09" itemprop="dateCreated datePublished" datetime="2024-04-30T11:36:24+08:00">2024-04-30</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CV/" itemprop="url" rel="index"><span itemprop="name">CV</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/web-model-load-infer-optimization-summary/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="web-model-load-infer-optimization-summary/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>6.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>6 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在上一篇<a href="https://roubin.me/enable-webgpu-accelerate-model-inference/">《启用 WebGPU 加速 Web 端模型推理》</a>中提到“可以将 tensorflow.js 和现代化的前端框架结合”，基于这个想法，我继续展开迭代，将代码迁移到 Next.js 14 框架中，并针对模型在浏览器端遇到的一些加载和推理问题，进行了一番优化，整个过程大致包含如下步骤：
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/web-model-load-infer-optimization-summary/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1334,20 +1334,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">144</span>
+          <span class="site-state-item-count">145</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">85</span>
+        <span class="site-state-item-count">88</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
