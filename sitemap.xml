@@ -261,13 +261,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/2019-year-end-summary/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/2016-year-end-summary/</loc>
     
     <lastmod>2021-12-19</lastmod>
@@ -275,7 +268,35 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/2019-year-end-summary/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/2018-year-end-summary/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/2020-year-end-summary/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/2017-year-end-summary/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/angular-adminlte-body-height-cut-off-fix/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -303,49 +324,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/angular-adminlte-body-height-cut-off-fix/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/2020-year-end-summary/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/angular-integrated-with-adminlte/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/angular-dependency-injection-summary/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/angular-pagination-component/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/angular-routing-params/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/angular-reactive-forms/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -359,6 +338,34 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/angular-dependency-injection-summary/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/angular-reactive-forms/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/angular-routing-params/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/angular-pagination-component/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/angular-routing-summary/</loc>
     
     <lastmod>2021-12-19</lastmod>
@@ -366,14 +373,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/async-await/</loc>
+    <loc>https://roubin.me/angular-rxjs-pipe/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/2018-year-end-summary/</loc>
+    <loc>https://roubin.me/async-await/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -394,27 +401,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/browser-event-loop/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/angular-rxjs-pipe/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/closure/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/centos-firewall-open-port/</loc>
     
     <lastmod>2021-12-19</lastmod>
@@ -422,7 +408,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/centos-redis-install/</loc>
+    <loc>https://roubin.me/browser-event-loop/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -436,7 +422,21 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/centos-redis-install/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/cookie-session-token/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/closure/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -471,21 +471,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/css-scrollbar-style-change/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/css-spinner-bounce/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/deep-clone/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -499,21 +485,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/docker-first-try/</loc>
+    <loc>https://roubin.me/css-scrollbar-style-change/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/css-layout-summary/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/docker0-ip-change/</loc>
+    <loc>https://roubin.me/differences-between-null-and-undefined/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -527,14 +506,35 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/elegant-way-for-complex-judgment/</loc>
+    <loc>https://roubin.me/css-layout-summary/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/differences-between-null-and-undefined/</loc>
+    <loc>https://roubin.me/deep-clone/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/docker-first-try/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/docker0-ip-change/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/elegant-way-for-complex-judgment/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -562,13 +562,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/first-priority-of-life/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/git-notes/</loc>
     
     <lastmod>2021-12-19</lastmod>
@@ -576,14 +569,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/git-submodule/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/forty-eight-self-improvement-skills/</loc>
+    <loc>https://roubin.me/first-priority-of-life/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -597,14 +583,21 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/git-worktree/</loc>
+    <loc>https://roubin.me/forty-eight-self-improvement-skills/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/gitlab-ci/</loc>
+    <loc>https://roubin.me/git-submodule/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/git-worktree/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -618,7 +611,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/how-to-ride-in-subway-train/</loc>
+    <loc>https://roubin.me/gitlab-ci/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -632,7 +625,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/inheritance-method-summary/</loc>
+    <loc>https://roubin.me/how-to-ride-in-subway-train/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -646,20 +639,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/ionic-environment-build-and-basic-command/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/js-match-search-replace-split-exec-test/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/install-office-2010-requires-msxml-version-6101129/</loc>
     
     <lastmod>2021-12-19</lastmod>
@@ -667,14 +646,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/japan-travel/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/k8s-service/</loc>
+    <loc>https://roubin.me/inheritance-method-summary/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -688,6 +660,20 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/js-match-search-replace-split-exec-test/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/ionic-environment-build-and-basic-command/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/jsonp-learning-summary/</loc>
     
     <lastmod>2021-12-19</lastmod>
@@ -695,7 +681,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/margin-top-overlap-problem/</loc>
+    <loc>https://roubin.me/japan-travel/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -703,6 +689,20 @@
   
   <url>
     <loc>https://roubin.me/login-with-temp-profile-and-desktop-lost/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/k8s-service/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/margin-top-overlap-problem/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -723,21 +723,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/mini-program-use-behavior-encapsulate-search-component/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/mini-program-use-wxs-solve-text-indent/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/morgan-winston/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -751,35 +737,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/nest-connect-mongodb-using-mongoose/</loc>
+    <loc>https://roubin.me/mini-program-use-behavior-encapsulate-search-component/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/my-world-views/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/nest-format-response/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/nest-input-validation/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/nest-swagger/</loc>
+    <loc>https://roubin.me/morgan-winston/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -793,7 +758,42 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/nest-connect-mongodb-using-mongoose/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/nest-input-validation/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/my-world-views/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/nest-swagger/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/nextjs-with-antd-issue/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/nest-format-response/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -814,14 +814,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/offset-scroll-client/</loc>
+    <loc>https://roubin.me/pm2-basic/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/pm2-basic/</loc>
+    <loc>https://roubin.me/offset-scroll-client/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -849,14 +849,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/shadowsocksr-serverspeed-configuration/</loc>
+    <loc>https://roubin.me/resolution-of-extra-pixel-under-image/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/resolution-of-extra-pixel-under-image/</loc>
+    <loc>https://roubin.me/shadowsocksr-serverspeed-configuration/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -870,13 +870,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/thirty-six-life-experiences/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://roubin.me/ssl-certificate-request-and-configuration/</loc>
     
     <lastmod>2021-12-19</lastmod>
@@ -884,14 +877,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/use-angular-cli-create-project/</loc>
+    <loc>https://roubin.me/thirty-six-life-experiences/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
   </url>
   
   <url>
-    <loc>https://roubin.me/use-k9s-kubecm-manage-k8s-cluster/</loc>
+    <loc>https://roubin.me/typescript-generic/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -899,6 +892,13 @@
   
   <url>
     <loc>https://roubin.me/use-docker-compose-install-lgp/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/use-angular-cli-create-project/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -919,28 +919,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/typescript-generic/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/vue-packed-with-cordova/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/vue-keepalive-activated-lifecycle/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/vue-modifiers/</loc>
+    <loc>https://roubin.me/vps-security-measures/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -954,21 +933,21 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/use-k9s-kubecm-manage-k8s-cluster/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/vue-keepalive-activated-lifecycle/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://roubin.me/vue-recursion-component/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/vps-security-measures/</loc>
-    
-    <lastmod>2021-12-19</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/vuex-basic/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -982,7 +961,21 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/web-crypto-api-introduction/</loc>
+    <loc>https://roubin.me/vue-modifiers/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/vue-packed-with-cordova/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/vuex-basic/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -997,6 +990,13 @@
   
   <url>
     <loc>https://roubin.me/vue-web-app-initialization/</loc>
+    
+    <lastmod>2021-12-19</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/web-crypto-api-introduction/</loc>
     
     <lastmod>2021-12-19</lastmod>
     
@@ -1061,20 +1061,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/tags/aes/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/%E7%AE%97%E6%B3%95/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://roubin.me/tags/angular/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1083,6 +1069,20 @@
   
   <url>
     <loc>https://roubin.me/tags/%E5%89%8D%E7%AB%AF/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/tags/aes/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/tags/%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1110,6 +1110,34 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/tags/centos/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/tags/firewall/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/tags/mediapipe/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/tags/webrtc/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://roubin.me/tags/aws/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1131,41 +1159,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/tags/mediapipe/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/webrtc/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/centos/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/firewall/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/redis/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://roubin.me/tags/session/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1180,7 +1173,35 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/tags/redis/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://roubin.me/tags/vue/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/tags/yolo/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/tags/opencv/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/tags/pandas/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1209,27 +1230,6 @@
   
   <url>
     <loc>https://roubin.me/tags/css/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/yolo/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/opencv/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/pandas/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1299,13 +1299,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/tags/%E4%BA%BA%E7%94%9F/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://roubin.me/tags/git/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1313,35 +1306,14 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/tags/%E4%BA%BA%E7%94%9F/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://roubin.me/tags/npm/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/ci/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/gitlab/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/%E8%AF%BB%E4%B9%A6/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/gulp/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1369,6 +1341,27 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/tags/gulp/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/tags/ci/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/tags/gitlab/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://roubin.me/tags/%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1376,7 +1369,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/tags/ionic/</loc>
+    <loc>https://roubin.me/tags/%E8%AF%BB%E4%B9%A6/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1397,14 +1390,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/tags/%E6%97%A5%E6%9C%AC/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/k8s/</loc>
+    <loc>https://roubin.me/tags/ionic/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1418,6 +1404,13 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/tags/%E6%97%A5%E6%9C%AC/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://roubin.me/tags/win7/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1425,7 +1418,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/</loc>
+    <loc>https://roubin.me/tags/k8s/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1439,7 +1432,28 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/tags/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/tags/lighthouse/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://roubin.me/tags/mongodb/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/tags/%E4%BA%BA%E7%94%9F%E5%B0%8F%E4%BC%A0/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1454,20 +1468,6 @@
   
   <url>
     <loc>https://roubin.me/tags/winston/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/lighthouse/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/tags/%E4%BA%BA%E7%94%9F%E5%B0%8F%E4%BC%A0/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1516,14 +1516,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/tags/RCNN/</loc>
+    <loc>https://roubin.me/tags/pm2/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://roubin.me/tags/pm2/</loc>
+    <loc>https://roubin.me/tags/RCNN/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1572,7 +1572,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/tags/socket-io/</loc>
+    <loc>https://roubin.me/tags/typescript/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1593,7 +1593,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/tags/typescript/</loc>
+    <loc>https://roubin.me/tags/socket-io/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1635,14 +1635,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/tags/z-index/</loc>
+    <loc>https://roubin.me/tags/nextjs/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://roubin.me/tags/nextjs/</loc>
+    <loc>https://roubin.me/tags/z-index/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1686,6 +1686,13 @@
   </url>
   
   <url>
+    <loc>https://roubin.me/categories/Angular/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://roubin.me/categories/%E5%8A%A0%E8%A7%A3%E5%AF%86/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1694,13 +1701,6 @@
   
   <url>
     <loc>https://roubin.me/categories/%E7%AE%97%E6%B3%95/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/categories/Angular/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1791,13 +1791,6 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/categories/%E4%BA%BA%E7%94%9F/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://roubin.me/categories/Git/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1805,21 +1798,7 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/categories/CI-CD/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/categories/%E8%AF%BB%E4%B9%A6/</loc>
-    <lastmod>2024-09-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://roubin.me/categories/Hexo/</loc>
+    <loc>https://roubin.me/categories/%E4%BA%BA%E7%94%9F/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1833,7 +1812,21 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/categories/Ionic/</loc>
+    <loc>https://roubin.me/categories/CI-CD/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/categories/Hexo/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/categories/%E8%AF%BB%E4%B9%A6/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1841,6 +1834,13 @@
   
   <url>
     <loc>https://roubin.me/categories/Windows/</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://roubin.me/categories/Ionic/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1861,14 +1861,14 @@
   </url>
   
   <url>
-    <loc>https://roubin.me/categories/%E5%B0%8F%E7%A8%8B%E5%BA%8F/</loc>
+    <loc>https://roubin.me/categories/Mac/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://roubin.me/categories/Mac/</loc>
+    <loc>https://roubin.me/categories/%E5%B0%8F%E7%A8%8B%E5%BA%8F/</loc>
     <lastmod>2024-09-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
