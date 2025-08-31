@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"roubin.me","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="共尝试了两套环境：  环境1：非docker环境，使用conda安装依赖包，运行在GPU上 环境2：docker环境，使用PaddleX官方提供的docker镜像，运行在CPU上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PaddleX OCR 使用">
+<meta property="og:url" content="https://roubin.me/paddlex-ocr/index.html">
+<meta property="og:site_name" content="CV肉饼王">
+<meta property="og:description" content="共尝试了两套环境：  环境1：非docker环境，使用conda安装依赖包，运行在GPU上 环境2：docker环境，使用PaddleX官方提供的docker镜像，运行在CPU上">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-08-31T02:58:57.000Z">
+<meta property="article:modified_time" content="2025-08-31T04:04:18.879Z">
+<meta property="article:author" content="roubin">
+<meta property="article:tag" content="paddlex">
+<meta property="article:tag" content="ocr">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://roubin.me/paddlex-ocr/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>PaddleX OCR 使用 | CV肉饼王</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b55ece62ebeb2e72a8efe3f8b5b43960";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">CV肉饼王</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Talk is cheap. Show me the code.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://roubin.me/paddlex-ocr/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="roubin">
+      <meta itemprop="description" content="芝兰其室，金石其心<br/>仁义为友，道德为师">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CV肉饼王">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PaddleX OCR 使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-08-31 10:58:57 / 修改时间：12:04:18" itemprop="dateCreated datePublished" datetime="2025-08-31T10:58:57+08:00">2025-08-31</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OCR/" itemprop="url" rel="index"><span itemprop="name">OCR</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/paddlex-ocr/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="paddlex-ocr/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>共尝试了两套环境：</p>
+<ul>
+<li>环境1：非docker环境，使用conda安装依赖包，运行在GPU上</li>
+<li>环境2：docker环境，使用PaddleX官方提供的docker镜像，运行在CPU上<a id="more"></a>
+
+</li>
+</ul>
+<h2 id="环境1："><a href="#环境1：" class="headerlink" title="环境1："></a>环境1：</h2><h3 id="一、检查环境与依赖"><a href="#一、检查环境与依赖" class="headerlink" title="一、检查环境与依赖"></a>一、检查环境与依赖</h3><h4 id="1-查看python、cuda、cuDNN版本"><a href="#1-查看python、cuda、cuDNN版本" class="headerlink" title="1.查看python、cuda、cuDNN版本"></a>1.查看python、cuda、cuDNN版本</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 查看python版本</span></span><br><span class="line">python -V</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看cuda版本</span></span><br><span class="line">nvcc -V</span><br><span class="line"></span><br><span class="line">or</span><br><span class="line"></span><br><span class="line">conda list | grep cudatoolkit</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看cuDNN版本</span></span><br><span class="line">cat /usr/include/cudnn_version.h | grep CUDNN_MAJOR -A 2</span><br><span class="line"></span><br><span class="line">or</span><br><span class="line"></span><br><span class="line">conda list | grep cudnn</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-搜索版本"><a href="#2-搜索版本" class="headerlink" title="2.搜索版本"></a>2.搜索版本</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda search cudatoolkit</span><br><span class="line">conda search cudnn</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-安装指定版本cuda和cuDNN"><a href="#3-安装指定版本cuda和cuDNN" class="headerlink" title="3.安装指定版本cuda和cuDNN"></a>3.安装指定版本cuda和cuDNN</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda install cudatoolkit==xx.xx </span><br><span class="line">conda install cudnn==xx.xx</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、使用conda创建虚拟环境"><a href="#二、使用conda创建虚拟环境" class="headerlink" title="二、使用conda创建虚拟环境"></a>二、使用conda创建虚拟环境</h3><h4 id="1-升级conda版本"><a href="#1-升级conda版本" class="headerlink" title="1.升级conda版本"></a>1.升级conda版本</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda update -n base -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main conda</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-查看已创建的虚拟环境"><a href="#2-查看已创建的虚拟环境" class="headerlink" title="2.查看已创建的虚拟环境"></a>2.查看已创建的虚拟环境</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda env list</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-创建虚拟环境"><a href="#3-创建虚拟环境" class="headerlink" title="3.创建虚拟环境"></a>3.创建虚拟环境</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda create -n paddlex python=3.10 -y</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-激活虚拟环境"><a href="#4-激活虚拟环境" class="headerlink" title="4.激活虚拟环境"></a>4.激活虚拟环境</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda activate paddlex</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-查看当前环境下已安装的包"><a href="#5-查看当前环境下已安装的包" class="headerlink" title="5.查看当前环境下已安装的包"></a>5.查看当前环境下已安装的包</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda list</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-删除环境"><a href="#6-删除环境" class="headerlink" title="6.删除环境"></a>6.删除环境</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda remove -n paddlex --all</span><br></pre></td></tr></table></figure>
+
+<h3 id="三、安装paddle相关依赖"><a href="#三、安装paddle相关依赖" class="headerlink" title="三、安装paddle相关依赖"></a>三、安装paddle相关依赖</h3><h4 id="1-安装paddlepaddle"><a href="#1-安装paddlepaddle" class="headerlink" title="1.安装paddlepaddle"></a>1.安装paddlepaddle</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> CPU 版本</span></span><br><span class="line">python -m pip install paddlepaddle==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cpu/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> GPU 版本，需显卡驱动程序版本 ≥450.80.02（Linux）或 ≥452.39（Windows）</span></span><br><span class="line">python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu118/</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> GPU 版本，需显卡驱动程序版本 ≥550.54.14（Linux）或 ≥550.54.14（Windows）</span></span><br><span class="line"> python -m pip install paddlepaddle-gpu==3.0.0 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-安装paddlex和paddle-ocr"><a href="#2-安装paddlex和paddle-ocr" class="headerlink" title="2.安装paddlex和paddle ocr"></a>2.安装paddlex和paddle ocr</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install paddlex==3.2.0</span><br><span class="line">pip install "paddlex[ocr]==3.2.0"</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-安装高性能推理插件"><a href="#3-安装高性能推理插件" class="headerlink" title="3.安装高性能推理插件"></a>3.安装高性能推理插件</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> gpu版本</span></span><br><span class="line">paddlex --install hpi-gpu</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> cpu版本</span></span><br><span class="line">paddlex --install hpi-cpu</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-安装项目相关依赖"><a href="#4-安装项目相关依赖" class="headerlink" title="4.安装项目相关依赖"></a>4.安装项目相关依赖</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">conda install fastapi==0.116.1</span><br><span class="line">conda install gunicorn==23.0.0</span><br><span class="line">conda install uvicorn[standard]==0.35.0</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="四、配置"><a href="#四、配置" class="headerlink" title="四、配置"></a>四、配置</h3><h3 id="1-获取paddlex-pipeline配置文件"><a href="#1-获取paddlex-pipeline配置文件" class="headerlink" title="1.获取paddlex pipeline配置文件"></a>1.获取paddlex pipeline配置文件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paddlex --get_pipeline_config OCR</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-修改配置文件模板"><a href="#2-修改配置文件模板" class="headerlink" title="2.修改配置文件模板"></a>2.修改配置文件模板</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">pipeline_name:</span> <span class="string">OCR</span></span><br><span class="line"></span><br><span class="line"><span class="attr">text_type:</span> <span class="string">general</span></span><br><span class="line"></span><br><span class="line"><span class="attr">use_doc_preprocessor:</span> <span class="literal">False</span></span><br><span class="line"><span class="attr">use_textline_orientation:</span> <span class="literal">False</span></span><br><span class="line"><span class="attr">use_hpip:</span> <span class="literal">False</span></span><br><span class="line"><span class="attr">device:</span> <span class="string">cpu</span></span><br><span class="line"></span><br><span class="line"><span class="attr">SubPipelines:</span></span><br><span class="line">  <span class="attr">DocPreprocessor:</span></span><br><span class="line">    <span class="attr">pipeline_name:</span> <span class="string">doc_preprocessor</span></span><br><span class="line">    <span class="attr">use_doc_orientation_classify:</span> <span class="literal">False</span></span><br><span class="line">    <span class="attr">use_doc_unwarping:</span> <span class="literal">False</span></span><br><span class="line">    <span class="attr">SubModules:</span></span><br><span class="line">      <span class="attr">DocOrientationClassify:</span></span><br><span class="line">        <span class="attr">module_name:</span> <span class="string">doc_text_orientation</span></span><br><span class="line">        <span class="attr">model_name:</span> <span class="string">PP-LCNet_x1_0_doc_ori</span></span><br><span class="line">        <span class="attr">model_dir:</span> <span class="literal">null</span></span><br><span class="line">      <span class="attr">DocUnwarping:</span></span><br><span class="line">        <span class="attr">module_name:</span> <span class="string">image_unwarping</span></span><br><span class="line">        <span class="attr">model_name:</span> <span class="string">UVDoc</span></span><br><span class="line">        <span class="attr">model_dir:</span> <span class="literal">null</span></span><br><span class="line"></span><br><span class="line"><span class="attr">SubModules:</span></span><br><span class="line">  <span class="attr">TextDetection:</span></span><br><span class="line">    <span class="attr">module_name:</span> <span class="string">text_detection</span></span><br><span class="line">    <span class="attr">model_name:</span> <span class="string">PP-OCRv5_mobile_det</span></span><br><span class="line">    <span class="attr">model_dir:</span> <span class="literal">null</span></span><br><span class="line">    <span class="attr">limit_side_len:</span> <span class="number">640</span></span><br><span class="line">    <span class="attr">limit_type:</span> <span class="string">max</span></span><br><span class="line">    <span class="attr">max_side_limit:</span> <span class="number">4000</span></span><br><span class="line">    <span class="attr">thresh:</span> <span class="number">0.3</span></span><br><span class="line">    <span class="attr">box_thresh:</span> <span class="number">0.6</span></span><br><span class="line">    <span class="attr">unclip_ratio:</span> <span class="number">1.5</span></span><br><span class="line">  <span class="attr">TextLineOrientation:</span></span><br><span class="line">    <span class="attr">module_name:</span> <span class="string">textline_orientation</span></span><br><span class="line">    <span class="attr">model_name:</span> <span class="string">PP-LCNet_x1_0_textline_ori</span> </span><br><span class="line">    <span class="attr">model_dir:</span> <span class="literal">null</span></span><br><span class="line">    <span class="attr">batch_size:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">TextRecognition:</span></span><br><span class="line">    <span class="attr">module_name:</span> <span class="string">text_recognition</span></span><br><span class="line">    <span class="attr">model_name:</span> <span class="string">PP-OCRv5_mobile_rec</span></span><br><span class="line">    <span class="attr">model_dir:</span> <span class="literal">null</span></span><br><span class="line">    <span class="attr">batch_size:</span> <span class="number">1</span></span><br><span class="line">    <span class="attr">score_thresh:</span> <span class="number">0.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-动态生成配置文件"><a href="#3-动态生成配置文件" class="headerlink" title="3.动态生成配置文件"></a>3.动态生成配置文件</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_ocr_config</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">with</span> open(config_template, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        config = yaml.safe_load(f)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 检测GPU可用性</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">import</span> paddle</span><br><span class="line">        has_gpu = (</span><br><span class="line">                getattr(paddle.device, <span class="string">"is_compiled_with_cuda"</span>, paddle.is_compiled_with_cuda)()</span><br><span class="line">                <span class="keyword">and</span> paddle.device.cuda.device_count() &gt; <span class="number">0</span></span><br><span class="line">        )</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        logger.warning(<span class="string">f"GPU 检测失败，使用 CPU。原因: <span class="subst">&#123;e&#125;</span>"</span>)</span><br><span class="line">        has_gpu = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    config[<span class="string">'device'</span>] = <span class="string">'gpu'</span> <span class="keyword">if</span> has_gpu <span class="keyword">else</span> <span class="string">'cpu'</span></span><br><span class="line">    logger.info(<span class="string">f"OCR 将使用设备: <span class="subst">&#123;config[<span class="string">'device'</span>]&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 更新模型路径为绝对路径</span></span><br><span class="line">    config[<span class="string">'SubModules'</span>][<span class="string">'TextDetection'</span>][<span class="string">'model_dir'</span>] = str(detection_model_dir)</span><br><span class="line">    config[<span class="string">'SubModules'</span>][<span class="string">'TextRecognition'</span>][<span class="string">'model_dir'</span>] = str(recognition_model_dir)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 保存临时配置文件</span></span><br><span class="line">    temp_config_path = Path(__file__).parent / <span class="string">"OCR_temp.yaml"</span></span><br><span class="line">    <span class="keyword">with</span> open(temp_config_path, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        yaml.dump(config, f, default_flow_style=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> temp_config_path</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、docker下使用"><a href="#二、docker下使用" class="headerlink" title="二、docker下使用"></a>二、docker下使用</h2><h3 id="1-编写Dockerfile文件"><a href="#1-编写Dockerfile文件" class="headerlink" title="1.编写Dockerfile文件"></a>1.编写Dockerfile文件</h3><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> ccr-<span class="number">2</span>vdh3abv-pub.cnc.bj.baidubce.com/paddlex/paddlex:paddlex3.<span class="number">1.2</span>-paddlepaddle3.<span class="number">0.0</span>-cpu</span><br><span class="line"></span><br><span class="line"><span class="comment"># copy files</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> pyproject.toml /app/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Install uv.</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> --from=ghcr.io/astral-sh/uv:latest /uv /bin/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /app</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> uv pip install . --system --no-cache --python $(<span class="built_in">which</span> python3)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 hpi-cpu（利用缓存机制，只在依赖变动时重新执行）</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> paddlex --install hpi-cpu</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Copy the application into the container.</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . .</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">17654</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">"uvicorn"</span>, <span class="string">"src.main:app"</span>, <span class="string">"--host"</span>, <span class="string">"0.0.0.0"</span>, <span class="string">"--port"</span>, <span class="string">"17654"</span>]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-生成镜像"><a href="#2-生成镜像" class="headerlink" title="2.生成镜像"></a>2.生成镜像</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker buildx build --platform=linux/amd64 -t ocr_test:1.0.2 .</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-运行容器"><a href="#3-运行容器" class="headerlink" title="3.运行容器"></a>3.运行容器</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container run -d -p 17654:17654 -v /root/log:/app/src/log -v /root/benchmark:/app/scripts/benchmark --name ocrTest ocr_test:1.0.2</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-进入容器查看"><a href="#4-进入容器查看" class="headerlink" title="4.进入容器查看"></a>4.进入容器查看</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it [containerId] bash</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、配置开机自启动"><a href="#三、配置开机自启动" class="headerlink" title="三、配置开机自启动"></a>三、配置开机自启动</h2><h3 id="1-创建配置文件"><a href="#1-创建配置文件" class="headerlink" title="1.创建配置文件"></a>1.创建配置文件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch /etc/systemd/system/paddle-ocr.service</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-编辑服务文件"><a href="#2-编辑服务文件" class="headerlink" title="2.编辑服务文件"></a>2.编辑服务文件</h3><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[Unit]</span></span><br><span class="line"><span class="attr">Description</span>=Paddle OCR Instance Startup</span><br><span class="line"><span class="attr">After</span>=network.target</span><br><span class="line"></span><br><span class="line"><span class="section">[Service]</span></span><br><span class="line"><span class="attr">Type</span>=simple</span><br><span class="line"><span class="attr">ExecStart</span>=/root/ocr/paddle_ocr/scripts/instance_start.sh</span><br><span class="line"><span class="attr">WorkingDirectory</span>=/root/ocr/paddle_ocr/scripts</span><br><span class="line"><span class="attr">Restart</span>=always</span><br><span class="line"><span class="attr">User</span>=root</span><br><span class="line"></span><br><span class="line"><span class="section">[Install]</span></span><br><span class="line"><span class="attr">WantedBy</span>=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-重启"><a href="#3-重启" class="headerlink" title="3.重启"></a>3.重启</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-设置开机启动"><a href="#4-设置开机启动" class="headerlink" title="4.设置开机启动"></a>4.设置开机启动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable paddle-ocr.service</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-立即启动并查看日志"><a href="#5-立即启动并查看日志" class="headerlink" title="5.立即启动并查看日志"></a>5.立即启动并查看日志</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start paddle-ocr.service</span><br><span class="line">sudo systemctl status paddle-ocr.service</span><br><span class="line">journalctl -u paddle-ocr.service -f</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、onnx模型转换"><a href="#四、onnx模型转换" class="headerlink" title="四、onnx模型转换"></a>四、onnx模型转换</h2><h3 id="1-获取onnx模型"><a href="#1-获取onnx模型" class="headerlink" title="1.获取onnx模型"></a>1.获取onnx模型</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">source .venv/bin/activate</span><br><span class="line">python3 -m ensurepip --upgrade</span><br><span class="line"></span><br><span class="line">paddlex --install paddle2onnx</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-转换模型"><a href="#2-转换模型" class="headerlink" title="2.转换模型"></a>2.转换模型</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">paddlex --paddle2onnx --paddle_model_dir ./models/PP-OCRv5_mobile_det_infer --onnx_model_dir ./onnx --opset_version 7</span><br><span class="line">paddlex --paddle2onnx --paddle_model_dir ./models/PP-OCRv5_mobile_rec_infer --onnx_model_dir ./onnx --opset_version 7</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、监控"><a href="#五、监控" class="headerlink" title="五、监控"></a>五、监控</h2><h3 id="1-实时查看显卡情况"><a href="#1-实时查看显卡情况" class="headerlink" title="1.实时查看显卡情况"></a>1.实时查看显卡情况</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">watch -n 1 nvidia-smi</span><br></pre></td></tr></table></figure>
+
+<h2 id="六、问题"><a href="#六、问题" class="headerlink" title="六、问题"></a>六、问题</h2><h3 id="1-在gpu上运行paddlex报错：“-Hint-‘cudaErrorInitializationError’-The-API-call-failed-because-the-CUDA-driver-and-runtime-could-not-be-initialized-”"><a href="#1-在gpu上运行paddlex报错：“-Hint-‘cudaErrorInitializationError’-The-API-call-failed-because-the-CUDA-driver-and-runtime-could-not-be-initialized-”" class="headerlink" title="1.在gpu上运行paddlex报错：“[Hint: ‘cudaErrorInitializationError’. The API call failed because the CUDA driver and runtime could not be initialized. ]”"></a>1.在gpu上运行paddlex报错：“[Hint: ‘cudaErrorInitializationError’. The API call failed because the CUDA driver and runtime could not be initialized. ]”</h3><p>解释：使用多进程时，运行异常</p>
+<p>解决：将所有与paddlex相关的模块的import放在函数内</p>
+<p>参考：</p>
+<ul>
+<li><a href="https://paddlepaddle.github.io/PaddleX/latest/pipeline_deploy/high_performance_inference.html" target="_blank" rel="noopener">PaddleX OCR 文档</a></li>
+<li><a href="https://blog.csdn.net/qq_45779334/article/details/122024343" target="_blank" rel="noopener">PaddlePaddle问题解决</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/paddlex/" rel="tag"><i class="fa fa-tag"></i> paddlex</a>
+              <a href="/tags/ocr/" rel="tag"><i class="fa fa-tag"></i> ocr</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023-2024-year-end-summary/" rel="prev" title="2023-2024年终总结与来年规划">
+      <i class="fa fa-chevron-left"></i> 2023-2024年终总结与来年规划
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境1："><span class="nav-text">环境1：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、检查环境与依赖"><span class="nav-text">一、检查环境与依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-查看python、cuda、cuDNN版本"><span class="nav-text">1.查看python、cuda、cuDNN版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-搜索版本"><span class="nav-text">2.搜索版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-安装指定版本cuda和cuDNN"><span class="nav-text">3.安装指定版本cuda和cuDNN</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、使用conda创建虚拟环境"><span class="nav-text">二、使用conda创建虚拟环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-升级conda版本"><span class="nav-text">1.升级conda版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-查看已创建的虚拟环境"><span class="nav-text">2.查看已创建的虚拟环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-创建虚拟环境"><span class="nav-text">3.创建虚拟环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-激活虚拟环境"><span class="nav-text">4.激活虚拟环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-查看当前环境下已安装的包"><span class="nav-text">5.查看当前环境下已安装的包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-删除环境"><span class="nav-text">6.删除环境</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、安装paddle相关依赖"><span class="nav-text">三、安装paddle相关依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-安装paddlepaddle"><span class="nav-text">1.安装paddlepaddle</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-安装paddlex和paddle-ocr"><span class="nav-text">2.安装paddlex和paddle ocr</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-安装高性能推理插件"><span class="nav-text">3.安装高性能推理插件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-安装项目相关依赖"><span class="nav-text">4.安装项目相关依赖</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、配置"><span class="nav-text">四、配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-获取paddlex-pipeline配置文件"><span class="nav-text">1.获取paddlex pipeline配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-修改配置文件模板"><span class="nav-text">2.修改配置文件模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-动态生成配置文件"><span class="nav-text">3.动态生成配置文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、docker下使用"><span class="nav-text">二、docker下使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-编写Dockerfile文件"><span class="nav-text">1.编写Dockerfile文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-生成镜像"><span class="nav-text">2.生成镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-运行容器"><span class="nav-text">3.运行容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-进入容器查看"><span class="nav-text">4.进入容器查看</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、配置开机自启动"><span class="nav-text">三、配置开机自启动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-创建配置文件"><span class="nav-text">1.创建配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-编辑服务文件"><span class="nav-text">2.编辑服务文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-重启"><span class="nav-text">3.重启</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-设置开机启动"><span class="nav-text">4.设置开机启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-立即启动并查看日志"><span class="nav-text">5.立即启动并查看日志</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、onnx模型转换"><span class="nav-text">四、onnx模型转换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-获取onnx模型"><span class="nav-text">1.获取onnx模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-转换模型"><span class="nav-text">2.转换模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、监控"><span class="nav-text">五、监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-实时查看显卡情况"><span class="nav-text">1.实时查看显卡情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、问题"><span class="nav-text">六、问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-在gpu上运行paddlex报错：“-Hint-‘cudaErrorInitializationError’-The-API-call-failed-because-the-CUDA-driver-and-runtime-could-not-be-initialized-”"><span class="nav-text">1.在gpu上运行paddlex报错：“[Hint: ‘cudaErrorInitializationError’. The API call failed because the CUDA driver and runtime could not be initialized. ]”</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="roubin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">roubin</p>
+  <div class="site-description" itemprop="description">芝兰其室，金石其心<br/>仁义为友，道德为师</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">149</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">91</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/satorioh" title="GitHub → https://github.com/satorioh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wangbinxp@gmail.com" title="E-Mail → mailto:wangbinxp@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">roubin</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://roubinme.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://roubin.me/paddlex-ocr/";
+    this.page.identifier = "paddlex-ocr/";
+    this.page.title = "PaddleX OCR 使用";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://roubinme.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
